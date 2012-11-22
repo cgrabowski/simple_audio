@@ -1,19 +1,5 @@
 part of simple_audio;
 
-/** TODO:
- * Add positional setters / getters to all sources and listener.
- * Add clip creation methods.
- * Add clip update methods.
- * Add error reporting.
- * Add error state to clips.
- * Test muting.
- * Test pause / resume all sources.
- * Add longer but shorter clip.
- * Add more pleasant sounding clip.
- * Add clip selection to left and right clip play buttons.
- * Add positional sound effects to demo application.
- */
-
 /** The [AudioManager] class is the main entry point to the [simple_audio]
  * library.
  */
@@ -213,4 +199,40 @@ class AudioManager {
     }
     source.resume();
   }
+
+  num get dopplerFactor => _listener.dopplerFactor;
+
+  void set dopplerFactor(num df) {
+    _listener.dopplerFactor = df;
+  }
+
+  num get speedOfSound => _listener.speedOfSound;
+
+  void set speedOfSound(num sos) {
+    _listener.speedOfSound = sos;
+  }
+
+  void setOrientation(num xForward, num yForward, num zForward,
+                      num xUp, num yUp, num zUp) {
+    _listener.setOrientation(xForward, yForward, zForward,
+                             xUp, yUp, zUp);
+  }
+
+  void setPosition(num x, num y, num z) {
+    _listener.setPosition(x, y, z);
+  }
+
+  void setVelocity(num x, num y, num z) {
+    _listener.setVelocity(x, y, z);
+  }
 }
+
+/** TODO:
+ * Expose more of pannernode properties in AudioSource.
+ * Test muting.
+ * Test pause / resume all sources.
+ * Add longer but shorter clip.
+ * Add more pleasant sounding clip.
+ * Add clip selection to left and right clip play buttons.
+ * Add positional sound effects to demo application.
+ */

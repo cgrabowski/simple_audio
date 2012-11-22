@@ -115,4 +115,17 @@ class AudioSource {
     });
     _scanSounds();
   }
+
+  void setOrientation(num xForward, num yForward, num zForward,
+                      num xUp, num yUp, num zUp) {
+    _panNode.setOrientation(xForward, yForward, zForward);
+  }
+
+  void setPosition(num x, num y, num z) {
+    _panNode.setPosition(x, y, z);
+  }
+
+  void setVelocity(num x, num y, num z) {
+    _panNode.setVelocity(x, y, z);
+  }
 }
