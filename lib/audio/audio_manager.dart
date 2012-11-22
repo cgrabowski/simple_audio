@@ -1,5 +1,21 @@
 part of simple_audio;
 
+/** TODO:
+ * Handle source plays when paused.
+ * Add positional setters / getters to all sources and listener.
+ * Add clip creation methods.
+ * Add clip update methods.
+ * Add error reporting.
+ * Add error state to clips.
+ * Test muting.
+ * Test pause / resume all sources.
+ * Document.
+ * Add longer but shorter clip.
+ * Add more pleasant sounding clip.
+ * Add clip selection to left and right clip play buttons.
+ * Add positional sound effects to demo application.
+ */
+
 class AudioManager {
   AudioContext _context;
   AudioDestinationNode _destination;
@@ -12,9 +28,7 @@ class AudioManager {
   Map<String, AudioClip> _clips = new Map<String, AudioClip>();
   Map<String, AudioSource> _sources = new Map<String, AudioSource>();
   List<AudioSource> _playOnceSources = new List<AudioSource>();
-  AudioSource _music;
-
-  AudioListener get listener => _listener;
+  AudioMusic _music;
 
   AudioManager() {
     _context = new AudioContext();
@@ -28,6 +42,8 @@ class AudioManager {
     _masterGain.connect(_destination, 0, 0);
     _musicGain.connect(_masterGain, 0, 0);
     _sourceGain.connect(_masterGain, 0, 0);
+
+    _music = new AudioMusic._internal(this, _musicGain);
   }
 
   num get sampleRate => _context.sampleRate;
@@ -43,7 +59,7 @@ class AudioManager {
   }
 
   num get sourceVolume => _sourceGain.gain.value;
-  void set fxVolume(num mv) {
+  void set sourceVolume(num mv) {
     _sourceGain.gain.value = mv;
   }
 
@@ -69,29 +85,47 @@ class AudioManager {
     unpauseMusic();
   }
 
+  bool _musicPaused = false;
   void pauseMusic() {
     _music.pause();
+    _musicPaused = true;
   }
 
   void unpauseMusic() {
     _music.play();
+    _musicPaused = false;
   }
 
+  bool _sourcesPaused = false;
   void pauseSources() {
     _sources.forEach((k,v) {
       v.pause();
     });
+    _playOnceSources.forEach((v) {
+      v.pause();
+    });
+    _sourcesPaused = true;
   }
 
   void unpauseSources() {
     _sources.forEach((k,v) {
       v.play();
     });
+    _playOnceSources.forEach((v) {
+      v.play();
+    });
+    _sourcesPaused = false;
   }
 
-  Map<String, AudioClip> get clips => _clips;
-  Map<String, AudioSource> get sources => _sources;
-  AudioSource get musicSource => _music;
+  AudioClip findClip(String name) {
+    return _clips[name];
+  }
+
+  AudioSource findSource(String name) {
+    return _sources[name];
+  }
+
+  AudioMusic get music => _music;
 
   AudioClip loadClip(String url, [bool forceReload=false]) {
     AudioClip clip = _clips[url];
@@ -155,6 +189,7 @@ class AudioManager {
     AudioSource oneShotSource = new AudioSource._cloneForOneShot(source);
     oneShotSource.clip = clip;
     oneShotSource.play();
+    _playOnceSources.add(oneShotSource);
   }
 
   void stopSource(String sourceName) {

@@ -16,6 +16,15 @@
       <p id="loop_start">Start the screaming</p>
       <p id="loop_stop">Stop the screaming</p>
       <p id="loop_pause">Pause the screaming</p>
+      <p id="music_play">Start the music</p>
+      <p id="music_stop">Stop the music</p>
+      <p id="music_pause">Pause the Music</p>
+    </div>
+
+    <div id="controls">
+      <p>Master</p><input id="masterVolume" min="0" max="1" step="0.1" value="1.0" type="range" />
+      <p>Music</p><input id="musicVolume" min="0" max="1" step="0.1" value="1.0" type="range" />
+      <p>Sources</p><input id="sourceVolume" min="0" max="1" step="0.1" value="1.0" type="range" />
     </div>
 
     <script type="application/dart" src="web/audio.dart"></script>
