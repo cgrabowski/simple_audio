@@ -2,7 +2,7 @@ import 'dart:html';
 import 'package:audio/simple_audio.dart';
 
 AudioManager audioManager = new AudioManager();
-
+AudioSound loopingSound = null;
 String sourceName = 'Page';
 String baseURL = 'http://127.0.0.1:3030/Users/johnmccutchan/workspace/simpleaudio/clips';
 String clipName = '$baseURL/wilhelm.ogg';
@@ -13,7 +13,6 @@ void main() {
   audioManager.loadClip(clipName);
   audioManager.loadClip(musicClipName);
   audioManager.makeSource(sourceName);
-  audioManager.setSourceClip(sourceName,clipName);
 
   query("#play_once")
     ..on.click.add(playOnce);
@@ -49,16 +48,20 @@ void main() {
 }
 
 void playOnce(Event event) {
-  audioManager.playOneShotClipFromSource(sourceName, clipName);
+  audioManager.playClipFromSource(sourceName, clipName);
 }
 
 void startLoop(Event event) {
-  audioManager.findSource(sourceName).loop = true;
-  audioManager.playSource(sourceName);
+  if (audioManager.findSource(sourceName).isPaused) {
+   audioManager.findSource(sourceName).resume();
+   print('resume');
+  } else {
+    loopingSound = audioManager.playClipFromSource(sourceName, clipName, true);
+  }
 }
 
 void stopLoop(Event event) {
-  audioManager.stopSource(sourceName);
+  loopingSound.stop();
 }
 
 void pauseLoop(Event event) {
@@ -66,8 +69,12 @@ void pauseLoop(Event event) {
 }
 
 void startMusic(Event event) {
-  audioManager.music.clip = audioManager.findClip(musicClipName);
-  audioManager.music.play();
+  if (audioManager.music.paused) {
+    audioManager.music.resume();
+  } else {
+    audioManager.music.play(audioManager.findClip(musicClipName));
+  }
+
 }
 
 void stopMusic(Event event) {

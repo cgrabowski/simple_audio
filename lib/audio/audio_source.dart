@@ -1,59 +1,35 @@
 part of simple_audio;
 
+/** An [AudioSource] is analogous to a speaker. It has a location and direction
+ * in the world and can emit sounds. The [AudioSource] by itself does nothing,
+ * you must play an [AudioClip] from the [AudioSource].
+ */
 class AudioSource {
   AudioManager _manager;
+  GainNode _gainNode;
   PannerNode _panNode;
-  AudioBufferSourceNode _sourceNode;
-  AudioClip _clip;
-  bool _loop;
-  num _volume;
+  List<AudioSound> _sounds;
   num _mutedVolume;
-  num _pausedTime;
-  num _startTime;
+  bool _isPaused;
 
   AudioSource._internal(this._manager, GainNode output) {
+    _gainNode = _manager._context.createGain();
+    _gainNode.connect(output, 0, 0);
     _panNode = _manager._context.createPanner();
-    _panNode.connect(output, 0, 0);
-    _volume = 1.0;
-    _loop = false;
+    _panNode.connect(_gainNode, 0, 0);
+    _sounds = new List<AudioSound>();
+    _isPaused = false;
   }
 
-  AudioSource._cloneForOneShot(AudioSource other) {
-    _manager = other._manager;
-    _panNode = other._panNode;
-    _volume = other._volume;
-    _loop = false;
-  }
+  /** Is the audio source currently paused? */
+  bool get isPaused => _isPaused;
 
   /** Get the volume of this source. 0.0 <= volume <= 1.0. */
-  num get volume => _volume;
+  num get volume => _gainNode.gain.value;
 
-  /** Get the clip for this source. */
-  AudioClip get clip => _clip;
-
-  /** Set the clip for this source. */
-  void set clip(AudioClip clip) {
-    // Reset paused state.
-    _pausedTime = null;
-    _clip = clip;
-  }
-
-  /** Set the volume for this source. */
+  /** Set the volume for this source. All sounds being played are affected. */
   void set volume(num v) {
-    _volume = v;
-    if (_sourceNode == null) {
-      return;
-    }
-    _volume = v;
-    _sourceNode.gain.value = v;
-  }
-
-  /** Get the loop flag for this source. */
-  bool get loop => _loop;
-
-  /** Set the loop flag for this source. */
-  void set loop(bool l) {
-    _loop = l;
+    _gainNode.gain.value = v;
   }
 
   /** Is this source muted? */
@@ -61,7 +37,7 @@ class AudioSource {
     return _mutedVolume != null;
   }
 
-  /** Mute this source */
+  /** Mute or unmute this source. */
   void set mute(bool b) {
     if (b) {
       if (_mutedVolume != null) {
@@ -80,73 +56,63 @@ class AudioSource {
     }
   }
 
-  /** Is the source currently playing  ? */
-  bool get isPlaying {
-    return _sourceNode == null ?
-      false : _sourceNode.playbackState == AudioBufferSourceNode.PLAYING_STATE;
-  }
-
-  AudioBufferSourceNode _readyClipForPlay(AudioClip clip_) {
-    // New source node
-    AudioBufferSourceNode sourceNode = _manager._context.createBufferSource();
-    sourceNode.loop = _loop;
-    sourceNode.gain.value = _volume;
-    if (clip_ != null && clip_._buffer != null) {
-      sourceNode.buffer = clip_._buffer;
-      sourceNode.loopStart = 0.0;
-      sourceNode.loopEnd = clip_._buffer.duration;
-    } else {
-      sourceNode.buffer = null;
+  /** Play [clip] from this [AudioSource]. */
+  AudioSound playOnce(AudioClip clip) {
+    AudioSound sound = new AudioSound._internal(this, clip, false);
+    _sounds.add(sound);
+    sound.play();
+    if (isPaused) {
+      sound.pause();
     }
-    _sourceNode = sourceNode;
-    _sourceNode.connect(_panNode, 0, 0);
-    return sourceNode;
+    return sound;
   }
 
-  void _start() {
-    if (_pausedTime != null) {
-      // Resume playing
-      _sourceNode.start(0.0, _pausedTime, 0.0);
-      _pausedTime = null;
-    } else {
-      _sourceNode.start(0.0);
+  /** Okay [clip] from this [AudioSource] in a loop. */
+  AudioSound playLooped(AudioClip clip) {
+    AudioSound sound = new AudioSound._internal(this, clip, true);
+    _sounds.add(sound);
+    sound.play();
+    if (isPaused) {
+      sound.pause();
     }
+    return sound;
   }
 
-  void _stop() {
-    if (_sourceNode != null) {
-      _sourceNode.stop(0.0);
-      _sourceNode = null;
+  bool _scanSounds() {
+    for (int i = _sounds.length-1; i >= 0; i--) {
+      AudioSound sound = _sounds[i];
+      if (sound.isFinished) {
+        int last = _sounds.length-1;
+        // Copy last over
+        _sounds[i] = _sounds[last];
+        // Pop end
+        _sounds.removeLast();
+        sound.stop();
+      }
     }
   }
 
-  void _pause(AudioBufferSourceNode sourceNode) {
-    if (isPlaying) {
-      var now = _manager._context.currentTime;
-      _pausedTime = now - _startTime;
-      sourceNode.stop(0.0);
-    }
-  }
-
-  /** Start playing the clip from this source */
-  void play() {
-    if (_pausedTime == null) {
-      // Straight play
-      _stop();
-    }
-    _readyClipForPlay(_clip);
-    _start();
-    _startTime = _manager._context.currentTime;
-  }
-
-  /** Pause this source */
+  /** Pause all sounds currently playing from this source */
   void pause() {
-    _pause(_sourceNode);
+    _scanSounds();
+    _sounds.forEach((sound) {
+      sound.pause();
+    });
   }
 
-  /** Stop this source */
+  /** Resume all paused sounds currently playing from this source */
+  void resume() {
+    _scanSounds();
+    _sounds.forEach((sound) {
+      sound.resume();
+    });
+  }
+
+  /** Stop all sounds currently playing from this source */
   void stop() {
-    _stop();
-    _pausedTime = null;
+    _sounds.forEach((sound) {
+      sound.stop();
+    });
+    _scanSounds();
   }
 }

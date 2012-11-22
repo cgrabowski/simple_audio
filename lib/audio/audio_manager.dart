@@ -1,7 +1,6 @@
 part of simple_audio;
 
 /** TODO:
- * Handle source plays when paused.
  * Add positional setters / getters to all sources and listener.
  * Add clip creation methods.
  * Add clip update methods.
@@ -9,13 +8,15 @@ part of simple_audio;
  * Add error state to clips.
  * Test muting.
  * Test pause / resume all sources.
- * Document.
  * Add longer but shorter clip.
  * Add more pleasant sounding clip.
  * Add clip selection to left and right clip play buttons.
  * Add positional sound effects to demo application.
  */
 
+/** The [AudioManager] class is the main entry point to the [simple_audio]
+ * library.
+ */
 class AudioManager {
   AudioContext _context;
   AudioDestinationNode _destination;
@@ -27,9 +28,9 @@ class AudioManager {
 
   Map<String, AudioClip> _clips = new Map<String, AudioClip>();
   Map<String, AudioSource> _sources = new Map<String, AudioSource>();
-  List<AudioSource> _playOnceSources = new List<AudioSource>();
   AudioMusic _music;
 
+  /** Construct a new AudioManager */
   AudioManager() {
     _context = new AudioContext();
     _destination = _context.destination;
@@ -46,28 +47,37 @@ class AudioManager {
     _music = new AudioMusic._internal(this, _musicGain);
   }
 
+  /** Sample rate of the audio driver */
   num get sampleRate => _context.sampleRate;
 
+  /** Get the music volume. */
   num get musicVolume => _musicGain.gain.value;
+  /** Set the music volume. */
   void set musicVolume(num mv) {
     _musicGain.gain.value = mv;
   }
 
+  /** Get the master volume. */
   num get masterVolume => _masterGain.gain.value;
+  /** Set the master volume. */
   void set masterVolume(num mv) {
     _masterGain.gain.value = mv;
   }
 
+  /** Get the sources volume */
   num get sourceVolume => _sourceGain.gain.value;
+  /** Set the sources volume */
   void set sourceVolume(num mv) {
     _sourceGain.gain.value = mv;
   }
 
   num _mutedVolume;
+  /** Mute all sounds */
   void mute() {
     _mutedVolume = _masterGain.gain.value;
   }
 
+  /** Unmute all sounds */
   void unmute() {
     if (_mutedVolume != null) {
       _masterGain.gain.value = _mutedVolume;
@@ -75,56 +85,58 @@ class AudioManager {
     }
   }
 
+  /** Pause both music and source based sounds. */
   void pauseAll() {
     pauseSources();
     pauseMusic();
   }
 
-  void unpauseAll() {
-    unpauseSources();
-    unpauseMusic();
+  /** Resume both music and source based sounds. */
+  void resumeAll() {
+    resumeSources();
+    resumeMusic();
   }
 
   bool _musicPaused = false;
+  /** Pause music sounds */
   void pauseMusic() {
     _music.pause();
     _musicPaused = true;
   }
-
-  void unpauseMusic() {
-    _music.play();
+  /** Resume music sounds */
+  void resumeMusic() {
+    _music.resume();
     _musicPaused = false;
   }
 
   bool _sourcesPaused = false;
+  /** Pause source base sounds. */
   void pauseSources() {
     _sources.forEach((k,v) {
-      v.pause();
-    });
-    _playOnceSources.forEach((v) {
       v.pause();
     });
     _sourcesPaused = true;
   }
 
-  void unpauseSources() {
+  /** Resume source base sounds. */
+  void resumeSources() {
     _sources.forEach((k,v) {
-      v.play();
-    });
-    _playOnceSources.forEach((v) {
-      v.play();
+      v.resume();
     });
     _sourcesPaused = false;
   }
 
+  /** Find the audio clip with [name] */
   AudioClip findClip(String name) {
     return _clips[name];
   }
 
+  /** Find the audio source with [name] */
   AudioSource findSource(String name) {
     return _sources[name];
   }
 
+  /** Get the [AudioMusic] singleton. */
   AudioMusic get music => _music;
 
   AudioClip loadClip(String url, [bool forceReload=false]) {
@@ -137,6 +149,7 @@ class AudioManager {
     return clip;
   }
 
+  /** Create an [AudioSource] and assign it [name] */
   AudioSource makeSource(String name) {
     AudioSource source = _sources[name];
     if (source != null) {
@@ -147,51 +160,28 @@ class AudioManager {
     return source;
   }
 
-  void setSourceClip(String sourceName, String clipName) {
+  /** Play [clipName] from [sourceName]. */
+  AudioSound playClipFromSource(String sourceName, String clipName, [bool looped=false]) {
     AudioSource source = _sources[sourceName];
     if (source == null) {
       // TODO(johnmccutchan): Determine error route.
       print('Could not find source $sourceName');
-      return;
+      return null;
     }
     AudioClip clip = _clips[clipName];
     if (clip == null) {
       // TODO(johnmccutchan): Determine error route.
       print('Could not find clip $clipName');
-      return;
+      return null;
     }
-    source.clip = clip;
+    if (looped) {
+      return source.playLooped(clip);
+    } else {
+      return source.playOnce(clip);
+    }
   }
 
-  void playSource(String sourceName) {
-    AudioSource source = _sources[sourceName];
-    if (source == null) {
-      // TODO(johnmccutchan): Determine error route.
-      print('Could not find source $sourceName');
-      return;
-    }
-    source.play();
-  }
-
-  void playOneShotClipFromSource(String sourceName, String clipName) {
-    AudioSource source = _sources[sourceName];
-    if (source == null) {
-      // TODO(johnmccutchan): Determine error route.
-      print('Could not find source $sourceName');
-      return;
-    }
-    AudioClip clip = _clips[clipName];
-    if (clip == null) {
-      // TODO(johnmccutchan): Determine error route.
-      print('Could not find clip $clipName');
-      return;
-    }
-    AudioSource oneShotSource = new AudioSource._cloneForOneShot(source);
-    oneShotSource.clip = clip;
-    oneShotSource.play();
-    _playOnceSources.add(oneShotSource);
-  }
-
+  /** Stop all sounds originating from [sourceName] */
   void stopSource(String sourceName) {
     AudioSource source = _sources[sourceName];
     if (source == null) {
@@ -202,6 +192,7 @@ class AudioManager {
     source.stop();
   }
 
+  /** Pause all sounds originating from [sourceName] */
   void pauseSource(String sourceName) {
     AudioSource source = _sources[sourceName];
     if (source == null) {
@@ -212,5 +203,14 @@ class AudioManager {
     source.pause();
   }
 
-
+  /** Resume all sounds originating from [sourceName] */
+  void resumeSource(String sourceName) {
+    AudioSource source = _sources[sourceName];
+    if (source == null) {
+      // TODO(johnmccutchan): Determine error route.
+      print('Could not find source $sourceName');
+      return;
+    }
+    source.resume();
+  }
 }

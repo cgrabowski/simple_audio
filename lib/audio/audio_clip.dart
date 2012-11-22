@@ -1,7 +1,10 @@
 part of simple_audio;
 
+/** An [AudioClip] stores sound data. It can be played by an [AudioSource]
+ * or played with [AudioMusic].
+ */
 class AudioClip {
-  AudioManager _manager;
+  final AudioManager _manager;
   AudioBuffer _buffer;
   String _url;
   bool _isReadyToPlay;
@@ -52,6 +55,7 @@ class AudioClip {
     print('Error fetching $_url');
   }
 
+  /** Length of audio clip in seconds */
   num get length {
     if (_buffer == null) {
       return 0;
@@ -59,6 +63,7 @@ class AudioClip {
     return _buffer.duration;
   }
 
+  /** Length of audio clip in samples */
   num get samples {
     if (_buffer == null) {
       return 0;
@@ -66,6 +71,7 @@ class AudioClip {
     return _buffer.length;
   }
 
+  /** Samples per second */
   num get frequency {
     if (_buffer == null) {
       return 0;
@@ -73,5 +79,6 @@ class AudioClip {
     return _buffer.sampleRate;
   }
 
+  /** Is the audio clip ready to be played ? */
   bool get isReadyToPlay => _isReadyToPlay;
 }
