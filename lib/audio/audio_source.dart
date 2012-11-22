@@ -1,35 +1,28 @@
 part of simple_audio;
 
 class AudioSource {
-  AudioContext _context;
+  AudioManager _manager;
+  PannerNode _panNode;
   AudioBufferSourceNode _sourceNode;
-  num _volume;
-  num _savedVolume;
-  bool _loop;
   AudioClip _clip;
+  bool _loop;
+  num _volume;
+  num _mutedVolume;
   num _pausedTime;
   num _startTime;
 
-  /** Create a new AudioSource. */
-  AudioSource() {
-    _context = simpleAudio._context;
-    _sourceNode = _context.createBufferSource();
-    _connectToListener(_sourceNode);
+  AudioSource._internal(this._manager, GainNode output) {
+    _panNode = _manager._context.createPanner();
+    _panNode.connect(output, 0, 0);
     _volume = 1.0;
     _loop = false;
   }
 
-  /** Create a new AudioSource ready to play [AudioClip]. */
-  AudioSource.withClip(this._clip) {
-    _context = simpleAudio._context;
-    _sourceNode = _context.createBufferSource();
-    _connectToListener(_sourceNode);
-    _volume = 1.0;
+  AudioSource._cloneForOneShot(AudioSource other) {
+    _manager = other._manager;
+    _panNode = other._panNode;
+    _volume = other._volume;
     _loop = false;
-  }
-
-  void _connectToListener(AudioBufferSourceNode sourceNode) {
-    sourceNode.connect(_context.destination, 0, 0);
   }
 
   /** Get the volume of this source. 0.0 <= volume <= 1.0. */
@@ -47,11 +40,9 @@ class AudioSource {
 
   /** Set the volume for this source. */
   void set volume(num v) {
-    if (v > _sourceNode.gain.maxValue) {
-      v = _sourceNode.gain.maxValue;
-    }
-    if (v < _sourceNode.gain.minValue) {
-      v = _sourceNode.gain.minValue;
+    _volume = v;
+    if (_sourceNode == null) {
+      return;
     }
     _volume = v;
     _sourceNode.gain.value = v;
@@ -67,68 +58,71 @@ class AudioSource {
 
   /** Is this source muted? */
   bool get mute {
-    return _savedVolume != null;
+    return _mutedVolume != null;
   }
 
   /** Mute this source */
   void set mute(bool b) {
     if (b) {
-      if (_savedVolume != null) {
+      if (_mutedVolume != null) {
         // Double mute.
         return;
       }
-      _savedVolume = volume;
+      _mutedVolume = volume;
       volume = 0.0;
     } else {
-      if (_savedVolume == null) {
+      if (_mutedVolume == null) {
         // Double unmute.
         return;
       }
-      volume = _savedVolume;
-      _savedVolume = null;
+      volume = _mutedVolume;
+      _mutedVolume = null;
     }
   }
 
   /** Is the source currently playing  ? */
   bool get isPlaying {
-    return _sourceNode.playbackState == AudioBufferSourceNode.PLAYING_STATE;
+    return _sourceNode == null ?
+      false : _sourceNode.playbackState == AudioBufferSourceNode.PLAYING_STATE;
   }
 
-  AudioBufferSourceNode _readyClipForPlay(AudioClip clip_, bool oneShot) {
+  AudioBufferSourceNode _readyClipForPlay(AudioClip clip_) {
     // New source node
-    AudioBufferSourceNode sourceNode = _context.createBufferSource();
-    sourceNode.loop = oneShot == true ? false : _loop;
+    AudioBufferSourceNode sourceNode = _manager._context.createBufferSource();
+    sourceNode.loop = _loop;
     sourceNode.gain.value = _volume;
-    _connectToListener(sourceNode);
-    if (clip_ != null) {
+    if (clip_ != null && clip_._buffer != null) {
       sourceNode.buffer = clip_._buffer;
       sourceNode.loopStart = 0.0;
       sourceNode.loopEnd = clip_._buffer.duration;
     } else {
       sourceNode.buffer = null;
     }
-
-    if (!oneShot) {
-      _sourceNode = sourceNode;
-    }
+    _sourceNode = sourceNode;
+    _sourceNode.connect(_panNode, 0, 0);
     return sourceNode;
   }
 
-  void _start(AudioBufferSourceNode sourceNode, num resumeTime) {
-    if (resumeTime != null) {
-      sourceNode.start(0.0, resumeTime, 0.0);
+  void _start() {
+    if (_pausedTime != null) {
+      // Resume playing
+      _sourceNode.start(0.0, _pausedTime, 0.0);
+      _pausedTime = null;
     } else {
-      sourceNode.start(0.0);
+      _sourceNode.start(0.0);
     }
   }
 
-  void _stop(AudioBufferSourceNode sourceNode) {
-    sourceNode.stop(0.0);
+  void _stop() {
+    if (_sourceNode != null) {
+      _sourceNode.stop(0.0);
+      _sourceNode = null;
+    }
   }
 
   void _pause(AudioBufferSourceNode sourceNode) {
     if (isPlaying) {
-      var now = _context.currentTime;
+      var now = _manager._context.currentTime;
       _pausedTime = now - _startTime;
       sourceNode.stop(0.0);
     }
@@ -136,19 +130,13 @@ class AudioSource {
 
   /** Start playing the clip from this source */
   void play() {
-    _stop(_sourceNode);
-    _readyClipForPlay(_clip, false);
-    _start(_sourceNode, _pausedTime);
-    _startTime = _context.currentTime;
-    _pausedTime = null;
-  }
-
-  /** Play [oneShotClip] from this source. Does not affect default clip.
-   * Clips played with this function cannot be paused or stopped.
-   */
-  void playOneShot(AudioClip oneShotClip) {
-    AudioBufferSourceNode sourceNode = _readyClipForPlay(oneShotClip, true);
-    _start(sourceNode, null);
+    if (_pausedTime == null) {
+      // Straight play
+      _stop();
+    }
+    _readyClipForPlay(_clip);
+    _start();
+    _startTime = _manager._context.currentTime;
   }
 
   /** Pause this source */
@@ -158,7 +146,7 @@ class AudioSource {
 
   /** Stop this source */
   void stop() {
-    _stop(_sourceNode);
+    _stop();
     _pausedTime = null;
   }
 }

@@ -17,6 +17,10 @@ class AudioClip {
     request.send();
   }
 
+  AudioClip._fromBuffer(this._manager, this._buffer) {
+    _isReadyToPlay = true;
+  }
+
   void _empty() {
     _isReadyToPlay = false;
     _buffer = null;
@@ -31,14 +35,15 @@ class AudioClip {
     }
     _buffer = buffer;
     _isReadyToPlay = true;
+    print('ready');
   }
 
 
   void _onRequestSuccess(HttpRequest request) {
     var response = request.response;
-    _context.decodeAudioData(response,
-                             _onDecode,
-                             _onDecode);
+    _manager._context.decodeAudioData(response,
+                                      _onDecode,
+                                      _onDecode);
   }
 
   void _onRequestError(HttpRequest request) {

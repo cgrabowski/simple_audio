@@ -1,13 +1,16 @@
 import 'dart:html';
 import 'package:audio/simple_audio.dart';
 
-var clip;
-AudioSource source;
+AudioManager audioManager = new AudioManager();
+String sourceName = 'Page';
+String clipName = 'http://127.0.0.1:3030/C:/workspace/audio/clips/wilhelm.ogg';
 
 void main() {
-  clip = new AudioClip.load('http://127.0.0.1:3030/C:/workspace/audio/clips/wilhelm.ogg');
-  source = new AudioSource();
-  source.clip = clip;
+
+  audioManager.loadClip(clipName);
+  audioManager.makeSource(sourceName);
+  audioManager.setSourceClip(sourceName,clipName);
+
   query("#play_once")
     ..on.click.add(playOnce);
   query("#loop_start")
@@ -19,18 +22,18 @@ void main() {
 }
 
 void playOnce(Event event) {
-  source.playOneShot(clip);
+  audioManager.playOneShotClipFromSource(sourceName, clipName);
 }
 
 void startLoop(Event event) {
-  source.loop = true;
-  source.play();
+  audioManager.sources[sourceName].loop = true;
+  audioManager.playSource(sourceName);
 }
 
 void stopLoop(Event event) {
-  source.stop();
+  audioManager.stopSource(sourceName);
 }
 
 void pauseLoop(Event event) {
-  source.pause();
+  audioManager.pauseSource(sourceName);
 }
