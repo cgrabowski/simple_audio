@@ -7,30 +7,43 @@ class AudioClip {
   final AudioManager _manager;
   final String name;
   AudioBuffer _buffer;
-  String _url;
-  bool _isReadyToPlay;
+  bool _hasError = false;
+  String _errorString = '';
+  bool _isReadyToPlay = false;
 
-  AudioClip._internal(this._manager, this.name) {
-    _isReadyToPlay = false;
-  }
+  AudioClip._internal(this._manager, this.name);
 
   void _empty() {
     _isReadyToPlay = false;
     _buffer = null;
   }
 
+  /** Does this [AudioClip] have an error? */
+  bool get hasError => _hasError;
+  /** Human readable error */
+  String get errorString => _errorString;
+
+  void _clearError() {
+    _hasError = false;
+    _errorString = 'OK';
+  }
+
+  void _setError(String error) {
+    _hasError = true;
+    _errorString = error;
+  }
+
   void _onDecode(AudioBuffer buffer) {
     if (buffer == null) {
       _empty();
-      // TODO(johnmccutchan): Determine error route.
-      print('Error decoding $name');
+      _setError('Error decoding buffer.');
       return;
     }
+    _clearError();
     _buffer = buffer;
     _isReadyToPlay = true;
     print('ready');
   }
-
 
   void _onRequestSuccess(HttpRequest request) {
     var response = request.response;
@@ -41,10 +54,10 @@ class AudioClip {
 
   void _onRequestError(HttpRequest request) {
     _empty();
-    // TODO(johnmccutchan): Determine error route.
-    print('Error fetching $name');
+    _setError('Error fetching data');
   }
 
+  /** Fetch [url] and decode it into this [AudioClip] buffer. */
   void loadFrom(String url) {
     var request = new HttpRequest();
     request.responseType = 'arraybuffer';
@@ -53,6 +66,33 @@ class AudioClip {
     request.on.abort.add((e) => _onRequestError(request));
     request.open('GET', url);
     request.send();
+  }
+
+  /** Make an empty buffer with [numberOfSampleFrames] in
+   * each [numberOfChannels]. The buffer plays at a rate of [sampleRate].
+   * The duration (in seconds) of the buffer is equal to:
+   * numberOfSampleFrames / sampleRate
+   */
+  void makeBuffer(num numberOfSampleFrames, num numberOfChannels, num sampleRate) {
+    _buffer = _manager._context.createBuffer(numberOfChannels,
+                                             numberOfChannels,
+                                             sampleRate);
+  }
+
+  /** Return the sample frames array for [channel] */
+  Float32Array getSampleFramesForChannel(num channel) {
+    if (_buffer == null) {
+      return null;
+    }
+    return _buffer.getChannelData(channel);
+  }
+
+  /** Return the number of channels this buffer has */
+  num get numberOfChannels {
+    if (_buffer == null) {
+      return 0;
+    }
+    return _buffer.numberOfChannels;
   }
 
   /** Length of audio clip in seconds */
