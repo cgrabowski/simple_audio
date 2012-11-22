@@ -5,23 +5,13 @@ part of simple_audio;
  */
 class AudioClip {
   final AudioManager _manager;
+  final String name;
   AudioBuffer _buffer;
   String _url;
   bool _isReadyToPlay;
 
-  AudioClip._load(this._manager, this._url) {
+  AudioClip._internal(this._manager, this.name) {
     _isReadyToPlay = false;
-    var request = new HttpRequest();
-    request.responseType = 'arraybuffer';
-    request.on.load.add((e) => _onRequestSuccess(request));
-    request.on.error.add((e) => _onRequestError(request));
-    request.on.abort.add((e) => _onRequestError(request));
-    request.open('GET', _url);
-    request.send();
-  }
-
-  AudioClip._fromBuffer(this._manager, this._buffer) {
-    _isReadyToPlay = true;
   }
 
   void _empty() {
@@ -33,7 +23,7 @@ class AudioClip {
     if (buffer == null) {
       _empty();
       // TODO(johnmccutchan): Determine error route.
-      print('Error decoding $_url');
+      print('Error decoding $name');
       return;
     }
     _buffer = buffer;
@@ -52,7 +42,17 @@ class AudioClip {
   void _onRequestError(HttpRequest request) {
     _empty();
     // TODO(johnmccutchan): Determine error route.
-    print('Error fetching $_url');
+    print('Error fetching $name');
+  }
+
+  void loadFrom(String url) {
+    var request = new HttpRequest();
+    request.responseType = 'arraybuffer';
+    request.on.load.add((e) => _onRequestSuccess(request));
+    request.on.error.add((e) => _onRequestError(request));
+    request.on.abort.add((e) => _onRequestError(request));
+    request.open('GET', url);
+    request.send();
   }
 
   /** Length of audio clip in seconds */

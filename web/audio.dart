@@ -4,14 +4,18 @@ import 'package:audio/simple_audio.dart';
 AudioManager audioManager = new AudioManager();
 AudioSound loopingSound = null;
 String sourceName = 'Page';
+
 String baseURL = 'http://127.0.0.1:3030/Users/johnmccutchan/workspace/simpleaudio/clips';
-String clipName = '$baseURL/wilhelm.ogg';
-String musicClipName = '$baseURL/deeper.ogg';
+String clipName = 'Wilhelm';
+String clipURL = '$baseURL/wilhelm.ogg';
+String musicClipName = 'Deeper';
+String musicClipURL = '$baseURL/deeper.ogg';
 
 void main() {
-
-  audioManager.loadClip(clipName);
-  audioManager.loadClip(musicClipName);
+  audioManager.makeClip(clipName);
+  audioManager.makeClip(musicClipName);
+  audioManager.findClip(clipName).loadFrom(clipURL);
+  audioManager.findClip(musicClipName).loadFrom(musicClipURL);
   audioManager.makeSource(sourceName);
 
   query("#play_once")

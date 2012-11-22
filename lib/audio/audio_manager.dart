@@ -139,13 +139,13 @@ class AudioManager {
   /** Get the [AudioMusic] singleton. */
   AudioMusic get music => _music;
 
-  AudioClip loadClip(String url, [bool forceReload=false]) {
-    AudioClip clip = _clips[url];
-    if (clip != null && forceReload == false) {
+  AudioClip makeClip(String name) {
+    AudioClip clip = _clips[name];
+    if (clip != null) {
       return clip;
     }
-    clip = new AudioClip._load(this, url);
-    _clips[url] = clip;
+    clip = new AudioClip._internal(this, name);
+    _clips[name] = clip;
     return clip;
   }
 
