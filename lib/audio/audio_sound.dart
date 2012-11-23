@@ -11,10 +11,11 @@ class AudioSound {
   AudioBufferSourceNode _sourceNode;
   num _pausedTime;
   num _startTime;
+  num _scheduledTime;
 
   bool get isScheduled => _sourceNode == null ? false : _sourceNode.playbackState == AudioBufferSourceNode.SCHEDULED_STATE;
   bool get isPlaying => _sourceNode == null ? false : _sourceNode.playbackState == AudioBufferSourceNode.PLAYING_STATE;
-  bool get isFinished => _sourceNode == null ? true : _sourceNode.playbackState == AudioBufferSourceNode.FINISHED_STATE;
+  bool get isFinished => _sourceNode == null ? false : _sourceNode.playbackState == AudioBufferSourceNode.FINISHED_STATE;
 
   AudioSound._internal(this._source, this._clip, this._loop) {
     _setupSourceNodeForPlayback();
@@ -52,32 +53,59 @@ class AudioSound {
     _stop();
     _setupSourceNodeForPlayback();
     _sourceNode.start(0.0);
+    _scheduledTime = _source._manager._context.currentTime;
     _startTime = _source._manager._context.currentTime;
   }
 
+  bool get pause => _pausedTime != null;
+
+  void set pause(bool b) {
+    if (b) {
+      if (_pausedTime != null) {
+        // Double pause.
+        return;
+      }
+      _pause();
+    } else {
+      if (_pausedTime == null) {
+        // Double unpause.
+        return;
+      }
+      _resume();
+    }
+  }
+
+  num _computePausedTime() {
+    assert(_startTime != null);
+    var now = _source._manager._context.currentTime;
+    var pt = now - _startTime;
+    if (_loop) {
+      pt = pt % _sourceNode.buffer.duration;
+    }
+    return pt;
+  }
+
   /** Pause this sound */
-  void pause() {
+  void _pause() {
     if (_startTime == null) {
       return;
     }
     print('Sound.pause');
     _dumpSourceNode();
     if (_sourceNode != null) {
-      var now = _source._manager._context.currentTime;
-      _pausedTime = now - _startTime;
-      _sourceNode.stop(0.0);
+      _pausedTime = _computePausedTime();
+      _stop();
       print('paused at $_pausedTime');
     }
   }
 
   /** Resume playing this sound */
-  void resume() {
+  void _resume() {
     if (_pausedTime == null) {
       return;
     }
     print('Sound.resume');
     _dumpSourceNode();
-    _stop();
     _setupSourceNodeForPlayback();
     print('resume $_pausedTime ${_sourceNode.loopStart} ${_sourceNode.loopEnd}');
     _sourceNode.start(0.0, _pausedTime, _sourceNode.buffer.duration-_pausedTime);
@@ -91,6 +119,7 @@ class AudioSound {
     _dumpSourceNode();
     _stop();
     _startTime = null;
+    _scheduledTime = null;
     _pausedTime = null;
   }
 }

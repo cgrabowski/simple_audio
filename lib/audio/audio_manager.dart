@@ -47,6 +47,7 @@ class AudioManager {
   num get masterVolume => _masterGain.gain.value;
   /** Set the master volume. */
   void set masterVolume(num mv) {
+    mute = false;
     _masterGain.gain.value = mv;
   }
 
@@ -58,14 +59,23 @@ class AudioManager {
   }
 
   num _mutedVolume;
-  /** Mute all sounds */
-  void mute() {
-    _mutedVolume = _masterGain.gain.value;
-  }
+  /** Is everything muted? */
+  bool get mute => _mutedVolume != null;
 
-  /** Unmute all sounds */
-  void unmute() {
-    if (_mutedVolume != null) {
+  /** Control the master mute */
+  void set mute(bool b) {
+    if (b) {
+     if (_mutedVolume != null) {
+       // Double mute.
+       return;
+     }
+     _mutedVolume = _masterGain.gain.value;
+     _masterGain.gain.value = 0;
+    } else {
+      if (_mutedVolume == null) {
+        // Double unmute.
+        return;
+      }
       _masterGain.gain.value = _mutedVolume;
       _mutedVolume = null;
     }
@@ -86,12 +96,12 @@ class AudioManager {
   bool _musicPaused = false;
   /** Pause music sounds */
   void pauseMusic() {
-    _music.pause();
+    _music.pause = true;
     _musicPaused = true;
   }
   /** Resume music sounds */
   void resumeMusic() {
-    _music.resume();
+    _music.pause = false;
     _musicPaused = false;
   }
 
@@ -99,7 +109,7 @@ class AudioManager {
   /** Pause source base sounds. */
   void pauseSources() {
     _sources.forEach((k,v) {
-      v.pause();
+      v.pause = true;
     });
     _sourcesPaused = true;
   }
@@ -107,7 +117,7 @@ class AudioManager {
   /** Resume source base sounds. */
   void resumeSources() {
     _sources.forEach((k,v) {
-      v.resume();
+      v.pause = false;
     });
     _sourcesPaused = false;
   }
@@ -186,7 +196,7 @@ class AudioManager {
       print('Could not find source $sourceName');
       return;
     }
-    source.pause();
+    source.pause = true;
   }
 
   /** Resume all sounds originating from [sourceName] */
@@ -197,7 +207,7 @@ class AudioManager {
       print('Could not find source $sourceName');
       return;
     }
-    source.resume();
+    source.pause = false;
   }
 
   num get dopplerFactor => _listener.dopplerFactor;
@@ -228,9 +238,8 @@ class AudioManager {
 }
 
 /** TODO:
+ * Support scheduled sounds and pausing of scheduled sounds.
  * Expose more of pannernode properties in AudioSource.
- * Test muting.
- * Test pause / resume all sources.
  * Add longer but shorter clip.
  * Add more pleasant sounding clip.
  * Add clip selection to left and right clip play buttons.

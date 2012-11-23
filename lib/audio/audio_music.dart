@@ -18,7 +18,12 @@ class AudioMusic {
   }
 
   /** Is the music paused? */
-  bool get paused => _sound == null ? false : _sound.paused;
+  bool get pause => _sound == null ? false : _sound.paused;
+  void set pause(bool b) {
+    if (_sound != null) {
+      _sound.pause = b;
+    }
+  }
 
   /** Play the music [clip]. The music will loop. */
   void play(AudioClip clip) {
@@ -30,19 +35,5 @@ class AudioMusic {
   /** Stop the music. */
   void stop() {
     _stop();
-  }
-
-  /** Pause the music. */
-  void pause() {
-    if (_sound != null) {
-      _sound.pause();
-    }
-  }
-
-  /** Resume the music. */
-  void resume() {
-    if (_sound != null) {
-      _sound.resume();
-    }
   }
 }

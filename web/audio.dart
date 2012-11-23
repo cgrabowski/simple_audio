@@ -26,6 +26,8 @@ void main() {
     ..on.click.add(stopLoop);
   query("#loop_pause")
     ..on.click.add(pauseLoop);
+  query("#pause_all")
+    ..on.click.add(pauseAll);
 
   query("#music_play")
     ..on.click.add(startMusic);
@@ -49,6 +51,8 @@ void main() {
     ie = query("#sourceVolume");
     ie.on.change.add((e) => adjustVolume("source", ie));
   }
+  query("#mute")
+    ..on.click.add(muteEverything);
 }
 
 void playOnce(Event event) {
@@ -56,9 +60,8 @@ void playOnce(Event event) {
 }
 
 void startLoop(Event event) {
-  if (audioManager.findSource(sourceName).isPaused) {
-   audioManager.findSource(sourceName).resume();
-   print('resume');
+  if (audioManager.findSource(sourceName).pause) {
+   audioManager.findSource(sourceName).pause = false;
   } else {
     loopingSound = audioManager.playClipFromSource(sourceName, clipName, true);
   }
@@ -73,12 +76,22 @@ void pauseLoop(Event event) {
 }
 
 void startMusic(Event event) {
-  if (audioManager.music.paused) {
-    audioManager.music.resume();
+  if (audioManager.music.pause) {
+    audioManager.music.pause = false;
   } else {
     audioManager.music.play(audioManager.findClip(musicClipName));
   }
+}
 
+bool _allPaused = false;
+void pauseAll(Event event) {
+  if (_allPaused) {
+    audioManager.resumeAll();
+    _allPaused = false;
+  } else {
+    audioManager.pauseAll();
+    _allPaused = true;
+  }
 }
 
 void stopMusic(Event event) {
@@ -86,7 +99,7 @@ void stopMusic(Event event) {
 }
 
 void pauseMusic(Event event) {
-  audioManager.music.pause();
+  audioManager.music.pause = true;
 }
 
 void adjustVolume(String volume, InputElement el) {
@@ -99,4 +112,8 @@ void adjustVolume(String volume, InputElement el) {
     audioManager.sourceVolume = val;
   }
   print('$volume -> $val');
+}
+
+void muteEverything(Event event) {
+  audioManager.mute = !audioManager.mute;
 }

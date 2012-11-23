@@ -10,7 +10,7 @@ class AudioSource {
   PannerNode _panNode;
   List<AudioSound> _sounds;
   num _mutedVolume;
-  bool _isPaused;
+  bool _isPaused = false;
 
   AudioSource._internal(this._manager, GainNode output) {
     _gainNode = _manager._context.createGain();
@@ -18,11 +18,7 @@ class AudioSource {
     _panNode = _manager._context.createPanner();
     _panNode.connect(_gainNode, 0, 0);
     _sounds = new List<AudioSound>();
-    _isPaused = false;
   }
-
-  /** Is the audio source currently paused? */
-  bool get isPaused => _isPaused;
 
   /** Get the volume of this source. 0.0 <= volume <= 1.0. */
   num get volume => _gainNode.gain.value;
@@ -61,9 +57,8 @@ class AudioSource {
     AudioSound sound = new AudioSound._internal(this, clip, false);
     _sounds.add(sound);
     sound.play();
-    if (isPaused) {
-      sound.pause();
-    }
+    sound.pause = pause;
+
     return sound;
   }
 
@@ -72,9 +67,7 @@ class AudioSource {
     AudioSound sound = new AudioSound._internal(this, clip, true);
     _sounds.add(sound);
     sound.play();
-    if (isPaused) {
-      sound.pause();
-    }
+    sound.pause = pause;
     return sound;
   }
 
@@ -87,24 +80,45 @@ class AudioSource {
         _sounds[i] = _sounds[last];
         // Pop end
         _sounds.removeLast();
+        print('removing sound.');
         sound.stop();
       }
     }
   }
 
+  /** Is the audio source currently paused? */
+  bool get pause => _isPaused;
+
+  void set pause(bool b) {
+    if (b) {
+      if (_isPaused == true) {
+        // Double pause.
+        return;
+      }
+      _pause();
+      _isPaused = true;
+    } else {
+      if (_isPaused == false) {
+        // Double unpause.
+        return;
+      }
+      _resume();
+      _isPaused = false;
+    }
+  }
   /** Pause all sounds currently playing from this source */
-  void pause() {
+  void _pause() {
     _scanSounds();
     _sounds.forEach((sound) {
-      sound.pause();
+      sound.pause = true;
     });
   }
 
   /** Resume all paused sounds currently playing from this source */
-  void resume() {
+  void _resume() {
     _scanSounds();
     _sounds.forEach((sound) {
-      sound.resume();
+      sound.pause = false;
     });
   }
 
