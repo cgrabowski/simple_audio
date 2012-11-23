@@ -60,7 +60,12 @@ class AudioClip {
     completer.complete(false);
   }
 
-  /** Fetch [url] and decode it into this [AudioClip] buffer. */
+  /** Fetch [url] and decode it into the clip buffer.
+   * Returns a [Future<bool>] which completes to true if the clip was
+   * succesfully loaded and decoded. Will complete to false if the clip
+   * could not be loaded or could not be decoded. On error,
+   * check [hasError] and [errorString].
+   */
   Future<bool> loadFrom(String url) {
     var request = new HttpRequest();
     var completer = new Completer<bool>();
@@ -73,7 +78,7 @@ class AudioClip {
     return completer.future;
   }
 
-  /** Make an empty buffer with [numberOfSampleFrames] in
+  /** Make an empty clip buffer with [numberOfSampleFrames] in
    * each [numberOfChannels]. The buffer plays at a rate of [sampleRate].
    * The duration (in seconds) of the buffer is equal to:
    * numberOfSampleFrames / sampleRate
