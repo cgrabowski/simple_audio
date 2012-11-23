@@ -1,8 +1,9 @@
 part of simple_audio;
 
-/** An [AudioSource] is analogous to a speaker. It has a location and direction
- * in the world and can emit sound. You must play an
- * [AudioClip] from the [AudioSource].
+/** An [AudioSource] is analogous to a speaker in the game world.
+ * It has a location and direction in the game world and can emit sound.
+ * The location of the listener can be controlled with an [AudioManager].
+ * You must play an [AudioClip] from the [AudioSource].
  */
 class AudioSource {
   AudioManager _manager;

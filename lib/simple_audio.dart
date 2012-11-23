@@ -2,8 +2,8 @@ library simple_audio;
 
 import 'dart:html';
 
-part 'audio/audio_clip.dart';
-part 'audio/audio_source.dart';
-part 'audio/audio_sound.dart';
-part 'audio/audio_music.dart';
-part 'audio/audio_manager.dart';
+part 'simple_audio/audio_clip.dart';
+part 'simple_audio/audio_source.dart';
+part 'simple_audio/audio_sound.dart';
+part 'simple_audio/audio_music.dart';
+part 'simple_audio/audio_manager.dart';

@@ -42,6 +42,9 @@
 <p>The <a class="crossref" href="../simple_audio/AudioManager.html#AudioManager">AudioManager</a> class is the main entry point to the <code>simple_audio</code>
 library. You can create <a class="crossref" href="../simple_audio/AudioClip.html">AudioClip</a>s and <a class="crossref" href="../simple_audio/AudioSource.html">AudioSource</a>s with the manager.
 You can play clips from sources with the manager.</p>
+<p>The <a class="crossref" href="../simple_audio/AudioManager.html#AudioManager">AudioManager</a> also has a listener which picks up sounds from
+<a class="crossref" href="../simple_audio/AudioSource.html">AudioSource</a>s. The sound picked up by the listener from the <a class="crossref" href="../simple_audio/AudioSource.html">AudioSource</a>s
+is played through the real, physical speakers attached to the computer.</p>
 <pre class="source">
 class AudioManager {
  AudioContext _context;
@@ -795,7 +798,7 @@ void stopSource(String sourceName) {
         </div>
         
         <div class="footer">
-          <div>This page was generated at 2012-11-22 22:45:41.326</div>
+          <div>This page was generated at 2012-11-23 08:55:44.991</div>
         </div>
         <script async src="../client-static.js"></script>
         </body></html>
