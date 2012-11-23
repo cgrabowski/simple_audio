@@ -51,6 +51,15 @@ class AudioSource {
  List&lt;AudioSound&gt; _sounds;
  num _mutedVolume;
  bool _isPaused = false;
+ num _x = 0.0;
+ num _y = 0.0;
+ num _z = 0.0;
+ num _xForward = 0.0;
+ num _yForward = 0.0;
+ num _zForward = -1.0;
+ num _xUp = 0.0;
+ num _yUp = 1.0;
+ num _zUp = 0.0;
 
  AudioSource._internal(this._manager, GainNode output) {
    _gainNode = _manager._context.createGain();
@@ -182,11 +191,36 @@ class AudioSource {
    _scanSounds();
  }
 
+ /** X position of the source. */
+ num get x =&gt; _x;
+ /** Y position of the source. */
+ num get y =&gt; _y;
+ /** Z position of the source. */
+ num get z =&gt; _z;
+ /** X forward direction of the source. */
+ num get xForward =&gt; _xForward;
+ /** Y forward direction of the source. */
+ num get yForward =&gt; _yForward;
+ /** Z forward direction of the source. */
+ num get zForward =&gt; _zForward;
+ /** X upward direction of the source. */
+ num get xUp =&gt; _xUp;
+ /** Y upward direction of the source. */
+ num get yUp =&gt; _yUp;
+ /** Z upward direction of the source. */
+ num get zUp =&gt; _zUp;
+
  /** Set forward and up direction vectors of the source. Forward and up must
   * be orthogonal to each other.
   */
  void setOrientation(num xForward, num yForward, num zForward,
                      num xUp, num yUp, num zUp) {
+   _xForward = xForward;
+   _yForward = yForward;
+   _zForward = zForward;
+   _xUp = xUp;
+   _yUp = yUp;
+   _zUp = zUp;
    _panNode.setOrientation(xForward, yForward, zForward);
  }
 
@@ -194,6 +228,9 @@ class AudioSource {
   * Set the position of the source.
   */
  void setPosition(num x, num y, num z) {
+   _x = x;
+   _y = y;
+   _z = z;
    _panNode.setPosition(x, y, z);
  }
 
@@ -310,6 +347,123 @@ void set volume(num v) {
 </pre>
 </div>
 </div>
+<div class="field"><h4 id="x">
+<button class="show-code">Code</button>
+final num         <strong>x</strong> <a class="anchor-link"
+            href="#x"
+            title="Permalink to AudioSource.x">#</a>
+        </h4>
+        <div class="doc">
+<p>X position of the source.</p>
+<pre class="source">
+num get x =&gt; _x;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="xForward">
+<button class="show-code">Code</button>
+final num         <strong>xForward</strong> <a class="anchor-link"
+            href="#xForward"
+            title="Permalink to AudioSource.xForward">#</a>
+        </h4>
+        <div class="doc">
+<p>X forward direction of the source.</p>
+<pre class="source">
+num get xForward =&gt; _xForward;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="xUp">
+<button class="show-code">Code</button>
+final num         <strong>xUp</strong> <a class="anchor-link"
+            href="#xUp"
+            title="Permalink to AudioSource.xUp">#</a>
+        </h4>
+        <div class="doc">
+<p>X upward direction of the source.</p>
+<pre class="source">
+num get xUp =&gt; _xUp;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="y">
+<button class="show-code">Code</button>
+final num         <strong>y</strong> <a class="anchor-link"
+            href="#y"
+            title="Permalink to AudioSource.y">#</a>
+        </h4>
+        <div class="doc">
+<p>Y position of the source.</p>
+<pre class="source">
+num get y =&gt; _y;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="yForward">
+<button class="show-code">Code</button>
+final num         <strong>yForward</strong> <a class="anchor-link"
+            href="#yForward"
+            title="Permalink to AudioSource.yForward">#</a>
+        </h4>
+        <div class="doc">
+<p>Y forward direction of the source.</p>
+<pre class="source">
+num get yForward =&gt; _yForward;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="yUp">
+<button class="show-code">Code</button>
+final num         <strong>yUp</strong> <a class="anchor-link"
+            href="#yUp"
+            title="Permalink to AudioSource.yUp">#</a>
+        </h4>
+        <div class="doc">
+<p>Y upward direction of the source.</p>
+<pre class="source">
+num get yUp =&gt; _yUp;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="z">
+<button class="show-code">Code</button>
+final num         <strong>z</strong> <a class="anchor-link"
+            href="#z"
+            title="Permalink to AudioSource.z">#</a>
+        </h4>
+        <div class="doc">
+<p>Z position of the source.</p>
+<pre class="source">
+num get z =&gt; _z;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="zForward">
+<button class="show-code">Code</button>
+final num         <strong>zForward</strong> <a class="anchor-link"
+            href="#zForward"
+            title="Permalink to AudioSource.zForward">#</a>
+        </h4>
+        <div class="doc">
+<p>Z forward direction of the source.</p>
+<pre class="source">
+num get zForward =&gt; _zForward;
+</pre>
+</div>
+</div>
+<div class="field"><h4 id="zUp">
+<button class="show-code">Code</button>
+final num         <strong>zUp</strong> <a class="anchor-link"
+            href="#zUp"
+            title="Permalink to AudioSource.zUp">#</a>
+        </h4>
+        <div class="doc">
+<p>Z upward direction of the source.</p>
+<pre class="source">
+num get zUp =&gt; _zUp;
+</pre>
+</div>
+</div>
 </div>
 <div>
 <h3>Methods</h3>
@@ -391,6 +545,12 @@ be orthogonal to each other.</p>
 <pre class="source">
 void setOrientation(num xForward, num yForward, num zForward,
                    num xUp, num yUp, num zUp) {
+ _xForward = xForward;
+ _yForward = yForward;
+ _zForward = zForward;
+ _xUp = xUp;
+ _yUp = yUp;
+ _zUp = zUp;
  _panNode.setOrientation(xForward, yForward, zForward);
 }
 </pre>
@@ -404,6 +564,9 @@ void <strong>setPosition</strong>(num x, num y, num z) <a class="anchor-link" hr
 <p>Set the position of the source.</p>
 <pre class="source">
 void setPosition(num x, num y, num z) {
+ _x = x;
+ _y = y;
+ _z = z;
  _panNode.setPosition(x, y, z);
 }
 </pre>
@@ -444,7 +607,7 @@ void stop() {
         </div>
         
         <div class="footer">
-          <div>This page was generated at 2012-11-23 08:57:06.564</div>
+          <div>This page was generated at 2012-11-23 15:11:32.312</div>
         </div>
         <script async src="../client-static.js"></script>
         </body></html>

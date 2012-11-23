@@ -253,8 +253,5 @@ class AudioManager {
  * Basic Demo:
  *    Add clip selection drop down (not just scream).
  *    Add music selection drop down (1 more song).
- * Add positional audio demo.
- *    Expose more of pannernode properties in AudioSource.
- *    Add 6 sources in standard directions.
  *    Add clip selection to each source.
  */

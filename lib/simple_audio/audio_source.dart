@@ -12,6 +12,15 @@ class AudioSource {
   List<AudioSound> _sounds;
   num _mutedVolume;
   bool _isPaused = false;
+  num _x = 0.0;
+  num _y = 0.0;
+  num _z = 0.0;
+  num _xForward = 0.0;
+  num _yForward = 0.0;
+  num _zForward = -1.0;
+  num _xUp = 0.0;
+  num _yUp = 1.0;
+  num _zUp = 0.0;
 
   AudioSource._internal(this._manager, GainNode output) {
     _gainNode = _manager._context.createGain();
@@ -143,11 +152,36 @@ class AudioSource {
     _scanSounds();
   }
 
+  /** X position of the source. */
+  num get x => _x;
+  /** Y position of the source. */
+  num get y => _y;
+  /** Z position of the source. */
+  num get z => _z;
+  /** X forward direction of the source. */
+  num get xForward => _xForward;
+  /** Y forward direction of the source. */
+  num get yForward => _yForward;
+  /** Z forward direction of the source. */
+  num get zForward => _zForward;
+  /** X upward direction of the source. */
+  num get xUp => _xUp;
+  /** Y upward direction of the source. */
+  num get yUp => _yUp;
+  /** Z upward direction of the source. */
+  num get zUp => _zUp;
+
   /** Set forward and up direction vectors of the source. Forward and up must
    * be orthogonal to each other.
    */
   void setOrientation(num xForward, num yForward, num zForward,
                       num xUp, num yUp, num zUp) {
+    _xForward = xForward;
+    _yForward = yForward;
+    _zForward = zForward;
+    _xUp = xUp;
+    _yUp = yUp;
+    _zUp = zUp;
     _panNode.setOrientation(xForward, yForward, zForward);
   }
 
@@ -155,6 +189,9 @@ class AudioSource {
    * Set the position of the source.
    */
   void setPosition(num x, num y, num z) {
+    _x = x;
+    _y = y;
+    _z = z;
     _panNode.setPosition(x, y, z);
   }
 

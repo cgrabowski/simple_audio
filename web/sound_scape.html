@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Audio</title>
+    <link rel="stylesheet" href="audio.css">
+  </head>
+  <body>
+    <h1>Sound Scape</h1>
+
+    <div>
+    <input type="button" id="pause_sources" value="Pause Sources"></input>
+    <input type="button" id="pause_music" value="Pause Music"></input>
+    <br />
+    <input type="button" id="music_play" value="Start the music"></input>
+    <input type="button" id="music_stop" value="Stop the music"></input>
+    </div>
+
+    <input type="button" id="play0" value="front left"></input>
+    <input type="button" id="play1" value="front right"></input>
+    <input type="button" id="play2" value="rear left"></input>
+    <input type="button" id="play3" value="rear right"></input>
+
+    <canvas id="stage" width="640" height="480"></canvas>
+
+    <div id="controls">
+      <input type="button" id="mute" value="Mute"></input>
+      <p>Master</p><input id="masterVolume" min="0" max="1" step="0.1" value="1.0" type="range" />
+      <p>Music</p><input id="musicVolume" min="0" max="1" step="0.1" value="1.0" type="range" />
+      <p>Sources</p><input id="sourceVolume" min="0" max="1" step="0.1" value="1.0" type="range" />
+    </div>
+
+    <script type="application/dart" src="sound_scape.dart"></script>
+    <script src="https://dart.googlecode.com/svn/branches/bleeding_edge/dart/client/dart.js"></script>
+  </body>
+</html>
