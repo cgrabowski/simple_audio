@@ -3,6 +3,11 @@ part of simple_audio;
 /** The [AudioManager] class is the main entry point to the [simple_audio]
  * library. You can create [AudioClip]s and [AudioSource]s with the manager.
  * You can play clips from sources with the manager.
+ *
+ * The [AudioManager] also has a listener which picks up sounds from
+ * [AudioSource]s. The sound picked up by the listener from the [AudioSource]s
+ * is played through the real, physical speakers attached to the computer.
+ *
  */
 class AudioManager {
   AudioContext _context;
