@@ -5,17 +5,28 @@ AudioManager audioManager = new AudioManager();
 AudioSound loopingSound = null;
 String sourceName = 'Page';
 
-String baseURL = 'http://127.0.0.1:3030/Users/johnmccutchan/workspace/simpleaudio/clips';
+String baseURL = null; // Automatically set.
 String clipName = 'Wilhelm';
-String clipURL = '$baseURL/wilhelm.ogg';
+String clipURL = 'clips/wilhelm.ogg';
 String musicClipName = 'Deeper';
-String musicClipURL = '$baseURL/deeper.ogg';
+String musicClipURL = 'clips/deeper.ogg';
+
+void setBaseURL() {
+  String location = window.location.href;
+  location = location.substring(0, location.length-"audio.html".length);
+  baseURL = location;
+}
+
+String urlFor(String clip) {
+  return '$baseURL/$clip';
+}
 
 void main() {
+  setBaseURL();
   audioManager.makeClip(clipName);
   audioManager.makeClip(musicClipName);
-  audioManager.findClip(clipName).loadFrom(clipURL);
-  audioManager.findClip(musicClipName).loadFrom(musicClipURL);
+  audioManager.findClip(clipName).loadFrom(urlFor(clipURL));
+  audioManager.findClip(musicClipName).loadFrom(urlFor(musicClipURL));
   audioManager.makeSource(sourceName);
 
   query("#clip_once")
