@@ -234,7 +234,9 @@ void stopLoop(Event event) {
 }
 
 void pauseLoop(Event event) {
-  audioManager.findSource(sourceName).pause = !audioManager.findSource(sourceName).pause;
+  globalSources.forEach((source) {
+    source.pause = !source.pause;
+  });
 }
 
 void startMusic(Event event) {
