@@ -54,19 +54,31 @@ class AudioSource {
 
   /** Play [clip] from this [AudioSource]. */
   AudioSound playOnce(AudioClip clip) {
+    return playOnceIn(0.0, clip);
+  }
+
+  /** Play [clip] from this [AudioSource] starting in [delay] seconds */
+  AudioSound playOnceIn(num delay, AudioClip clip) {
     AudioSound sound = new AudioSound._internal(this, clip, false);
     _sounds.add(sound);
-    sound.play();
+    sound.play(delay);
     sound.pause = pause;
 
     return sound;
   }
 
-  /** Okay [clip] from this [AudioSource] in a loop. */
+  /** Play [clip] from this [AudioSource] in a loop. */
   AudioSound playLooped(AudioClip clip) {
+    return playLoopedIn(0.0, clip);
+  }
+
+  /** Play [clip] from this [AudioSource] in a loop starting in [delay]
+   * seconds
+   */
+  AudioSound playLoopedIn(num delay, AudioClip clip) {
     AudioSound sound = new AudioSound._internal(this, clip, true);
     _sounds.add(sound);
-    sound.play();
+    sound.play(delay);
     sound.pause = pause;
     return sound;
   }

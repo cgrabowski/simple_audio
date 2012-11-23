@@ -56,7 +56,7 @@ void main() {
 }
 
 void playOnce(Event event) {
-  audioManager.playClipFromSource(sourceName, clipName);
+  audioManager.playClipFromSourceIn(2.0, sourceName, clipName);
 }
 
 void startLoop(Event event) {

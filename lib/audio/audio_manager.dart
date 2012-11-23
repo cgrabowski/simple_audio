@@ -158,6 +158,11 @@ class AudioManager {
 
   /** Play [clipName] from [sourceName]. */
   AudioSound playClipFromSource(String sourceName, String clipName, [bool looped=false]) {
+    return playClipFromSourceIn(0.0, sourceName, clipName, looped);
+  }
+
+  /** Play [clipName] from [sourceName] in [delay] seconds. */
+  AudioSound playClipFromSourceIn(num delay, String sourceName, String clipName, [bool looped=false]) {
     AudioSource source = _sources[sourceName];
     if (source == null) {
       // TODO(johnmccutchan): Determine error route.
@@ -171,9 +176,9 @@ class AudioManager {
       return null;
     }
     if (looped) {
-      return source.playLooped(clip);
+      return source.playLoopedIn(delay, clip);
     } else {
-      return source.playOnce(clip);
+      return source.playOnceIn(delay, clip);
     }
   }
 
@@ -238,7 +243,6 @@ class AudioManager {
 }
 
 /** TODO:
- * Support scheduled sounds and pausing of scheduled sounds.
  * Expose more of pannernode properties in AudioSource.
  * Add longer but shorter clip.
  * Add more pleasant sounding clip.

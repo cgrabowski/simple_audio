@@ -1,6 +1,6 @@
 part of simple_audio;
 
-/** [AudioSound] is an [AudioClip] being played from an [AudioSource].
+/** [AudioSound] is an [AudioClip] scheduled to be played from an [AudioSource].
  * You cannot construct an instance of [AudioSound] directly, it must be
  * done by playing an [AudioClip] from an [AudioSource].
  */
@@ -26,6 +26,7 @@ class AudioSound {
       print('${_sourceNode.playbackState}');
     }
   }
+
   void _setupSourceNodeForPlayback() {
     _sourceNode = _source._manager._context.createBufferSource();
     if (_clip != null && _clip._buffer != null) {
@@ -46,17 +47,6 @@ class AudioSound {
     _sourceNode = null;
   }
 
-  /** Start playing this sound */
-  void play() {
-    print('Sound.play');
-    _dumpSourceNode();
-    _stop();
-    _setupSourceNodeForPlayback();
-    _sourceNode.start(0.0);
-    _scheduledTime = _source._manager._context.currentTime;
-    _startTime = _source._manager._context.currentTime;
-  }
-
   bool get pause => _pausedTime != null;
 
   void set pause(bool b) {
@@ -75,19 +65,36 @@ class AudioSound {
     }
   }
 
+  /**
+   * Time cursor for sound. Will be negative is sound is scheduled
+   * to be played. Positive if playing.
+   */
+  num get time {
+    var now = _source._manager._context.currentTime;
+    if (_pausedTime != null) {
+      return _pausedTime;
+    }
+    return _computePausedTime();
+  }
+
   num _computePausedTime() {
     assert(_startTime != null);
     var now = _source._manager._context.currentTime;
-    var pt = now - _startTime;
-    if (_loop) {
-      pt = pt % _sourceNode.buffer.duration;
+    var delta = now - _startTime;
+    if (now < _scheduledTime) {
+      // Haven't started yet.
+      return now-_scheduledTime;
     }
-    return pt;
+    // Playing sound.
+    if (_loop) {
+      return delta % _sourceNode.buffer.duration;
+    }
+    return delta;
   }
 
-  /** Pause this sound */
   void _pause() {
     if (_startTime == null) {
+      // Not started.
       return;
     }
     print('Sound.pause');
@@ -99,24 +106,48 @@ class AudioSound {
     }
   }
 
-  /** Resume playing this sound */
   void _resume() {
     if (_pausedTime == null) {
+      // Not paused.
       return;
     }
     print('Sound.resume');
     _dumpSourceNode();
     _setupSourceNodeForPlayback();
-    print('resume $_pausedTime ${_sourceNode.loopStart} ${_sourceNode.loopEnd}');
-    _sourceNode.start(0.0, _pausedTime, _sourceNode.buffer.duration-_pausedTime);
-    _startTime = _source._manager._context.currentTime-_pausedTime;
+    if (_pausedTime < 0.0) {
+      // Schedule again.
+      _pausedTime = -_pausedTime;
+      print('Scheduling to play sound in $_pausedTime.');
+      _scheduledTime = _source._manager._context.currentTime+_pausedTime;
+      _sourceNode.start(_scheduledTime, 0.0, _sourceNode.buffer.duration);
+      _startTime = _source._manager._context.currentTime;
+    } else {
+      print('Starting to play at offset $_pausedTime');
+      _scheduledTime = _source._manager._context.currentTime;
+      _sourceNode.start(_scheduledTime, // Now.
+                        _pausedTime, // Offset.
+                        _sourceNode.buffer.duration-_pausedTime); // Length.
+      // Offset the time that start was called by the offset into clip.
+      _startTime = _source._manager._context.currentTime-_pausedTime;
+    }
+    // Clear paused time.
     _pausedTime = null;
+  }
+
+  /** Start playing this sound */
+  void play([num when=0.0]) {
+    print('Sound.play');
+    _dumpSourceNode();
+    _stop();
+    _setupSourceNodeForPlayback();
+    _scheduledTime = _source._manager._context.currentTime+when;
+    _sourceNode.start(_scheduledTime);
+    // Called start now.
+    _startTime = _source._manager._context.currentTime;
   }
 
   /** Stop playing this sound */
   void stop() {
-    print('Sound.stop');
-    _dumpSourceNode();
     _stop();
     _startTime = null;
     _scheduledTime = null;
