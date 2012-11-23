@@ -33,39 +33,44 @@ class AudioClip {
     _errorString = error;
   }
 
-  void _onDecode(AudioBuffer buffer) {
+  void _onDecode(AudioBuffer buffer, Completer<bool> completer) {
     if (buffer == null) {
       _empty();
       _setError('Error decoding buffer.');
+      completer.complete(false);
       return;
     }
     _clearError();
     _buffer = buffer;
     _isReadyToPlay = true;
     print('ready');
+    completer.complete(true);
   }
 
-  void _onRequestSuccess(HttpRequest request) {
+  void _onRequestSuccess(HttpRequest request, Completer<bool> completer) {
     var response = request.response;
     _manager._context.decodeAudioData(response,
-                                      _onDecode,
-                                      _onDecode);
+                                      (b) => _onDecode(b, completer),
+                                      (b) => _onDecode(b, completer));
   }
 
-  void _onRequestError(HttpRequest request) {
+  void _onRequestError(HttpRequest request, Completer<bool> completer) {
     _empty();
     _setError('Error fetching data');
+    completer.complete(false);
   }
 
   /** Fetch [url] and decode it into this [AudioClip] buffer. */
-  void loadFrom(String url) {
+  Future<bool> loadFrom(String url) {
     var request = new HttpRequest();
+    var completer = new Completer<bool>();
     request.responseType = 'arraybuffer';
-    request.on.load.add((e) => _onRequestSuccess(request));
-    request.on.error.add((e) => _onRequestError(request));
-    request.on.abort.add((e) => _onRequestError(request));
+    request.on.load.add((e) => _onRequestSuccess(request, completer));
+    request.on.error.add((e) => _onRequestError(request, completer));
+    request.on.abort.add((e) => _onRequestError(request, completer));
     request.open('GET', url);
     request.send();
+    return completer.future;
   }
 
   /** Make an empty buffer with [numberOfSampleFrames] in
