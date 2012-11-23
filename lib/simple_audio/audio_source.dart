@@ -152,14 +152,23 @@ class AudioSource {
     _scanSounds();
   }
 
+  /** X position of the source. */
   num get x => _x;
+  /** Y position of the source. */
   num get y => _y;
+  /** Z position of the source. */
   num get z => _z;
+  /** X forward direction of the source. */
   num get xForward => _xForward;
+  /** Y forward direction of the source. */
   num get yForward => _yForward;
+  /** Z forward direction of the source. */
   num get zForward => _zForward;
+  /** X upward direction of the source. */
   num get xUp => _xUp;
+  /** Y upward direction of the source. */
   num get yUp => _yUp;
+  /** Z upward direction of the source. */
   num get zUp => _zUp;
 
   /** Set forward and up direction vectors of the source. Forward and up must
