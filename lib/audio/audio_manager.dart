@@ -1,7 +1,8 @@
 part of simple_audio;
 
 /** The [AudioManager] class is the main entry point to the [simple_audio]
- * library.
+ * library. You can create [AudioClip]s and [AudioSource]s with the manager.
+ * You can play clips from sources with the manager.
  */
 class AudioManager {
   AudioContext _context;
@@ -59,7 +60,7 @@ class AudioManager {
   }
 
   num _mutedVolume;
-  /** Is everything muted? */
+  /** Is the master volume muted? */
   bool get mute => _mutedVolume != null;
 
   /** Control the master mute */
@@ -135,6 +136,7 @@ class AudioManager {
   /** Get the [AudioMusic] singleton. */
   AudioMusic get music => _music;
 
+  /** Create an [AudioClip] with [name]. */
   AudioClip makeClip(String name) {
     AudioClip clip = _clips[name];
     if (clip != null) {
@@ -242,10 +244,12 @@ class AudioManager {
   }
 }
 
-/** TODO:
- * Expose more of pannernode properties in AudioSource.
- * Add longer but shorter clip.
- * Add more pleasant sounding clip.
- * Add clip selection to left and right clip play buttons.
- * Add positional sound effects to demo application.
+/* TODO:
+ * Basic Demo:
+ *    Add clip selection drop down (not just scream).
+ *    Add music selection drop down (1 more song).
+ * Add positional audio demo.
+ *    Expose more of pannernode properties in AudioSource.
+ *    Add 6 sources in standard directions.
+ *    Add clip selection to each source.
  */

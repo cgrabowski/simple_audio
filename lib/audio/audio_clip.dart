@@ -1,7 +1,7 @@
 part of simple_audio;
 
-/** An [AudioClip] stores sound data. It can be played by an [AudioSource]
- * or played with [AudioMusic].
+/** An [AudioClip] stores sound data. To play an [AudioClip],
+ * see [AudioSource], [AudioMusic], and [AudioManager].
  */
 class AudioClip {
   final AudioManager _manager;
@@ -18,7 +18,7 @@ class AudioClip {
     _buffer = null;
   }
 
-  /** Does this [AudioClip] have an error? */
+  /** Does the clip have an error? */
   bool get hasError => _hasError;
   /** Human readable error */
   String get errorString => _errorString;
@@ -79,7 +79,8 @@ class AudioClip {
                                              sampleRate);
   }
 
-  /** Return the sample frames array for [channel] */
+  /** Return the sample frames array for [channel]. Assuming a stereo setup,
+   * the left and right speakers are mapped to channel 0 and 1 respectively. */
   Float32Array getSampleFramesForChannel(num channel) {
     if (_buffer == null) {
       return null;
@@ -87,7 +88,7 @@ class AudioClip {
     return _buffer.getChannelData(channel);
   }
 
-  /** Return the number of channels this buffer has */
+  /** Number of clip channels. */
   num get numberOfChannels {
     if (_buffer == null) {
       return 0;
@@ -95,7 +96,7 @@ class AudioClip {
     return _buffer.numberOfChannels;
   }
 
-  /** Length of audio clip in seconds */
+  /** Length of clip in seconds. */
   num get length {
     if (_buffer == null) {
       return 0;
@@ -103,7 +104,7 @@ class AudioClip {
     return _buffer.duration;
   }
 
-  /** Length of audio clip in samples */
+  /** Length of clip in samples. */
   num get samples {
     if (_buffer == null) {
       return 0;
@@ -111,7 +112,7 @@ class AudioClip {
     return _buffer.length;
   }
 
-  /** Samples per second */
+  /** Samples per second. */
   num get frequency {
     if (_buffer == null) {
       return 0;
@@ -119,6 +120,6 @@ class AudioClip {
     return _buffer.sampleRate;
   }
 
-  /** Is the audio clip ready to be played ? */
+  /** Is the clip ready to be played? */
   bool get isReadyToPlay => _isReadyToPlay;
 }

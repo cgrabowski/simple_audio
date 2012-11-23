@@ -1,6 +1,6 @@
 part of simple_audio;
 
-/** [AudioMusic] plays music from an omnidirectional [AudioSource].
+/** [AudioMusic] plays a clip from an omnidirectional [AudioSource].
  */
 class AudioMusic {
   final AudioManager _manager;
@@ -18,7 +18,8 @@ class AudioMusic {
   }
 
   /** Is the music paused? */
-  bool get pause => _sound == null ? false : _sound.paused;
+  bool get pause => _sound == null ? false : _sound.pause;
+  /** Pause or unpause the music */
   void set pause(bool b) {
     if (_sound != null) {
       _sound.pause = b;

@@ -1,8 +1,8 @@
 part of simple_audio;
 
-/** [AudioSound] is an [AudioClip] scheduled to be played from an [AudioSource].
- * You cannot construct an instance of [AudioSound] directly, it must be
- * done by playing an [AudioClip] from an [AudioSource].
+/** [AudioSound] is an [AudioClip] scheduled to be played on an [AudioSource].
+ * You cannot construct an instance of the [AudioSound] class directly, it can only be
+ * done by playing an [AudioClip] from an [AudioSource] (See [AudioSource], [AudioMusic], and [AudioManager]).
  */
 class AudioSound {
   final AudioSource _source;
@@ -12,9 +12,13 @@ class AudioSound {
   num _pausedTime;
   num _startTime;
   num _scheduledTime;
+  num _volume = 1.0;
 
+  /** Is the sound scheduled to be played? */
   bool get isScheduled => _sourceNode == null ? false : _sourceNode.playbackState == AudioBufferSourceNode.SCHEDULED_STATE;
+  /** Is the sound playing right now? */
   bool get isPlaying => _sourceNode == null ? false : _sourceNode.playbackState == AudioBufferSourceNode.PLAYING_STATE;
+  /** Is the sound finished being played? */
   bool get isFinished => _sourceNode == null ? false : _sourceNode.playbackState == AudioBufferSourceNode.FINISHED_STATE;
 
   AudioSound._internal(this._source, this._clip, this._loop) {
@@ -34,11 +38,10 @@ class AudioSound {
       _sourceNode.loopStart = 0.0;
       _sourceNode.loopEnd = _clip._buffer.duration;
     }
+    _sourceNode.gain.value = _volume;
     _sourceNode.loop = _loop;
     _sourceNode.connect(_source._panNode, 0, 0);
   }
-
-  bool get paused => _pausedTime != null;
 
   void _stop() {
     if (_sourceNode != null) {
@@ -47,8 +50,10 @@ class AudioSound {
     _sourceNode = null;
   }
 
+  /** Is the sound paused? */
   bool get pause => _pausedTime != null;
 
+  /** Pause or unpause the sound. */
   void set pause(bool b) {
     if (b) {
       if (_pausedTime != null) {
@@ -134,7 +139,7 @@ class AudioSound {
     _pausedTime = null;
   }
 
-  /** Start playing this sound */
+  /** Start playing this sound in [when] seconds. */
   void play([num when=0.0]) {
     print('Sound.play');
     _dumpSourceNode();
@@ -152,5 +157,16 @@ class AudioSound {
     _startTime = null;
     _scheduledTime = null;
     _pausedTime = null;
+  }
+
+  /** Get the volume of the sound. 0.0 <= volume <= 1.0. */
+  num get volume => _volume;
+
+  /** Set the volume for the sound. */
+  void set volume(num v) {
+    if (_sourceNode != null) {
+      _sourceNode.gain.value = v;
+    }
+    _volume = v;
   }
 }

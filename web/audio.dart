@@ -18,13 +18,15 @@ void main() {
   audioManager.findClip(musicClipName).loadFrom(musicClipURL);
   audioManager.makeSource(sourceName);
 
-  query("#play_once")
+  query("#clip_once")
     ..on.click.add(playOnce);
-  query("#loop_start")
+  query("#clip_once_delay")
+  ..on.click.add(playOnceDelay);
+  query("#clip_loop_start")
     ..on.click.add(startLoop);
-  query("#loop_stop")
+  query("#clip_loop_stop")
     ..on.click.add(stopLoop);
-  query("#loop_pause")
+  query("#pause_sources")
     ..on.click.add(pauseLoop);
   query("#pause_all")
     ..on.click.add(pauseAll);
@@ -33,7 +35,7 @@ void main() {
     ..on.click.add(startMusic);
   query("#music_stop")
     ..on.click.add(stopMusic);
-  query("#music_pause")
+  query("#pause_music")
     ..on.click.add(pauseMusic);
 
   {
@@ -56,15 +58,18 @@ void main() {
 }
 
 void playOnce(Event event) {
+  audioManager.playClipFromSourceIn(0.0, sourceName, clipName);
+}
+
+void playOnceDelay(Event event) {
   audioManager.playClipFromSourceIn(2.0, sourceName, clipName);
 }
 
 void startLoop(Event event) {
-  if (audioManager.findSource(sourceName).pause) {
-   audioManager.findSource(sourceName).pause = false;
-  } else {
-    loopingSound = audioManager.playClipFromSource(sourceName, clipName, true);
+  if (loopingSound != null) {
+    loopingSound.stop();
   }
+  loopingSound = audioManager.playClipFromSource(sourceName, clipName, true);
 }
 
 void stopLoop(Event event) {
@@ -72,15 +77,11 @@ void stopLoop(Event event) {
 }
 
 void pauseLoop(Event event) {
-  audioManager.pauseSource(sourceName);
+  audioManager.findSource(sourceName).pause = !audioManager.findSource(sourceName).pause;
 }
 
 void startMusic(Event event) {
-  if (audioManager.music.pause) {
-    audioManager.music.pause = false;
-  } else {
-    audioManager.music.play(audioManager.findClip(musicClipName));
-  }
+  audioManager.music.play(audioManager.findClip(musicClipName));
 }
 
 bool _allPaused = false;
@@ -99,7 +100,7 @@ void stopMusic(Event event) {
 }
 
 void pauseMusic(Event event) {
-  audioManager.music.pause = true;
+  audioManager.music.pause = !audioManager.music.pause;
 }
 
 void adjustVolume(String volume, InputElement el) {

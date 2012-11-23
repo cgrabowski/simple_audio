@@ -1,8 +1,8 @@
 part of simple_audio;
 
 /** An [AudioSource] is analogous to a speaker. It has a location and direction
- * in the world and can emit sounds. The [AudioSource] by itself does nothing,
- * you must play an [AudioClip] from the [AudioSource].
+ * in the world and can emit sound. You must play an
+ * [AudioClip] from the [AudioSource].
  */
 class AudioSource {
   AudioManager _manager;
@@ -20,20 +20,20 @@ class AudioSource {
     _sounds = new List<AudioSound>();
   }
 
-  /** Get the volume of this source. 0.0 <= volume <= 1.0. */
+  /** Get the volume of the source. 0.0 <= volume <= 1.0. */
   num get volume => _gainNode.gain.value;
 
-  /** Set the volume for this source. All sounds being played are affected. */
+  /** Set the volume for the source. All sounds being played are affected. */
   void set volume(num v) {
     _gainNode.gain.value = v;
   }
 
-  /** Is this source muted? */
+  /** Is the source muted? */
   bool get mute {
     return _mutedVolume != null;
   }
 
-  /** Mute or unmute this source. */
+  /** Mute or unmute the source. */
   void set mute(bool b) {
     if (b) {
       if (_mutedVolume != null) {
@@ -52,12 +52,12 @@ class AudioSource {
     }
   }
 
-  /** Play [clip] from this [AudioSource]. */
+  /** Play [clip] from the source. */
   AudioSound playOnce(AudioClip clip) {
     return playOnceIn(0.0, clip);
   }
 
-  /** Play [clip] from this [AudioSource] starting in [delay] seconds */
+  /** Play [clip] from the source starting in [delay] seconds. */
   AudioSound playOnceIn(num delay, AudioClip clip) {
     AudioSound sound = new AudioSound._internal(this, clip, false);
     _sounds.add(sound);
@@ -67,13 +67,13 @@ class AudioSource {
     return sound;
   }
 
-  /** Play [clip] from this [AudioSource] in a loop. */
+  /** Play [clip] from the source in a loop. */
   AudioSound playLooped(AudioClip clip) {
     return playLoopedIn(0.0, clip);
   }
 
-  /** Play [clip] from this [AudioSource] in a loop starting in [delay]
-   * seconds
+  /** Play [clip] from the source in a loop starting in [delay]
+   * seconds.
    */
   AudioSound playLoopedIn(num delay, AudioClip clip) {
     AudioSound sound = new AudioSound._internal(this, clip, true);
@@ -98,9 +98,10 @@ class AudioSource {
     }
   }
 
-  /** Is the audio source currently paused? */
+  /** Is the source currently paused? */
   bool get pause => _isPaused;
 
+  /** Pause or resume the source */
   void set pause(bool b) {
     if (b) {
       if (_isPaused == true) {
@@ -118,7 +119,7 @@ class AudioSource {
       _isPaused = false;
     }
   }
-  /** Pause all sounds currently playing from this source */
+
   void _pause() {
     _scanSounds();
     _sounds.forEach((sound) {
@@ -126,7 +127,6 @@ class AudioSource {
     });
   }
 
-  /** Resume all paused sounds currently playing from this source */
   void _resume() {
     _scanSounds();
     _sounds.forEach((sound) {
@@ -134,7 +134,7 @@ class AudioSource {
     });
   }
 
-  /** Stop all sounds currently playing from this source */
+  /** Stop the source. Affects all playing and scheduled sounds. */
   void stop() {
     _sounds.forEach((sound) {
       sound.stop();
@@ -142,15 +142,24 @@ class AudioSource {
     _scanSounds();
   }
 
+  /** Set forward and up direction vectors of the source. Forward and up must
+   * be orthogonal to each other.
+   */
   void setOrientation(num xForward, num yForward, num zForward,
                       num xUp, num yUp, num zUp) {
     _panNode.setOrientation(xForward, yForward, zForward);
   }
 
+  /**
+   * Set the position of the source.
+   */
   void setPosition(num x, num y, num z) {
     _panNode.setPosition(x, y, z);
   }
 
+  /**
+   * Set the linear velocity of the source.
+   */
   void setVelocity(num x, num y, num z) {
     _panNode.setVelocity(x, y, z);
   }
