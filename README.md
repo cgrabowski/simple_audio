@@ -93,6 +93,7 @@ main() {
   // Point the source at the origin.
   source.setOrientation(-1, 0, -1, 0, 1, 0);
 }
+```
 
 5\. Play a clip from a source.
 
@@ -117,3 +118,4 @@ main() {
   // Play clip.
   audioManager.playClipFromSource('Source A', 'jump_sound');
 }
+```
