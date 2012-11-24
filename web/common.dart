@@ -12,3 +12,36 @@ void setBaseURL(AudioManager manager) {
   }
 }
 
+class ClipTable {
+  AudioManager _manager;
+  // Table or Div
+  ClipTable(this._manager);
+
+  void _removeDead() {
+  }
+
+  void _addNew() {
+  }
+
+  void refresh() {
+    _removeDead();
+    _addNew();
+  }
+}
+
+class SourceTable {
+  AudioManager _manager;
+  // Table or Div
+  SourceTable(this._manager);
+
+  void _removeDead() {
+  }
+
+  void _addNew() {
+  }
+
+  void refresh() {
+    _removeDead();
+    _addNew();
+  }
+}

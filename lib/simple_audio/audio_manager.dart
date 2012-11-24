@@ -280,8 +280,20 @@ class AudioManager {
 }
 
 /* TODO:
+ * Snapshot:
+ *  Ensure all properties are saved.
+ *
+ * Demo Common:
+ *  Clip Table
+ *    Draggable
+ *    Add a new Clip
+ *    Change a clip URL
+ *    Load a clip
+ *  Source Table
+ *    Add a new source
+ *    Change a source position and orientation
  * Basic Demo:
- *    Add clip selection drop down (not just scream).
- *    Add music selection drop down (1 more song).
- *    Add clip selection to each source.
+ *  Add clip selection drop down (not just scream).
+ *  Add music selection drop down (1 more song).
+ *  Add clip selection to each source.
  */
