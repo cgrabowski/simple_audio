@@ -283,12 +283,6 @@ class AudioManager {
     _listener.speedOfSound = sos;
   }
 
-  void setOrientation(num xForward, num yForward, num zForward,
-                      num xUp, num yUp, num zUp) {
-    _listener.setOrientation(xForward, yForward, zForward,
-                             xUp, yUp, zUp);
-  }
-
   void setPosition(num x, num y, num z) {
     _listener.setPosition(x, y, z);
   }
@@ -299,6 +293,8 @@ class AudioManager {
 }
 
 /* TODO:
+ * Allow clips and sources to be deleted.
+ *
  * Snapshot:
  *  Ensure all properties are saved.
  *
