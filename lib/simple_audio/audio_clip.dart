@@ -26,13 +26,14 @@ class AudioClip {
   final AudioManager _manager;
   String _name;
   String _url;
+  set url(String u) => _url = u;
   String get url => _url;
   AudioBuffer _buffer;
   bool _hasError = false;
   String _errorString = '';
   bool _isReadyToPlay = false;
 
-  AudioClip._internal(this._manager, this._name);
+  AudioClip._internal(this._manager, this._name, this._url);
 
   void _empty() {
     _isReadyToPlay = false;
@@ -58,7 +59,8 @@ class AudioClip {
   /** Human readable error */
   String get errorString => _errorString;
 
-  void _clearError() {
+  /** Clear any error. */
+  void clearError() {
     _hasError = false;
     _errorString = 'OK';
   }
@@ -68,43 +70,43 @@ class AudioClip {
     _errorString = error;
   }
 
-  void _onDecode(AudioBuffer buffer, Completer<bool> completer) {
+  void _onDecode(AudioBuffer buffer, Completer<AudioClip> completer) {
     if (buffer == null) {
-      _empty();
       _setError('Error decoding buffer.');
-      completer.complete(false);
+      completer.complete(this);
       return;
     }
-    _clearError();
+    clearError();
     _buffer = buffer;
     _isReadyToPlay = true;
-    print('ready');
-    completer.complete(true);
+    completer.complete(this);
   }
 
-  void _onRequestSuccess(HttpRequest request, Completer<bool> completer) {
+  void _onRequestSuccess(HttpRequest request, Completer<AudioClip> completer) {
     var response = request.response;
     _manager._context.decodeAudioData(response,
                                       (b) => _onDecode(b, completer),
                                       (b) => _onDecode(b, completer));
   }
 
-  void _onRequestError(HttpRequest request, Completer<bool> completer) {
-    _empty();
+  void _onRequestError(HttpRequest request, Completer<AudioClip> completer) {
     _setError('Error fetching data');
-    completer.complete(false);
+    completer.complete(this);
   }
 
-  /** Fetch [url] and decode it into the clip buffer.
-   * Returns a [Future<bool>] which completes to true if the clip was
-   * succesfully loaded and decoded. Will complete to false if the clip
-   * could not be loaded or could not be decoded. On error,
-   * check [hasError] and [errorString].
+  /** Fetch and decode the clip's [url] into the clip buffer.
+   * Returns a [Future<AudioClip>] which completes to *this*.
+   * [hasError] and [errorString] will indicate and explain respetively
+   * any load errors.
    */
-  Future<bool> loadFrom(String url) {
+  Future<AudioClip> load() {
+    if (url == null) {
+      _setError('No URL set.');
+      return new Future<AudioClip>.immediate(this);
+    }
+    _empty();
     var request = new HttpRequest();
-    var completer = new Completer<bool>();
-    _url = url;
+    var completer = new Completer<AudioClip>();
     request.responseType = 'arraybuffer';
     request.on.load.add((e) => _onRequestSuccess(request, completer));
     request.on.error.add((e) => _onRequestError(request, completer));
@@ -123,6 +125,7 @@ class AudioClip {
     _buffer = _manager._context.createBuffer(numberOfChannels,
                                              numberOfChannels,
                                              sampleRate);
+    isReadyToPlay = true;
   }
 
   /** Return the sample frames array for [channel]. Assuming a stereo setup,

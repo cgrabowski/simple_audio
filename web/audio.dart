@@ -14,10 +14,8 @@ String musicClipURL = 'clips/deeper.ogg';
 
 void main() {
   setBaseURL(audioManager);
-  audioManager.makeClip(clipName);
-  audioManager.makeClip(musicClipName);
-  audioManager.findClip(clipName).loadFrom(clipURL);
-  audioManager.findClip(musicClipName).loadFrom(musicClipURL);
+  audioManager.makeClip(clipName, clipURL).load();
+  audioManager.makeClip(musicClipName, musicClipURL).load();
   audioManager.music.clip = audioManager.findClip(musicClipName);
   audioManager.makeSource(sourceName);
 

@@ -31,6 +31,23 @@ dependencies:
 import 'package:simple_audio/simple_audio.dart';
 ```
 
+# Documentation #
+
+## API ##
+
+[Reference Manual](http://johnmccutchan.github.com/simpleaudio/simple_audio.html)
+
+## Samples ##
+
+1\. audio.html
+
+A basic sample application which plays music and a clip from a source.
+
+2\. sound_scape.html
+
+A demonstration of 3D positional audio. A clip can be played from any of
+four sources positioned around the listener.
+
 ## Examples ##
 
 1\. Initialize an AudioManager.
@@ -53,9 +70,9 @@ main() {
   // Set the base URL used when loading AudioClips.
   setBaseURL(audioManager);
   // Make a clip named.
-  AudioClip musicClip = audioManager.makeClip('music');
+  AudioClip musicClip = audioManager.makeClip('music', '/music.mp3');
   // Load sound data into clip.
-  musicClip.loadFrom('/music.mp3');
+  musicClip.load();
 }
 ```
 
@@ -68,13 +85,14 @@ main() {
   // Set the base URL used when loading AudioClips.
   setBaseURL(audioManager);
   // Make a clip.
-  AudioClip musicClip = audioManager.makeClip('music');
+  AudioClip musicClip = audioManager.makeClip('music', '/music.mp3');
   // Load sound data into clip.
-  musicClip.loadFrom('/music.mp3');
-  // Music system uses musicClip.
-  audioManager.music.clip = musicClip;
-  // Play music.
-  audioManager.music.play();
+  musicClip.load().then((_) {
+   // Assign clip to music system.
+   audioManager.music.clip = musicClip;
+   // Play music.
+   audioManager.music.play();
+  });
 }
 ```
 
@@ -90,8 +108,6 @@ main() {
   AudioSource source = audioManager.makeSource('Source A');
   // Place the source at (1, 0, 1).
   source.setPosition(1, 0, 1);
-  // Point the source at the origin.
-  source.setOrientation(-1, 0, -1, 0, 1, 0);
 }
 ```
 
@@ -105,15 +121,13 @@ main() {
   setBaseURL(audioManager);
   // Make a source called 'Source A'
   AudioSource source = audioManager.makeSource('Source A');
-  // Place the source at (1, 0, 1).
-  source.setPosition(1, 0, 1);
-  // Point the source at the origin.
-  source.setOrientation(-1, 0, -1, 0, 1, 0);
+  // This source is not affected by the position of the listener.
+  source.positional = false;
   
   // Make a clip.
-  AudioClip musicClip = audioManager.makeClip('jump_sound');
+  AudioClip clip = audioManager.makeClip('jump_sound', '/jump_sound.mp3');
   // Load sound data into clip.
-  musicClip.loadFrom('/jump_sound.mp3');
+  clip.load();
   
   // Play clip.
   audioManager.playClipFromSource('Source A', 'jump_sound');

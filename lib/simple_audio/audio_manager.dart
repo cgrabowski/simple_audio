@@ -78,8 +78,8 @@ class AudioManager {
     _sourceGain.gain.value = map['sourceVolume'];
     _clips = new Map<String,AudioClip>();
     map['clips'].forEach((k,v) {
-      _clips[k] = new AudioClip._internal(this, k).fromMap(v);
-      _clips[k].loadFrom(_clips[k].url);
+      _clips[k] = new AudioClip._internal(this, k, null).fromMap(v);
+      _clips[k].load();
     });
     _sources = new Map<String,AudioSource>();
     map['sources'].forEach((k,v) {
@@ -191,12 +191,12 @@ class AudioManager {
   AudioMusic get music => _music;
 
   /** Create an [AudioClip] with [name]. */
-  AudioClip makeClip(String name) {
+  AudioClip makeClip(String name, String url) {
     AudioClip clip = _clips[name];
     if (clip != null) {
       return clip;
     }
-    clip = new AudioClip._internal(this, name);
+    clip = new AudioClip._internal(this, name, url);
     _clips[name] = clip;
     return clip;
   }

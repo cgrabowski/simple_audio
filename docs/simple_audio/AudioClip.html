@@ -47,13 +47,14 @@ class AudioClip {
  final AudioManager _manager;
  String _name;
  String _url;
+ set url(String u) =&gt; _url = u;
  String get url =&gt; _url;
  AudioBuffer _buffer;
  bool _hasError = false;
  String _errorString = '';
  bool _isReadyToPlay = false;
 
- AudioClip._internal(this._manager, this._name);
+ AudioClip._internal(this._manager, this._name, this._url);
 
  void _empty() {
    _isReadyToPlay = false;
@@ -79,7 +80,8 @@ class AudioClip {
  /** Human readable error */
  String get errorString =&gt; _errorString;
 
- void _clearError() {
+ /** Clear any error. */
+ void clearError() {
    _hasError = false;
    _errorString = 'OK';
  }
@@ -89,43 +91,43 @@ class AudioClip {
    _errorString = error;
  }
 
- void _onDecode(AudioBuffer buffer, Completer&lt;bool&gt; completer) {
+ void _onDecode(AudioBuffer buffer, Completer&lt;AudioClip&gt; completer) {
    if (buffer == null) {
-     _empty();
      _setError('Error decoding buffer.');
-     completer.complete(false);
+     completer.complete(this);
      return;
    }
-   _clearError();
+   clearError();
    _buffer = buffer;
    _isReadyToPlay = true;
-   print('ready');
-   completer.complete(true);
+   completer.complete(this);
  }
 
- void _onRequestSuccess(HttpRequest request, Completer&lt;bool&gt; completer) {
+ void _onRequestSuccess(HttpRequest request, Completer&lt;AudioClip&gt; completer) {
    var response = request.response;
    _manager._context.decodeAudioData(response,
                                      (b) =&gt; _onDecode(b, completer),
                                      (b) =&gt; _onDecode(b, completer));
  }
 
- void _onRequestError(HttpRequest request, Completer&lt;bool&gt; completer) {
-   _empty();
+ void _onRequestError(HttpRequest request, Completer&lt;AudioClip&gt; completer) {
    _setError('Error fetching data');
-   completer.complete(false);
+   completer.complete(this);
  }
 
- /** Fetch [url] and decode it into the clip buffer.
-  * Returns a [Future&lt;bool&gt;] which completes to true if the clip was
-  * succesfully loaded and decoded. Will complete to false if the clip
-  * could not be loaded or could not be decoded. On error,
-  * check [hasError] and [errorString].
+ /** Fetch and decode the clip's [url] into the clip buffer.
+  * Returns a [Future&lt;AudioClip&gt;] which completes to *this*.
+  * [hasError] and [errorString] will indicate and explain respetively
+  * any load errors.
   */
- Future&lt;bool&gt; loadFrom(String url) {
+ Future&lt;AudioClip&gt; load() {
+   if (url == null) {
+     _setError('No URL set.');
+     return new Future&lt;AudioClip&gt;.immediate(this);
+   }
+   _empty();
    var request = new HttpRequest();
-   var completer = new Completer&lt;bool&gt;();
-   _url = url;
+   var completer = new Completer&lt;AudioClip&gt;();
    request.responseType = 'arraybuffer';
    request.on.load.add((e) =&gt; _onRequestSuccess(request, completer));
    request.on.error.add((e) =&gt; _onRequestError(request, completer));
@@ -144,6 +146,7 @@ class AudioClip {
    _buffer = _manager._context.createBuffer(numberOfChannels,
                                             numberOfChannels,
                                             sampleRate);
+   isReadyToPlay = true;
  }
 
  /** Return the sample frames array for [channel]. Assuming a stereo setup,
@@ -307,7 +310,7 @@ num get samples {
 </div>
 <div class="field"><h4 id="url">
 <button class="show-code">Code</button>
-final String         <strong>url</strong> <a class="anchor-link"
+String         <strong>url</strong> <a class="anchor-link"
             href="#url"
             title="Permalink to AudioClip.url">#</a>
         </h4>
@@ -315,11 +318,28 @@ final String         <strong>url</strong> <a class="anchor-link"
 <pre class="source">
 String get url =&gt; _url;
 </pre>
+<pre class="source">
+set url(String u) =&gt; _url = u;
+</pre>
 </div>
 </div>
 </div>
 <div>
 <h3>Methods</h3>
+<div class="method"><h4 id="clearError">
+<button class="show-code">Code</button>
+void <strong>clearError</strong>() <a class="anchor-link" href="#clearError"
+              title="Permalink to AudioClip.clearError">#</a></h4>
+<div class="doc">
+<p>Clear any error.</p>
+<pre class="source">
+void clearError() {
+ _hasError = false;
+ _errorString = 'OK';
+}
+</pre>
+</div>
+</div>
 <div class="method"><h4 id="fromMap">
 <button class="show-code">Code</button>
 <a href="../simple_audio/AudioClip.html">AudioClip</a> <strong>fromMap</strong>(Map map) <a class="anchor-link" href="#fromMap"
@@ -352,22 +372,24 @@ Float32Array getSampleFramesForChannel(num channel) {
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="loadFrom">
+<div class="method"><h4 id="load">
 <button class="show-code">Code</button>
-Future&lt;bool&gt; <strong>loadFrom</strong>(String url) <a class="anchor-link" href="#loadFrom"
-              title="Permalink to AudioClip.loadFrom">#</a></h4>
+Future&lt;<a href="../simple_audio/AudioClip.html">AudioClip</a>&gt; <strong>load</strong>() <a class="anchor-link" href="#load"
+              title="Permalink to AudioClip.load">#</a></h4>
 <div class="doc">
-<p>Fetch 
-<span class="param">url</span> and decode it into the clip buffer.
-Returns a [Future<bool>] which completes to true if the clip was
-succesfully loaded and decoded. Will complete to false if the clip
-could not be loaded or could not be decoded. On error,
-check <a class="crossref" href="../simple_audio/AudioClip.html#hasError">hasError</a> and <a class="crossref" href="../simple_audio/AudioClip.html#errorString">errorString</a>.</p>
+<p>Fetch and decode the clip's <a class="crossref" href="../simple_audio/AudioClip.html#url">url</a> into the clip buffer.
+Returns a [Future<AudioClip>] which completes to <em>this</em>.
+<a class="crossref" href="../simple_audio/AudioClip.html#hasError">hasError</a> and <a class="crossref" href="../simple_audio/AudioClip.html#errorString">errorString</a> will indicate and explain respetively
+any load errors.</p>
 <pre class="source">
-Future&lt;bool&gt; loadFrom(String url) {
+Future&lt;AudioClip&gt; load() {
+ if (url == null) {
+   _setError('No URL set.');
+   return new Future&lt;AudioClip&gt;.immediate(this);
+ }
+ _empty();
  var request = new HttpRequest();
- var completer = new Completer&lt;bool&gt;();
- _url = url;
+ var completer = new Completer&lt;AudioClip&gt;();
  request.responseType = 'arraybuffer';
  request.on.load.add((e) =&gt; _onRequestSuccess(request, completer));
  request.on.error.add((e) =&gt; _onRequestError(request, completer));
@@ -396,6 +418,7 @@ void makeBuffer(num numberOfSampleFrames, num numberOfChannels, num sampleRate) 
  _buffer = _manager._context.createBuffer(numberOfChannels,
                                           numberOfChannels,
                                           sampleRate);
+ isReadyToPlay = true;
 }
 </pre>
 </div>
@@ -422,7 +445,7 @@ Map toJson() {
         </div>
         
         <div class="footer">
-          <div>This page was generated at 2012-11-23 20:41:21.561</div>
+          <div>This page was generated at 2012-11-24 12:50:48.581</div>
         </div>
         <script async src="../client-static.js"></script>
         </body></html>

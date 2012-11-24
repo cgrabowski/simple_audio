@@ -29,6 +29,7 @@ class AudioMusic {
   AudioClip _clip;
   AudioMusic._internal(this._manager, GainNode output) {
     _source = new AudioSource._internal(_manager, 'music', output);
+    _source.positional = false;
   }
 
   Map toJson() {

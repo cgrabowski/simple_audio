@@ -16,12 +16,10 @@ List<AudioSource> globalSources = new List<AudioSource>();
 
 void main() {
   setBaseURL(audioManager);
-  audioManager.makeClip(clipName);
-  audioManager.makeClip(musicClipName);
-  audioManager.findClip(clipName).loadFrom(clipURL);
-  audioManager.findClip(musicClipName).loadFrom(musicClipURL);
+  audioManager.makeClip(clipName, clipURL).load();
+  audioManager.makeClip(musicClipName, musicClipURL).load();
   audioManager.music.clip = audioManager.findClip(musicClipName);
-
+  globalSources.add(audioManager.makeSource("non-positional"));
   globalSources.add(audioManager.makeSource("front left"));
   globalSources.add(audioManager.makeSource("front right"));
 
@@ -32,19 +30,19 @@ void main() {
   AudioSource source;
   source = audioManager.findSource("front left");
   source.setPosition(-1.0, 0.0, -1.0);
-  source.setOrientation(1.0, 0.0, 1.0, 0.0, 1.0, 0.0);
 
   source = audioManager.findSource("front right");
   source.setPosition(1.0, 0.0, -1.0);
-  source.setOrientation(-1.0, 0.0, 1.0, 0.0, 1.0, 0.0);
 
   source = audioManager.findSource("rear left");
   source.setPosition(-1.0, 0.0, 1.0);
-  source.setOrientation(1.0, 0.0, -1.0, 0.0, 1.0, 0.0);
 
   source = audioManager.findSource("rear right");
   source.setPosition(1.0, 0.0, 1.0);
-  source.setOrientation(-1.0, 0.0, -1.0, 0.0, 1.0, 0.0);
+
+  source = audioManager.findSource("non-positional");
+  source.setPosition(-1.0, 0.0, -1.0);
+  source.positional = false;
 
   query("#pause_sources")
     ..on.click.add(pauseLoop);
@@ -76,6 +74,12 @@ void main() {
     ie = query("#play3");
     ie.on.click.add((e) => playClipOn(ie.value));
   }
+  {
+    InputElement ie;
+    ie = query("#play4");
+    ie.on.click.add((e) => playClipOn(ie.value));
+  }
+
   {
     InputElement ie;
     ie = query("#masterVolume");
@@ -156,8 +160,7 @@ void drawListener(CanvasElement canvas) {
   context.fill();
 }
 
-void drawSource(CanvasElement canvas, num x, num y,
-                num xForward, num yForward) {
+void drawSource(CanvasElement canvas, num x, num y) {
   num width = canvas.width;
   num height = canvas.height;
   num centerWidth = width~/2;
@@ -168,7 +171,6 @@ void drawSource(CanvasElement canvas, num x, num y,
   context.fillStyle = "#ff6600";
   context.lineWidth = 2.0;
   context.beginPath();
-  print('$x $y');
   context.arc(x+centerWidth, y+centerHeight, width~/20.0, 0.0, 6.28318530, true);
   context.closePath();
   context.stroke();
@@ -198,8 +200,7 @@ void drawSources(CanvasElement canvas, List<AudioSource> sources) {
   num scaleX = width/(maxX-minX);
   num scaleZ = height/(maxZ-minZ);
   sources.forEach((source) {
-    drawSource(canvas, source.x * scaleX, source.z * scaleZ,
-        source.xForward, source.zForward);
+    drawSource(canvas, source.x * scaleX, source.z * scaleZ);
   });
 }
 
