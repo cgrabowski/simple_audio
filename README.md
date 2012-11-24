@@ -31,6 +31,21 @@ dependencies:
 import 'package:simple_audio/simple_audio.dart';
 ```
 
+## Document ##
+
+[API Document](http://johnmccutchan.github.com/simpleaudio/simple_audio.html)
+
+## Samples ##
+
+1\. audio.html
+
+A basic sample application which plays music and a clip from a source.
+
+2\. sound_scape.html
+
+A demonstration of 3D positional audio. A clip can be played from any of
+four sources positioned around the listener.
+
 ## Examples ##
 
 1\. Initialize an AudioManager.
