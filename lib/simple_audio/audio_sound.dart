@@ -161,8 +161,8 @@ class AudioSound {
 
   /** Start playing this sound in [when] seconds. */
   void play([num when=0.0]) {
-    print('Sound.play');
-    _dumpSourceNode();
+    //print('Sound.play');
+    //_dumpSourceNode();
     _stop();
     _setupSourceNodeForPlayback();
     _scheduledTime = _source._manager._context.currentTime+when;
