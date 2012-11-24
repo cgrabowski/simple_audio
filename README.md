@@ -11,6 +11,7 @@ A simple to use audio library for video games. Supports 3D directional audio.
 * Audio clips storing sound data (AudioClip)
 * Looped music playback (AudioMusic)
 * High level manager (AudioManager)
+* Save and load snapshots which includes all settings, clips, and sources.
 
 ## Status: Beta ##
 
