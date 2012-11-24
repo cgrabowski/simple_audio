@@ -5,6 +5,7 @@ part of simple_audio;
  */
 class AudioClip {
   final AudioManager _manager;
+  String _name;
   String _url;
   String get url => _url;
   AudioBuffer _buffer;
@@ -12,7 +13,7 @@ class AudioClip {
   String _errorString = '';
   bool _isReadyToPlay = false;
 
-  AudioClip._internal(this._manager);
+  AudioClip._internal(this._manager, this._name);
 
   void _empty() {
     _isReadyToPlay = false;
@@ -23,11 +24,13 @@ class AudioClip {
     // Serialize buffer contents as well.
     return {
       "_url":_url,
+      "_name": _name,
     };
   }
 
   AudioClip fromMap(Map map) {
     _url = map['_url'];
+    _name = map['_name'];
     return this;
   }
 

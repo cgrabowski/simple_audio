@@ -18,6 +18,7 @@ void main() {
   audioManager.makeClip(musicClipName);
   audioManager.findClip(clipName).loadFrom(clipURL);
   audioManager.findClip(musicClipName).loadFrom(musicClipURL);
+  audioManager.music.clip = audioManager.findClip(musicClipName);
   audioManager.makeSource(sourceName);
 
   query("#clip_once")
@@ -83,7 +84,7 @@ void pauseLoop(Event event) {
 }
 
 void startMusic(Event event) {
-  audioManager.music.play(audioManager.findClip(musicClipName));
+  audioManager.music.play();
 }
 
 bool _allPaused = false;

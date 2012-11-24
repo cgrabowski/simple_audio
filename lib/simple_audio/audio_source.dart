@@ -7,6 +7,7 @@ part of simple_audio;
  */
 class AudioSource {
   AudioManager _manager;
+  String _name;
   GainNode _gainNode;
   PannerNode _panNode;
   List<AudioSound> _sounds;
@@ -22,7 +23,7 @@ class AudioSource {
   num _yUp = 1.0;
   num _zUp = 0.0;
 
-  AudioSource._internal(this._manager, GainNode output) {
+  AudioSource._internal(this._manager, this._name, GainNode output) {
     _gainNode = _manager._context.createGain();
     _gainNode.connect(output, 0, 0);
     _panNode = _manager._context.createPanner();
@@ -40,6 +41,7 @@ class AudioSource {
 
   Map toJson() {
     return {
+      "_name": _name,
       "volume": _gainNode.gain.value,
       "_mutedVolume": _mutedVolume,
       "_isPaused": _isPaused,
@@ -59,6 +61,7 @@ class AudioSource {
     _gainNode.gain.value = map["volume"];
     _mutedVolume = map["_mutedVolume"];
     _isPaused = map["_isPaused"];
+    _name = map["_name"];
     _x = map["_x"];
     _y = map["_y"];
     _z = map["_z"];

@@ -48,6 +48,7 @@ class AudioManager {
     map['sourceVolume'] = _sourceGain.gain.value;
     map['clips'] = _clips;
     map['sources'] = _sources;
+    map['music'] = _music;
 
     return map;
   }
@@ -58,13 +59,14 @@ class AudioManager {
     _sourceGain.gain.value = map['sourceVolume'];
     _clips = new Map<String,AudioClip>();
     map['clips'].forEach((k,v) {
-      _clips[k] = new AudioClip._internal(this).fromMap(v);
+      _clips[k] = new AudioClip._internal(this, k).fromMap(v);
       _clips[k].loadFrom(_clips[k].url);
     });
     _sources = new Map<String,AudioSource>();
     map['sources'].forEach((k,v) {
-      _sources[k] = new AudioSource._internal(this,_sourceGain).fromMap(v);
+      _sources[k] = new AudioSource._internal(this, k, _sourceGain).fromMap(v);
     });
+    _music.fromMap(map['music']);
   }
 
   /** Sample rate of the audio driver */
@@ -175,7 +177,7 @@ class AudioManager {
     if (clip != null) {
       return clip;
     }
-    clip = new AudioClip._internal(this);
+    clip = new AudioClip._internal(this, name);
     _clips[name] = clip;
     return clip;
   }
@@ -186,7 +188,7 @@ class AudioManager {
     if (source != null) {
       return source;
     }
-    source = new AudioSource._internal(this, _sourceGain);
+    source = new AudioSource._internal(this, name, _sourceGain);
     _sources[name] = source;
     return source;
   }

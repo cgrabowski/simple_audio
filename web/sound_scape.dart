@@ -20,6 +20,7 @@ void main() {
   audioManager.makeClip(musicClipName);
   audioManager.findClip(clipName).loadFrom(clipURL);
   audioManager.findClip(musicClipName).loadFrom(musicClipURL);
+  audioManager.music.clip = audioManager.findClip(musicClipName);
 
   globalSources.add(audioManager.makeSource("front left"));
   globalSources.add(audioManager.makeSource("front right"));
@@ -233,7 +234,7 @@ void pauseLoop(Event event) {
 }
 
 void startMusic(Event event) {
-  audioManager.music.play(audioManager.findClip(musicClipName));
+  audioManager.music.play();
 }
 
 bool _allPaused = false;
