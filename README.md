@@ -33,7 +33,9 @@ import 'package:simple_audio/simple_audio.dart';
 
 # Documentation #
 
-[API ](http://johnmccutchan.github.com/simpleaudio/simple_audio.html)
+## API ##
+
+[Reference Manual](http://johnmccutchan.github.com/simpleaudio/simple_audio.html)
 
 ## Samples ##
 
