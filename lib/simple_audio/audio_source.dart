@@ -68,7 +68,7 @@ class AudioSource {
 
   bool get positional => _positional;
 
-  void set positioned(bool b) {
+  void set positional(bool b) {
     _positional = b;
     _setupNodes();
   }
