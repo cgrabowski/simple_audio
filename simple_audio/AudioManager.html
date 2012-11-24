@@ -97,8 +97,8 @@ class AudioManager {
    _sourceGain.gain.value = map['sourceVolume'];
    _clips = new Map&lt;String,AudioClip&gt;();
    map['clips'].forEach((k,v) {
-     _clips[k] = new AudioClip._internal(this, k).fromMap(v);
-     _clips[k].loadFrom(_clips[k].url);
+     _clips[k] = new AudioClip._internal(this, k, null).fromMap(v);
+     _clips[k].load();
    });
    _sources = new Map&lt;String,AudioSource&gt;();
    map['sources'].forEach((k,v) {
@@ -210,12 +210,12 @@ class AudioManager {
  AudioMusic get music =&gt; _music;
 
  /** Create an [AudioClip] with [name]. */
- AudioClip makeClip(String name) {
+ AudioClip makeClip(String name, String url) {
    AudioClip clip = _clips[name];
    if (clip != null) {
      return clip;
    }
-   clip = new AudioClip._internal(this, name);
+   clip = new AudioClip._internal(this, name, url);
    _clips[name] = clip;
    return clip;
  }
@@ -574,8 +574,8 @@ void fromMap(Map map) {
  _sourceGain.gain.value = map['sourceVolume'];
  _clips = new Map&lt;String,AudioClip&gt;();
  map['clips'].forEach((k,v) {
-   _clips[k] = new AudioClip._internal(this, k).fromMap(v);
-   _clips[k].loadFrom(_clips[k].url);
+   _clips[k] = new AudioClip._internal(this, k, null).fromMap(v);
+   _clips[k].load();
  });
  _sources = new Map&lt;String,AudioSource&gt;();
  map['sources'].forEach((k,v) {
@@ -588,18 +588,18 @@ void fromMap(Map map) {
 </div>
 <div class="method"><h4 id="makeClip">
 <button class="show-code">Code</button>
-<a href="../simple_audio/AudioClip.html">AudioClip</a> <strong>makeClip</strong>(String name) <a class="anchor-link" href="#makeClip"
+<a href="../simple_audio/AudioClip.html">AudioClip</a> <strong>makeClip</strong>(String name, String url) <a class="anchor-link" href="#makeClip"
               title="Permalink to AudioManager.makeClip">#</a></h4>
 <div class="doc">
 <p>Create an <a class="crossref" href="../simple_audio/AudioClip.html">AudioClip</a> with 
 <span class="param">name</span>.</p>
 <pre class="source">
-AudioClip makeClip(String name) {
+AudioClip makeClip(String name, String url) {
  AudioClip clip = _clips[name];
  if (clip != null) {
    return clip;
  }
- clip = new AudioClip._internal(this, name);
+ clip = new AudioClip._internal(this, name, url);
  _clips[name] = clip;
  return clip;
 }
@@ -885,7 +885,7 @@ Map toJson() {
         </div>
         
         <div class="footer">
-          <div>This page was generated at 2012-11-23 19:55:51.871</div>
+          <div>This page was generated at 2012-11-24 12:50:48.546</div>
         </div>
         <script async src="../client-static.js"></script>
         </body></html>

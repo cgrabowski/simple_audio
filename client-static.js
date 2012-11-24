@@ -3116,7 +3116,7 @@ $$.AbstractScanner = {"": [],
   } else
     isDynamicBuiltIn = false;
   if (typeof next !== 'number')
-    return this.tokenizeIdentifier$3$bailout(2, start, allowDollar, isDynamicBuiltIn, next);
+    return this.tokenizeIdentifier$3$bailout(2, start, allowDollar, next, isDynamicBuiltIn);
   for (isAscii = true; true; isDynamicBuiltIn = false) {
     if (!($.leB(97, next) && $.leB(next, 122)))
       if (!($.leB(65, next) && $.leB(next, 90)))
@@ -3167,8 +3167,8 @@ $$.AbstractScanner = {"": [],
       next = env0;
       break;
     case 2:
-      next = env3;
-      isDynamicBuiltIn = env2;
+      isDynamicBuiltIn = env3;
+      next = env2;
       allowDollar = env1;
       start = env0;
       break;
@@ -4304,7 +4304,7 @@ $$._convertDartToNative_PrepareForStructuredClone_walk = {"": ["writeSlot_8", "r
             t3.call$2(slot, copy);
           }
           if (typeof copy !== 'object' || copy === null || (copy.constructor !== Array || !!copy.immutable$list) && !copy.is$JavaScriptIndexingBehavior())
-            return this.call$1$bailout(2, e, t3, elementCopy, length$, copy, slot, i);
+            return this.call$1$bailout(2, e, i, t3, elementCopy, length$, copy, slot);
           for (t1 = e.length, t2 = copy.length, j = 0; j < i; ++j) {
             if (j >= t1)
               throw $.ioore(j);
@@ -4330,7 +4330,7 @@ $$._convertDartToNative_PrepareForStructuredClone_walk = {"": ["writeSlot_8", "r
       i = 0;
     }
     if (typeof copy !== 'object' || copy === null || (copy.constructor !== Array || !!copy.immutable$list) && !copy.is$JavaScriptIndexingBehavior())
-      return this.call$1$bailout(3, e, length$, copy, i);
+      return this.call$1$bailout(3, e, length$, i, copy);
     for (; i < length$; ++i) {
       if (i >= e.length)
         throw $.ioore(i);
@@ -4349,17 +4349,17 @@ $$._convertDartToNative_PrepareForStructuredClone_walk = {"": ["writeSlot_8", "r
       e = env0;
       break;
     case 2:
-      i = env6;
-      slot = env5;
-      copy = env4;
-      length$ = env3;
-      elementCopy = env2;
-      t3 = env1;
+      slot = env6;
+      copy = env5;
+      length$ = env4;
+      elementCopy = env3;
+      t3 = env2;
+      i = env1;
       e = env0;
       break;
     case 3:
-      i = env3;
-      copy = env2;
+      copy = env3;
+      i = env2;
       length$ = env1;
       e = env0;
       break;
@@ -4494,14 +4494,6 @@ $$.BoundClosure0 = {'':
 'super': 'Closure',
 call$1: function(p0) { return this.self[this.target](p0); }
 };
-$.DedicatedWorkerContextEvents$ = function(_ptr) {
-  return new $.DedicatedWorkerContextEvents(_ptr);
-};
-
-$.WorkerContextEvents$ = function(_ptr) {
-  return new $.WorkerContextEvents(_ptr);
-};
-
 $._Sort__doSort = function(a, left, right, compare) {
   if ($.leB($.sub(right, left), 32))
     $._Sort_insertionSort_(a, left, right, compare);
@@ -4598,9 +4590,9 @@ $._Sort__dualPivotQuicksort = function(a, left, right, compare) {
     throw $.ioore(index5);
   el5 = a[index5];
   if ($.gtB(compare.call$2(el1, el2), 0)) {
-    t0 = el1;
-    el1 = el2;
-    el2 = t0;
+    t0 = el2;
+    el2 = el1;
+    el1 = t0;
   }
   if ($.gtB(compare.call$2(el4, el5), 0)) {
     t0 = el5;
@@ -4608,9 +4600,9 @@ $._Sort__dualPivotQuicksort = function(a, left, right, compare) {
     el4 = t0;
   }
   if ($.gtB(compare.call$2(el1, el3), 0)) {
-    t0 = el1;
-    el1 = el3;
-    el3 = t0;
+    t0 = el3;
+    el3 = el1;
+    el1 = t0;
   }
   if ($.gtB(compare.call$2(el2, el3), 0)) {
     t0 = el3;
@@ -4618,9 +4610,9 @@ $._Sort__dualPivotQuicksort = function(a, left, right, compare) {
     el2 = t0;
   }
   if ($.gtB(compare.call$2(el1, el4), 0)) {
-    t0 = el1;
-    el1 = el4;
-    el4 = t0;
+    t0 = el4;
+    el4 = el1;
+    el1 = t0;
   }
   if ($.gtB(compare.call$2(el3, el4), 0)) {
     t0 = el4;
@@ -4723,8 +4715,8 @@ $._Sort__dualPivotQuicksort = function(a, left, right, compare) {
                 throw $.ioore(great);
               a[less] = a[great];
               a[great] = ak;
-              less = less0;
               great = great0;
+              less = less0;
               break;
             } else {
               if (great >= t2)
@@ -4792,8 +4784,8 @@ $._Sort__dualPivotQuicksort = function(a, left, right, compare) {
                 throw $.ioore(great);
               a[less] = a[great];
               a[great] = ak;
-              less = less0;
               great = great0;
+              less = less0;
             } else {
               if (great >= t2)
                 throw $.ioore(great);
@@ -4903,8 +4895,8 @@ $._Sort__dualPivotQuicksort = function(a, left, right, compare) {
                 throw $.ioore(great);
               a[less] = a[great];
               a[great] = ak;
-              less = less0;
               great = great0;
+              less = less0;
             } else {
               if (great >= t2)
                 throw $.ioore(great);
@@ -6447,7 +6439,7 @@ $.getTypeMemberUrl = function(libraryName, typeName, memberInfo) {
 };
 
 $.json = function() {
-  return [$.makeLiteralMap(['name', 'simple_audio', 'types', [$.makeLiteralMap(['name', 'AudioClip', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'errorString']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'frequency']), $.makeLiteralMap(['kind', 'method', 'name', 'fromMap']), $.makeLiteralMap(['kind', 'method', 'name', 'getSampleFramesForChannel']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'hasError']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'isReadyToPlay']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'length']), $.makeLiteralMap(['kind', 'method', 'name', 'loadFrom']), $.makeLiteralMap(['kind', 'method', 'name', 'makeBuffer']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'numberOfChannels']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'samples']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'toJson']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'url'])]]), $.makeLiteralMap(['name', 'AudioManager', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'constructor', 'noparams', true, 'name', 'AudioManager']), $.makeLiteralMap(['kind', 'field', 'name', 'baseURL']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'dopplerFactor']), $.makeLiteralMap(['kind', 'setter', 'name', 'dopplerFactor', 'link_name', 'dopplerFactor=']), $.makeLiteralMap(['kind', 'method', 'name', 'findClip']), $.makeLiteralMap(['kind', 'method', 'name', 'findSource']), $.makeLiteralMap(['kind', 'method', 'name', 'fromMap']), $.makeLiteralMap(['kind', 'method', 'name', 'makeClip']), $.makeLiteralMap(['kind', 'method', 'name', 'makeSource']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'masterVolume']), $.makeLiteralMap(['kind', 'setter', 'name', 'masterVolume', 'link_name', 'masterVolume=']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'music']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'musicVolume']), $.makeLiteralMap(['kind', 'setter', 'name', 'musicVolume', 'link_name', 'musicVolume=']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'mute']), $.makeLiteralMap(['kind', 'setter', 'name', 'mute', 'link_name', 'mute=']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'pauseAll']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'pauseMusic']), $.makeLiteralMap(['kind', 'method', 'name', 'pauseSource']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'pauseSources']), $.makeLiteralMap(['kind', 'method', 'name', 'playClipFromSource']), $.makeLiteralMap(['kind', 'method', 'name', 'playClipFromSourceIn']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'resumeAll']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'resumeMusic']), $.makeLiteralMap(['kind', 'method', 'name', 'resumeSource']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'resumeSources']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'sampleRate']), $.makeLiteralMap(['kind', 'method', 'name', 'setOrientation']), $.makeLiteralMap(['kind', 'method', 'name', 'setPosition']), $.makeLiteralMap(['kind', 'method', 'name', 'setVelocity']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'sourceVolume']), $.makeLiteralMap(['kind', 'setter', 'name', 'sourceVolume', 'link_name', 'sourceVolume=']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'speedOfSound']), $.makeLiteralMap(['kind', 'setter', 'name', 'speedOfSound', 'link_name', 'speedOfSound=']), $.makeLiteralMap(['kind', 'method', 'name', 'stopSource']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'toJson'])]]), $.makeLiteralMap(['name', 'AudioMusic', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'clip']), $.makeLiteralMap(['kind', 'setter', 'name', 'clip', 'link_name', 'clip=']), $.makeLiteralMap(['kind', 'method', 'name', 'fromMap']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'pause']), $.makeLiteralMap(['kind', 'setter', 'name', 'pause', 'link_name', 'pause=']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'play']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'stop']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'toJson'])]]), $.makeLiteralMap(['name', 'AudioSnapshot', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'constructor', 'name', 'AudioSnapshot']), $.makeLiteralMap(['kind', 'method', 'name', 'loadSnapshot']), $.makeLiteralMap(['kind', 'field', 'name', 'manager']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'takeSnapshot'])]]), $.makeLiteralMap(['name', 'AudioSound', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'isFinished']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'isPlaying']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'isScheduled']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'pause']), $.makeLiteralMap(['kind', 'setter', 'name', 'pause', 'link_name', 'pause=']), $.makeLiteralMap(['kind', 'method', 'name', 'play']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'stop']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'time']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'volume']), $.makeLiteralMap(['kind', 'setter', 'name', 'volume', 'link_name', 'volume='])]]), $.makeLiteralMap(['name', 'AudioSource', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'method', 'name', 'fromMap']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'mute']), $.makeLiteralMap(['kind', 'setter', 'name', 'mute', 'link_name', 'mute=']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'pause']), $.makeLiteralMap(['kind', 'setter', 'name', 'pause', 'link_name', 'pause=']), $.makeLiteralMap(['kind', 'method', 'name', 'playLooped']), $.makeLiteralMap(['kind', 'method', 'name', 'playLoopedIn']), $.makeLiteralMap(['kind', 'method', 'name', 'playOnce']), $.makeLiteralMap(['kind', 'method', 'name', 'playOnceIn']), $.makeLiteralMap(['kind', 'method', 'name', 'setOrientation']), $.makeLiteralMap(['kind', 'method', 'name', 'setPosition']), $.makeLiteralMap(['kind', 'method', 'name', 'setVelocity']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'stop']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'toJson']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'volume']), $.makeLiteralMap(['kind', 'setter', 'name', 'volume', 'link_name', 'volume=']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'x']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'xForward']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'xUp']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'y']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'yForward']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'yUp']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'z']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'zForward']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'zUp'])]])]])];
+  return [$.makeLiteralMap(['name', 'simple_audio', 'types', [$.makeLiteralMap(['name', 'AudioClip', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'clearError']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'errorString']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'frequency']), $.makeLiteralMap(['kind', 'method', 'name', 'fromMap']), $.makeLiteralMap(['kind', 'method', 'name', 'getSampleFramesForChannel']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'hasError']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'isReadyToPlay']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'length']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'load']), $.makeLiteralMap(['kind', 'method', 'name', 'makeBuffer']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'numberOfChannels']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'samples']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'toJson']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'url']), $.makeLiteralMap(['kind', 'setter', 'name', 'url', 'link_name', 'url='])]]), $.makeLiteralMap(['name', 'AudioManager', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'constructor', 'noparams', true, 'name', 'AudioManager']), $.makeLiteralMap(['kind', 'field', 'name', 'baseURL']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'dopplerFactor']), $.makeLiteralMap(['kind', 'setter', 'name', 'dopplerFactor', 'link_name', 'dopplerFactor=']), $.makeLiteralMap(['kind', 'method', 'name', 'findClip']), $.makeLiteralMap(['kind', 'method', 'name', 'findSource']), $.makeLiteralMap(['kind', 'method', 'name', 'fromMap']), $.makeLiteralMap(['kind', 'method', 'name', 'makeClip']), $.makeLiteralMap(['kind', 'method', 'name', 'makeSource']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'masterVolume']), $.makeLiteralMap(['kind', 'setter', 'name', 'masterVolume', 'link_name', 'masterVolume=']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'music']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'musicVolume']), $.makeLiteralMap(['kind', 'setter', 'name', 'musicVolume', 'link_name', 'musicVolume=']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'mute']), $.makeLiteralMap(['kind', 'setter', 'name', 'mute', 'link_name', 'mute=']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'pauseAll']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'pauseMusic']), $.makeLiteralMap(['kind', 'method', 'name', 'pauseSource']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'pauseSources']), $.makeLiteralMap(['kind', 'method', 'name', 'playClipFromSource']), $.makeLiteralMap(['kind', 'method', 'name', 'playClipFromSourceIn']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'resumeAll']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'resumeMusic']), $.makeLiteralMap(['kind', 'method', 'name', 'resumeSource']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'resumeSources']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'sampleRate']), $.makeLiteralMap(['kind', 'method', 'name', 'setOrientation']), $.makeLiteralMap(['kind', 'method', 'name', 'setPosition']), $.makeLiteralMap(['kind', 'method', 'name', 'setVelocity']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'sourceVolume']), $.makeLiteralMap(['kind', 'setter', 'name', 'sourceVolume', 'link_name', 'sourceVolume=']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'speedOfSound']), $.makeLiteralMap(['kind', 'setter', 'name', 'speedOfSound', 'link_name', 'speedOfSound=']), $.makeLiteralMap(['kind', 'method', 'name', 'stopSource']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'toJson'])]]), $.makeLiteralMap(['name', 'AudioMusic', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'clip']), $.makeLiteralMap(['kind', 'setter', 'name', 'clip', 'link_name', 'clip=']), $.makeLiteralMap(['kind', 'method', 'name', 'fromMap']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'pause']), $.makeLiteralMap(['kind', 'setter', 'name', 'pause', 'link_name', 'pause=']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'play']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'stop']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'toJson'])]]), $.makeLiteralMap(['name', 'AudioSnapshot', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'constructor', 'name', 'AudioSnapshot']), $.makeLiteralMap(['kind', 'method', 'name', 'loadSnapshot']), $.makeLiteralMap(['kind', 'field', 'name', 'manager']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'takeSnapshot'])]]), $.makeLiteralMap(['name', 'AudioSound', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'isFinished']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'isPlaying']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'isScheduled']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'pause']), $.makeLiteralMap(['kind', 'setter', 'name', 'pause', 'link_name', 'pause=']), $.makeLiteralMap(['kind', 'method', 'name', 'play']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'stop']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'time']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'volume']), $.makeLiteralMap(['kind', 'setter', 'name', 'volume', 'link_name', 'volume='])]]), $.makeLiteralMap(['name', 'AudioSource', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'method', 'name', 'fromMap']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'mute']), $.makeLiteralMap(['kind', 'setter', 'name', 'mute', 'link_name', 'mute=']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'pause']), $.makeLiteralMap(['kind', 'setter', 'name', 'pause', 'link_name', 'pause=']), $.makeLiteralMap(['kind', 'method', 'name', 'playLooped']), $.makeLiteralMap(['kind', 'method', 'name', 'playLoopedIn']), $.makeLiteralMap(['kind', 'method', 'name', 'playOnce']), $.makeLiteralMap(['kind', 'method', 'name', 'playOnceIn']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'positional']), $.makeLiteralMap(['kind', 'setter', 'name', 'positional', 'link_name', 'positional=']), $.makeLiteralMap(['kind', 'method', 'name', 'setPosition']), $.makeLiteralMap(['kind', 'method', 'name', 'setVelocity']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'stop']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'toJson']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'volume']), $.makeLiteralMap(['kind', 'setter', 'name', 'volume', 'link_name', 'volume=']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'x']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'y']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'z'])]])]])];
 };
 
 $.window = function() {
@@ -6614,10 +6606,10 @@ $.InputElementEvents$ = function(_ptr) {
 };
 
 $.classifySource = function(text) {
-  var html, token, inString, whitespaceOffset, whitespaceOffset0, kind, escapedText, stringClass;
+  var html, token, whitespaceOffset, inString, whitespaceOffset0, kind, escapedText, stringClass;
   html = $.StringBuffer_StringBuffer('');
   token = $.StringScanner$(text, true).tokenize$0();
-  for (inString = false, whitespaceOffset = 0; !$.eqB(token.get$kind(), 0); whitespaceOffset = whitespaceOffset0) {
+  for (whitespaceOffset = 0, inString = false; !$.eqB(token.get$kind(), 0); whitespaceOffset = whitespaceOffset0) {
     $.getInterceptor(html).add$1(html, $.getInterceptor(text).substring$2(text, whitespaceOffset, token.get$charOffset()));
     whitespaceOffset0 = $.add(token.get$charOffset(), token.get$slowCharCount());
     switch (token.get$kind()) {
@@ -6956,17 +6948,17 @@ $.KeywordState_computeKeywordStateTable = function(start, strings, offset, lengt
       throw $.ioore(i);
     t3 = $.get$length(strings[i]);
     if (typeof t3 !== 'number')
-      return $.KeywordState_computeKeywordStateTable$bailout(1, start, strings, offset, length$, t3, result, t1, i, chunk, chunkStart, isLeaf, t2);
+      return $.KeywordState_computeKeywordStateTable$bailout(1, start, strings, offset, length$, t3, result, t1, chunk, chunkStart, isLeaf, i, t2);
     if (t3 === start)
       isLeaf = true;
     t3 = $.get$length(strings[i]);
     if (typeof t3 !== 'number')
-      return $.KeywordState_computeKeywordStateTable$bailout(2, start, strings, offset, length$, result, isLeaf, t1, i, t3, chunk, chunkStart, t2);
+      return $.KeywordState_computeKeywordStateTable$bailout(2, start, strings, offset, length$, result, isLeaf, t1, t3, chunkStart, chunk, i, t2);
     if (t3 > start) {
       t3 = strings[i];
       c = $.getInterceptor(t3).charCodeAt$1(t3, start);
       if (c !== (c | 0))
-        return $.KeywordState_computeKeywordStateTable$bailout(3, start, strings, offset, length$, result, isLeaf, t1, i, chunk, chunkStart, t2, c);
+        return $.KeywordState_computeKeywordStateTable$bailout(3, start, strings, offset, length$, result, isLeaf, t1, chunk, chunkStart, i, t2, c);
       if (chunk !== c) {
         if (chunkStart !== -1) {
           t3 = chunk - 97;
@@ -7270,12 +7262,12 @@ $.StateError$ = function(message) {
   return new $.StateError(message);
 };
 
-$._ExceptionImplementation$ = function(message) {
-  return new $._ExceptionImplementation(message);
-};
-
 $.ListIterator$ = function(list) {
   return new $.ListIterator(0, list);
+};
+
+$._ExceptionImplementation$ = function(message) {
+  return new $._ExceptionImplementation(message);
 };
 
 $.Primitives_objectHashCode = function(object) {
@@ -7314,10 +7306,6 @@ $.Primitives_newList = function(length$) {
   return result;
 };
 
-$.StackOverflowError$ = function() {
-  return new $.StackOverflowError();
-};
-
 $.Primitives_stringFromCharCodes = function(charCodes) {
   var t1, t2;
   for (t1 = $.iterator(charCodes); t1.get$hasNext() === true;) {
@@ -7326,6 +7314,10 @@ $.Primitives_stringFromCharCodes = function(charCodes) {
       throw $.$$throw($.ArgumentError$(t2));
   }
   return String.fromCharCode.apply(null, charCodes);
+};
+
+$.StackOverflowError$ = function() {
+  return new $.StackOverflowError();
 };
 
 $.DOMApplicationCacheEvents$ = function(_ptr) {
@@ -7399,162 +7391,12 @@ $._NodeListWrapper$ = function(list) {
   return new $._NodeListWrapper(list);
 };
 
-$.stringReplaceAllUnchecked$bailout = function(state0, receiver, from, to) {
-  var result, length$, i;
-  if (typeof from === 'string')
-    if (from === '')
-      if ($.eqB(receiver, ''))
-        return to;
-      else {
-        result = $.StringBuffer_StringBuffer('');
-        length$ = $.get$length(receiver);
-        $.getInterceptor(result).add$1(result, to);
-        for (i = 0; $.ltB(i, length$); ++i) {
-          $.getInterceptor(result).add$1(result, $.index(receiver, i));
-          $.getInterceptor(result).add$1(result, to);
-        }
-        return $.toString(result);
-      }
-    else
-      return $.stringReplaceJS(receiver, $.regExpMakeNative($.JSSyntaxRegExp$(from.replace($.regExpMakeNative($.get$quoteRegExp(), true), "\\$&"), false, false), true), to);
-  else if (typeof from === 'object' && from !== null && !!from.is$JSSyntaxRegExp)
-    return $.stringReplaceJS(receiver, $.regExpMakeNative(from, true), to);
-  else {
-    $.checkNull(from);
-    throw $.$$throw('String.replaceAll(Pattern) UNIMPLEMENTED');
-  }
+$.DedicatedWorkerContextEvents$ = function(_ptr) {
+  return new $.DedicatedWorkerContextEvents(_ptr);
 };
 
-$.contains$1$bailout = function(state0, receiver, other) {
-  var i;
-  if (typeof receiver === 'string')
-    return $.contains$2(receiver, other, 0);
-  else if ($.isJsArray(receiver)) {
-    for (i = 0; $.ltB(i, $.get$length(receiver)); ++i)
-      if (other === $.index(receiver, i))
-        return true;
-    return false;
-  }
-  return receiver.contains$1(other);
-};
-
-$.KeywordState_computeKeywordStateTable$bailout = function(state0, env0, env1, env2, env3, env4, env5, env6, env7, env8, env9, env10, env11) {
-  switch (state0) {
-    case 1:
-      t2 = env11;
-      isLeaf = env10;
-      chunkStart = env9;
-      chunk = env8;
-      i = env7;
-      t1 = env6;
-      result = env5;
-      t3 = env4;
-      length$ = env3;
-      offset = env2;
-      strings = env1;
-      start = env0;
-      break;
-    case 2:
-      t2 = env11;
-      chunkStart = env10;
-      chunk = env9;
-      t3 = env8;
-      i = env7;
-      t1 = env6;
-      isLeaf = env5;
-      result = env4;
-      length$ = env3;
-      offset = env2;
-      strings = env1;
-      start = env0;
-      break;
-    case 3:
-      c = env11;
-      t2 = env10;
-      chunkStart = env9;
-      chunk = env8;
-      i = env7;
-      t1 = env6;
-      isLeaf = env5;
-      result = env4;
-      length$ = env3;
-      offset = env2;
-      strings = env1;
-      start = env0;
-      break;
-  }
-  switch (state0) {
-    case 0:
-      result = $._ListImpl_List(26);
-      t1 = start + 1;
-      t2 = strings.length;
-      i = offset;
-      chunk = 0;
-      chunkStart = -1;
-      isLeaf = false;
-    default:
-      var result, t1, t2, i, chunk, chunkStart, isLeaf, t3, length$, offset, strings, start, c, t4;
-      L0:
-        while (true)
-          switch (state0) {
-            case 0:
-              t3 = offset + length$;
-              if (!(i < t3))
-                break L0;
-              if (i < 0)
-                throw $.ioore(i);
-              t3 = $.get$length(strings[i]);
-            case 1:
-              state0 = 0;
-              if ($.eqB(t3, start))
-                isLeaf = true;
-              t3 = $.get$length(strings[i]);
-            case 2:
-              state0 = 0;
-            case 3:
-              if (state0 === 3 || state0 === 0 && $.gtB(t3, start))
-                switch (state0) {
-                  case 0:
-                    t3 = strings[i];
-                    c = $.getInterceptor(t3).charCodeAt$1(t3, start);
-                  case 3:
-                    state0 = 0;
-                    if (!$.eqB(chunk, c)) {
-                      if (chunkStart !== -1) {
-                        t3 = $.sub(chunk, 97);
-                        t4 = $.KeywordState_computeKeywordStateTable(t1, strings, chunkStart, i - chunkStart);
-                        if (t3 !== (t3 | 0))
-                          throw $.iae(t3);
-                        if (t3 < 0 || t3 >= 26)
-                          throw $.ioore(t3);
-                        result[t3] = t4;
-                      }
-                      chunkStart = i;
-                      chunk = c;
-                    }
-                }
-              ++i;
-          }
-      if (chunkStart !== -1) {
-        t4 = $.sub(chunk, 97);
-        t1 = $.KeywordState_computeKeywordStateTable(t1, strings, chunkStart, t3 - chunkStart);
-        if (t4 !== (t4 | 0))
-          throw $.iae(t4);
-        if (t4 < 0 || t4 >= 26)
-          throw $.ioore(t4);
-        result[t4] = t1;
-      } else {
-        if (offset < 0 || offset >= t2)
-          throw $.ioore(offset);
-        return $.LeafKeywordState$(strings[offset]);
-      }
-      if (isLeaf) {
-        if (offset < 0 || offset >= t2)
-          throw $.ioore(offset);
-        return $.ArrayKeywordState$(result, strings[offset]);
-      } else
-        return $.ArrayKeywordState$(result, null);
-  }
+$.WorkerContextEvents$ = function(_ptr) {
+  return new $.WorkerContextEvents(_ptr);
 };
 
 $._Lists_indexOf$bailout = function(state0, a, element, startIndex, endIndex) {
@@ -7601,9 +7443,9 @@ $._Sort__dualPivotQuicksort$bailout = function(state0, a, left, right, compare) 
   el4 = $.index(a, index4);
   el5 = $.index(a, index5);
   if ($.gtB(compare.call$2(el1, el2), 0)) {
-    t0 = el1;
-    el1 = el2;
-    el2 = t0;
+    t0 = el2;
+    el2 = el1;
+    el1 = t0;
   }
   if ($.gtB(compare.call$2(el4, el5), 0)) {
     t0 = el5;
@@ -7611,9 +7453,9 @@ $._Sort__dualPivotQuicksort$bailout = function(state0, a, left, right, compare) 
     el4 = t0;
   }
   if ($.gtB(compare.call$2(el1, el3), 0)) {
-    t0 = el1;
-    el1 = el3;
-    el3 = t0;
+    t0 = el3;
+    el3 = el1;
+    el1 = t0;
   }
   if ($.gtB(compare.call$2(el2, el3), 0)) {
     t0 = el3;
@@ -7621,9 +7463,9 @@ $._Sort__dualPivotQuicksort$bailout = function(state0, a, left, right, compare) 
     el2 = t0;
   }
   if ($.gtB(compare.call$2(el1, el4), 0)) {
-    t0 = el1;
-    el1 = el4;
-    el4 = t0;
+    t0 = el4;
+    el4 = el1;
+    el1 = t0;
   }
   if ($.gtB(compare.call$2(el3, el4), 0)) {
     t0 = el4;
@@ -7677,8 +7519,8 @@ $._Sort__dualPivotQuicksort$bailout = function(state0, a, left, right, compare) 
             $.indexSet(a, less, $.index(a, great));
             great0 = great - 1;
             $.indexSet(a, great, ak);
-            less = less0;
             great = great0;
+            less = less0;
             break;
           } else {
             $.indexSet(a, k, $.index(a, great));
@@ -7712,8 +7554,8 @@ $._Sort__dualPivotQuicksort$bailout = function(state0, a, left, right, compare) 
               $.indexSet(a, less, $.index(a, great));
               great0 = great - 1;
               $.indexSet(a, great, ak);
-              less = less0;
               great = great0;
+              less = less0;
             } else {
               $.indexSet(a, k, $.index(a, great));
               great0 = great - 1;
@@ -7759,8 +7601,8 @@ $._Sort__dualPivotQuicksort$bailout = function(state0, a, left, right, compare) 
               $.indexSet(a, less, $.index(a, great));
               great0 = great - 1;
               $.indexSet(a, great, ak);
-              less = less0;
               great = great0;
+              less = less0;
             } else {
               $.indexSet(a, k, $.index(a, great));
               great0 = great - 1;
@@ -7846,6 +7688,174 @@ $.allMatchesInStringUnchecked$bailout = function(state0, needle, haystack, patte
   return result;
 };
 
+$.stringReplaceAllUnchecked$bailout = function(state0, receiver, from, to) {
+  var result, length$, i;
+  if (typeof from === 'string')
+    if (from === '')
+      if ($.eqB(receiver, ''))
+        return to;
+      else {
+        result = $.StringBuffer_StringBuffer('');
+        length$ = $.get$length(receiver);
+        $.getInterceptor(result).add$1(result, to);
+        for (i = 0; $.ltB(i, length$); ++i) {
+          $.getInterceptor(result).add$1(result, $.index(receiver, i));
+          $.getInterceptor(result).add$1(result, to);
+        }
+        return $.toString(result);
+      }
+    else
+      return $.stringReplaceJS(receiver, $.regExpMakeNative($.JSSyntaxRegExp$(from.replace($.regExpMakeNative($.get$quoteRegExp(), true), "\\$&"), false, false), true), to);
+  else if (typeof from === 'object' && from !== null && !!from.is$JSSyntaxRegExp)
+    return $.stringReplaceJS(receiver, $.regExpMakeNative(from, true), to);
+  else {
+    $.checkNull(from);
+    throw $.$$throw('String.replaceAll(Pattern) UNIMPLEMENTED');
+  }
+};
+
+$.contains$1$bailout = function(state0, receiver, other) {
+  var i;
+  if (typeof receiver === 'string')
+    return $.contains$2(receiver, other, 0);
+  else if ($.isJsArray(receiver)) {
+    for (i = 0; $.ltB(i, $.get$length(receiver)); ++i)
+      if (other === $.index(receiver, i))
+        return true;
+    return false;
+  }
+  return receiver.contains$1(other);
+};
+
+$.KeywordState_computeKeywordStateTable$bailout = function(state0, env0, env1, env2, env3, env4, env5, env6, env7, env8, env9, env10, env11) {
+  switch (state0) {
+    case 1:
+      t2 = env11;
+      i = env10;
+      isLeaf = env9;
+      chunkStart = env8;
+      chunk = env7;
+      t1 = env6;
+      result = env5;
+      t3 = env4;
+      length$ = env3;
+      offset = env2;
+      strings = env1;
+      start = env0;
+      break;
+    case 2:
+      t2 = env11;
+      i = env10;
+      chunk = env9;
+      chunkStart = env8;
+      t3 = env7;
+      t1 = env6;
+      isLeaf = env5;
+      result = env4;
+      length$ = env3;
+      offset = env2;
+      strings = env1;
+      start = env0;
+      break;
+    case 3:
+      c = env11;
+      t2 = env10;
+      i = env9;
+      chunkStart = env8;
+      chunk = env7;
+      t1 = env6;
+      isLeaf = env5;
+      result = env4;
+      length$ = env3;
+      offset = env2;
+      strings = env1;
+      start = env0;
+      break;
+  }
+  switch (state0) {
+    case 0:
+      result = $._ListImpl_List(26);
+      t1 = start + 1;
+      t2 = strings.length;
+      i = offset;
+      chunk = 0;
+      chunkStart = -1;
+      isLeaf = false;
+    default:
+      var result, t1, t2, i, chunk, chunkStart, isLeaf, t3, length$, offset, strings, start, c, t4;
+      L0:
+        while (true)
+          switch (state0) {
+            case 0:
+              t3 = offset + length$;
+              if (!(i < t3))
+                break L0;
+              if (i < 0)
+                throw $.ioore(i);
+              t3 = $.get$length(strings[i]);
+            case 1:
+              state0 = 0;
+              if ($.eqB(t3, start))
+                isLeaf = true;
+              t3 = $.get$length(strings[i]);
+            case 2:
+              state0 = 0;
+            case 3:
+              if (state0 === 3 || state0 === 0 && $.gtB(t3, start))
+                switch (state0) {
+                  case 0:
+                    t3 = strings[i];
+                    c = $.getInterceptor(t3).charCodeAt$1(t3, start);
+                  case 3:
+                    state0 = 0;
+                    if (!$.eqB(chunk, c)) {
+                      if (chunkStart !== -1) {
+                        t3 = $.sub(chunk, 97);
+                        t4 = $.KeywordState_computeKeywordStateTable(t1, strings, chunkStart, i - chunkStart);
+                        if (t3 !== (t3 | 0))
+                          throw $.iae(t3);
+                        if (t3 < 0 || t3 >= 26)
+                          throw $.ioore(t3);
+                        result[t3] = t4;
+                      }
+                      chunkStart = i;
+                      chunk = c;
+                    }
+                }
+              ++i;
+          }
+      if (chunkStart !== -1) {
+        t4 = $.sub(chunk, 97);
+        t1 = $.KeywordState_computeKeywordStateTable(t1, strings, chunkStart, t3 - chunkStart);
+        if (t4 !== (t4 | 0))
+          throw $.iae(t4);
+        if (t4 < 0 || t4 >= 26)
+          throw $.ioore(t4);
+        result[t4] = t1;
+      } else {
+        if (offset < 0 || offset >= t2)
+          throw $.ioore(offset);
+        return $.LeafKeywordState$(strings[offset]);
+      }
+      if (isLeaf) {
+        if (offset < 0 || offset >= t2)
+          throw $.ioore(offset);
+        return $.ArrayKeywordState$(result, strings[offset]);
+      } else
+        return $.ArrayKeywordState$(result, null);
+  }
+};
+
+$.typeNameInOpera.call$1 = $.typeNameInOpera;
+$.typeNameInOpera.$name = "typeNameInOpera";
+$.typeNameInFirefox.call$1 = $.typeNameInFirefox;
+$.typeNameInFirefox.$name = "typeNameInFirefox";
+$.invokeClosure.call$5 = $.invokeClosure;
+$.invokeClosure.$name = "invokeClosure";
+$.typeNameInIE.call$1 = $.typeNameInIE;
+$.typeNameInIE.$name = "typeNameInIE";
+$.constructorNameFallback.call$1 = $.constructorNameFallback;
+$.constructorNameFallback.$name = "constructorNameFallback";
 $.Comparable_compare.call$2 = $.Comparable_compare;
 $.Comparable_compare.$name = "Comparable_compare";
 $.handleUpDown.call$1 = $.handleUpDown;
@@ -7864,16 +7874,6 @@ $.typeNameInChrome.call$1 = $.typeNameInChrome;
 $.typeNameInChrome.$name = "typeNameInChrome";
 $.typeNameInSafari.call$1 = $.typeNameInSafari;
 $.typeNameInSafari.$name = "typeNameInSafari";
-$.typeNameInOpera.call$1 = $.typeNameInOpera;
-$.typeNameInOpera.$name = "typeNameInOpera";
-$.typeNameInFirefox.call$1 = $.typeNameInFirefox;
-$.typeNameInFirefox.$name = "typeNameInFirefox";
-$.invokeClosure.call$5 = $.invokeClosure;
-$.invokeClosure.$name = "invokeClosure";
-$.typeNameInIE.call$1 = $.typeNameInIE;
-$.typeNameInIE.$name = "typeNameInIE";
-$.constructorNameFallback.call$1 = $.constructorNameFallback;
-$.constructorNameFallback.$name = "constructorNameFallback";
 Isolate.$finishClasses($$);
 $$ = {};
 Isolate.makeConstantList = function(list) {
@@ -8088,8 +8088,6 @@ $.CTC69 = new Isolate.$isolateProperties.PrecedenceInfo(Isolate.$isolateProperti
 $.CTC68 = new Isolate.$isolateProperties.PrecedenceInfo(Isolate.$isolateProperties.CTC201, 11, 156);
 $.CTC45 = new Isolate.$isolateProperties.PrecedenceInfo(Isolate.$isolateProperties.CTC91, 6, 124);
 $.CTC64 = new Isolate.$isolateProperties.PrecedenceInfo(Isolate.$isolateProperties.CTC202, 0, 130);
-$.HEXADECIMAL_INFO = Isolate.$isolateProperties.CTC25;
-$.COMMENT_INFO = Isolate.$isolateProperties.CTC33;
 $.$$EOF = 0;
 $._Sort__INSERTION_SORT_THRESHOLD = 32;
 $.$$STX = 2;
@@ -8190,8 +8188,8 @@ $.INTERFACE = 'interface';
 $.TYPEDEF = 'typedef';
 $.MEMBERS = 'members';
 $.TYPES = 'types';
-$.NAME = 'name';
 $.ARGS = 'args';
+$.NAME = 'name';
 $.KIND = 'kind';
 $.FIELD = 'field';
 $.CONSTRUCTOR = 'constructor';
@@ -8352,6 +8350,8 @@ $.CLOSE_SQUARE_BRACKET_INFO = Isolate.$isolateProperties.CTC13;
 $.DOUBLE_INFO = Isolate.$isolateProperties.CTC22;
 $.STRING_INTERPOLATION_INFO = Isolate.$isolateProperties.CTC29;
 $.STRING_INTERPOLATION_IDENTIFIER_INFO = Isolate.$isolateProperties.CTC28;
+$.HEXADECIMAL_INFO = Isolate.$isolateProperties.CTC25;
+$.COMMENT_INFO = Isolate.$isolateProperties.CTC33;
 Isolate.$lazy($, 'quoteRegExp', 'quoteRegExp', 'get$quoteRegExp', function() {
   return $.JSSyntaxRegExp$('[-[\\]{}()*+?.,\\\\^$|#\\s]', false, false);
 });

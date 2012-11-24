@@ -49,6 +49,7 @@ class AudioMusic {
  AudioClip _clip;
  AudioMusic._internal(this._manager, GainNode output) {
    _source = new AudioSource._internal(_manager, 'music', output);
+   _source.positional = false;
  }
 
  Map toJson() {
@@ -205,7 +206,7 @@ Map toJson() {
         </div>
         
         <div class="footer">
-          <div>This page was generated at 2012-11-23 19:55:51.881</div>
+          <div>This page was generated at 2012-11-24 12:50:48.556</div>
         </div>
         <script async src="../client-static.js"></script>
         </body></html>
