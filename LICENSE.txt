@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2012 John McCutchan <john@johnmccutchan.com>
-
+  
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
   arising from the use of this software.
@@ -18,26 +18,3 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-part of simple_audio;
-
-class AudioSnapshot {
-  final AudioManager manager;
-
-  AudioSnapshot(this.manager);
-
-  /** Take a snapshot of the manager. Snapshot includes:
-   * Loaded clips
-   * Sources
-   * Volume
-   */
-  String takeSnapshot() {
-    return JSON.stringify(manager);
-  }
-
-  /** Load a snapshot of the manager.
-   */
-  void loadSnapshot(String snapshot) {
-    Map map = JSON.parse(snapshot);
-    manager.fromMap(map);
-  }
-}
