@@ -5,17 +5,30 @@ part of simple_audio;
  */
 class AudioClip {
   final AudioManager _manager;
-  final String name;
+  String _url;
+  String get url => _url;
   AudioBuffer _buffer;
   bool _hasError = false;
   String _errorString = '';
   bool _isReadyToPlay = false;
 
-  AudioClip._internal(this._manager, this.name);
+  AudioClip._internal(this._manager);
 
   void _empty() {
     _isReadyToPlay = false;
     _buffer = null;
+  }
+
+  Map toJson() {
+    // Serialize buffer contents as well.
+    return {
+      "_url":_url,
+    };
+  }
+
+  AudioClip fromMap(Map map) {
+    _url = map['_url'];
+    return this;
   }
 
   /** Does the clip have an error? */
@@ -69,11 +82,12 @@ class AudioClip {
   Future<bool> loadFrom(String url) {
     var request = new HttpRequest();
     var completer = new Completer<bool>();
+    _url = url;
     request.responseType = 'arraybuffer';
     request.on.load.add((e) => _onRequestSuccess(request, completer));
     request.on.error.add((e) => _onRequestError(request, completer));
     request.on.abort.add((e) => _onRequestError(request, completer));
-    request.open('GET', url);
+    request.open('GET', '${_manager.baseURL}/$url');
     request.send();
     return completer.future;
   }

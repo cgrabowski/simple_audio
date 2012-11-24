@@ -1,32 +1,23 @@
 import 'dart:html';
-import 'package:audio/simple_audio.dart';
+import 'package:simple_audio/simple_audio.dart';
+import 'common.dart';
 
 AudioManager audioManager = new AudioManager();
 AudioSound loopingSound = null;
 String sourceName = 'Page';
 
-String baseURL = null; // Automatically set.
 String clipName = 'Wilhelm';
 String clipURL = 'clips/wilhelm.ogg';
 String musicClipName = 'Deeper';
 String musicClipURL = 'clips/deeper.ogg';
 
-void setBaseURL() {
-  String location = window.location.href;
-  location = location.substring(0, location.length-"audio.html".length);
-  baseURL = location;
-}
-
-String urlFor(String clip) {
-  return '$baseURL/$clip';
-}
 
 void main() {
-  setBaseURL();
+  setBaseURL(audioManager);
   audioManager.makeClip(clipName);
   audioManager.makeClip(musicClipName);
-  audioManager.findClip(clipName).loadFrom(urlFor(clipURL));
-  audioManager.findClip(musicClipName).loadFrom(urlFor(musicClipURL));
+  audioManager.findClip(clipName).loadFrom(clipURL);
+  audioManager.findClip(musicClipName).loadFrom(musicClipURL);
   audioManager.makeSource(sourceName);
 
   query("#clip_once")

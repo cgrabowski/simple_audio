@@ -38,6 +38,39 @@ class AudioSource {
     _gainNode.gain.value = v;
   }
 
+  Map toJson() {
+    return {
+      "volume": _gainNode.gain.value,
+      "_mutedVolume": _mutedVolume,
+      "_isPaused": _isPaused,
+      "_x":_x,
+      "_y":_y,
+      "_z":_z,
+      "_xForward":_xForward,
+      "_yForward":_yForward,
+      "_zForward":_zForward,
+      "_xUp":_xUp,
+      "_yUp":_yUp,
+      "_zUp":_zUp,
+    };
+  }
+
+  AudioSource fromMap(Map map) {
+    _gainNode.gain.value = map["volume"];
+    _mutedVolume = map["_mutedVolume"];
+    _isPaused = map["_isPaused"];
+    _x = map["_x"];
+    _y = map["_y"];
+    _z = map["_z"];
+    _xForward = map["_xForward"];
+    _yForward = map["_yForward"];
+    _zForward = map["_zForward"];
+    _xUp = map["_xUp"];
+    _yUp = map["_yUp"];
+    _zUp = map["_zUp"];
+    return this;
+  }
+
   /** Is the source muted? */
   bool get mute {
     return _mutedVolume != null;

@@ -18,6 +18,8 @@ class AudioManager {
   GainNode _musicGain;
   GainNode _sourceGain;
 
+  String baseURL = '';
+
   Map<String, AudioClip> _clips = new Map<String, AudioClip>();
   Map<String, AudioSource> _sources = new Map<String, AudioSource>();
   AudioMusic _music;
@@ -37,6 +39,32 @@ class AudioManager {
     _sourceGain.connect(_masterGain, 0, 0);
 
     _music = new AudioMusic._internal(this, _musicGain);
+  }
+
+  Map toJson() {
+    Map map = new Map();
+    map['masterVolume'] = _masterGain.gain.value;
+    map['musicVolume'] = _musicGain.gain.value;
+    map['sourceVolume'] = _sourceGain.gain.value;
+    map['clips'] = _clips;
+    map['sources'] = _sources;
+
+    return map;
+  }
+
+  void fromMap(Map map) {
+    _masterGain.gain.value = map['masterVolume'];
+    _musicGain.gain.value = map['musicVolume'];
+    _sourceGain.gain.value = map['sourceVolume'];
+    _clips = new Map<String,AudioClip>();
+    map['clips'].forEach((k,v) {
+      _clips[k] = new AudioClip._internal(this).fromMap(v);
+      _clips[k].loadFrom(_clips[k].url);
+    });
+    _sources = new Map<String,AudioSource>();
+    map['sources'].forEach((k,v) {
+      _sources[k] = new AudioSource._internal(this,_sourceGain).fromMap(v);
+    });
   }
 
   /** Sample rate of the audio driver */
@@ -147,7 +175,7 @@ class AudioManager {
     if (clip != null) {
       return clip;
     }
-    clip = new AudioClip._internal(this, name);
+    clip = new AudioClip._internal(this);
     _clips[name] = clip;
     return clip;
   }
