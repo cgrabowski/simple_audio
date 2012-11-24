@@ -80,7 +80,7 @@ class AudioSound {
    }
    _sourceNode.gain.value = _volume;
    _sourceNode.loop = _loop;
-   _sourceNode.connect(_source._panNode, 0, 0);
+   _sourceNode.connect(_source._gainNode, 0, 0);
  }
 
  void _stop() {
@@ -181,8 +181,8 @@ class AudioSound {
 
  /** Start playing this sound in [when] seconds. */
  void play([num when=0.0]) {
-   print('Sound.play');
-   _dumpSourceNode();
+   //print('Sound.play');
+   //_dumpSourceNode();
    _stop();
    _setupSourceNodeForPlayback();
    _scheduledTime = _source._manager._context.currentTime+when;
@@ -348,8 +348,8 @@ void <strong>play</strong>([num when = 0.0]) <a class="anchor-link" href="#play"
 <span class="param">when</span> seconds.</p>
 <pre class="source">
 void play([num when=0.0]) {
- print('Sound.play');
- _dumpSourceNode();
+ //print('Sound.play');
+ //_dumpSourceNode();
  _stop();
  _setupSourceNodeForPlayback();
  _scheduledTime = _source._manager._context.currentTime+when;
@@ -382,7 +382,7 @@ void stop() {
         </div>
         
         <div class="footer">
-          <div>This page was generated at 2012-11-23 20:41:21.542</div>
+          <div>This page was generated at 2012-11-24 12:50:48.562</div>
         </div>
         <script async src="../client-static.js"></script>
         </body></html>
