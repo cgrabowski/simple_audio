@@ -62,12 +62,14 @@ class AudioSource {
     _x = map["_x"];
     _y = map["_y"];
     _z = map["_z"];
+    setPosition(_x, _y, _z);
     _xForward = map["_xForward"];
     _yForward = map["_yForward"];
     _zForward = map["_zForward"];
     _xUp = map["_xUp"];
     _yUp = map["_yUp"];
     _zUp = map["_zUp"];
+    setOrientation(_xForward, _yForward, _zForward, _xUp, _yUp, _zUp);
     return this;
   }
 
