@@ -28,6 +28,7 @@
 <li><div class="icon-class"></div><strong>AudioClip</strong></li>
 <li><a href="../simple_audio/AudioManager.html"><div class="icon-class"></div>AudioManager</a></li>
 <li><a href="../simple_audio/AudioMusic.html"><div class="icon-class"></div>AudioMusic</a></li>
+<li><a href="../simple_audio/AudioSnapshot.html"><div class="icon-class"></div>AudioSnapshot</a></li>
 <li><a href="../simple_audio/AudioSound.html"><div class="icon-class"></div>AudioSound</a></li>
 <li><a href="../simple_audio/AudioSource.html"><div class="icon-class"></div>AudioSource</a></li>
 </ul>
@@ -44,17 +45,33 @@ see <a class="crossref" href="../simple_audio/AudioSource.html">AudioSource</a>,
 <pre class="source">
 class AudioClip {
  final AudioManager _manager;
- final String name;
+ String _name;
+ String _url;
+ String get url =&gt; _url;
  AudioBuffer _buffer;
  bool _hasError = false;
  String _errorString = '';
  bool _isReadyToPlay = false;
 
- AudioClip._internal(this._manager, this.name);
+ AudioClip._internal(this._manager, this._name);
 
  void _empty() {
    _isReadyToPlay = false;
    _buffer = null;
+ }
+
+ Map toJson() {
+   // Serialize buffer contents as well.
+   return {
+     "_url":_url,
+     "_name": _name,
+   };
+ }
+
+ AudioClip fromMap(Map map) {
+   _url = map['_url'];
+   _name = map['_name'];
+   return this;
  }
 
  /** Does the clip have an error? */
@@ -108,11 +125,12 @@ class AudioClip {
  Future&lt;bool&gt; loadFrom(String url) {
    var request = new HttpRequest();
    var completer = new Completer&lt;bool&gt;();
+   _url = url;
    request.responseType = 'arraybuffer';
    request.on.load.add((e) =&gt; _onRequestSuccess(request, completer));
    request.on.error.add((e) =&gt; _onRequestError(request, completer));
    request.on.abort.add((e) =&gt; _onRequestError(request, completer));
-   request.open('GET', url);
+   request.open('GET', '${_manager.baseURL}/$url');
    request.send();
    return completer.future;
  }
@@ -251,18 +269,6 @@ num get length {
 </pre>
 </div>
 </div>
-<div class="field"><h4 id="name">
-<button class="show-code">Code</button>
-final String         <strong>name</strong> <a class="anchor-link"
-            href="#name"
-            title="Permalink to AudioClip.name">#</a>
-        </h4>
-        <div class="doc">
-<pre class="source">
-final String name;
-</pre>
-</div>
-</div>
 <div class="field"><h4 id="numberOfChannels">
 <button class="show-code">Code</button>
 final num         <strong>numberOfChannels</strong> <a class="anchor-link"
@@ -299,9 +305,35 @@ num get samples {
 </pre>
 </div>
 </div>
+<div class="field"><h4 id="url">
+<button class="show-code">Code</button>
+final String         <strong>url</strong> <a class="anchor-link"
+            href="#url"
+            title="Permalink to AudioClip.url">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+String get url =&gt; _url;
+</pre>
+</div>
+</div>
 </div>
 <div>
 <h3>Methods</h3>
+<div class="method"><h4 id="fromMap">
+<button class="show-code">Code</button>
+<a href="../simple_audio/AudioClip.html">AudioClip</a> <strong>fromMap</strong>(Map map) <a class="anchor-link" href="#fromMap"
+              title="Permalink to AudioClip.fromMap">#</a></h4>
+<div class="doc">
+<pre class="source">
+AudioClip fromMap(Map map) {
+ _url = map['_url'];
+ _name = map['_name'];
+ return this;
+}
+</pre>
+</div>
+</div>
 <div class="method"><h4 id="getSampleFramesForChannel">
 <button class="show-code">Code</button>
 Float32Array <strong>getSampleFramesForChannel</strong>(num channel) <a class="anchor-link" href="#getSampleFramesForChannel"
@@ -335,11 +367,12 @@ check <a class="crossref" href="../simple_audio/AudioClip.html#hasError">hasErro
 Future&lt;bool&gt; loadFrom(String url) {
  var request = new HttpRequest();
  var completer = new Completer&lt;bool&gt;();
+ _url = url;
  request.responseType = 'arraybuffer';
  request.on.load.add((e) =&gt; _onRequestSuccess(request, completer));
  request.on.error.add((e) =&gt; _onRequestError(request, completer));
  request.on.abort.add((e) =&gt; _onRequestError(request, completer));
- request.open('GET', url);
+ request.open('GET', '${_manager.baseURL}/$url');
  request.send();
  return completer.future;
 }
@@ -367,13 +400,29 @@ void makeBuffer(num numberOfSampleFrames, num numberOfChannels, num sampleRate) 
 </pre>
 </div>
 </div>
+<div class="method"><h4 id="toJson">
+<button class="show-code">Code</button>
+Map <strong>toJson</strong>() <a class="anchor-link" href="#toJson"
+              title="Permalink to AudioClip.toJson">#</a></h4>
+<div class="doc">
+<pre class="source">
+Map toJson() {
+ // Serialize buffer contents as well.
+ return {
+   "_url":_url,
+   "_name": _name,
+ };
+}
+</pre>
+</div>
+</div>
 </div>
         </div>
         <div class="clear"></div>
         </div>
         
         <div class="footer">
-          <div>This page was generated at 2012-11-23 15:21:51.888</div>
+          <div>This page was generated at 2012-11-23 19:55:51.906</div>
         </div>
         <script async src="../client-static.js"></script>
         </body></html>

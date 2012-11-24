@@ -28,6 +28,7 @@
 <li><a href="../simple_audio/AudioClip.html"><div class="icon-class"></div>AudioClip</a></li>
 <li><a href="../simple_audio/AudioManager.html"><div class="icon-class"></div>AudioManager</a></li>
 <li><a href="../simple_audio/AudioMusic.html"><div class="icon-class"></div>AudioMusic</a></li>
+<li><a href="../simple_audio/AudioSnapshot.html"><div class="icon-class"></div>AudioSnapshot</a></li>
 <li><a href="../simple_audio/AudioSound.html"><div class="icon-class"></div>AudioSound</a></li>
 <li><div class="icon-class"></div><strong>AudioSource</strong></li>
 </ul>
@@ -46,6 +47,7 @@ You must play an <a class="crossref" href="../simple_audio/AudioClip.html">Audio
 <pre class="source">
 class AudioSource {
  AudioManager _manager;
+ String _name;
  GainNode _gainNode;
  PannerNode _panNode;
  List&lt;AudioSound&gt; _sounds;
@@ -61,7 +63,7 @@ class AudioSource {
  num _yUp = 1.0;
  num _zUp = 0.0;
 
- AudioSource._internal(this._manager, GainNode output) {
+ AudioSource._internal(this._manager, this._name, GainNode output) {
    _gainNode = _manager._context.createGain();
    _gainNode.connect(output, 0, 0);
    _panNode = _manager._context.createPanner();
@@ -75,6 +77,43 @@ class AudioSource {
  /** Set the volume for the source. All sounds being played are affected. */
  void set volume(num v) {
    _gainNode.gain.value = v;
+ }
+
+ Map toJson() {
+   return {
+     "_name": _name,
+     "volume": _gainNode.gain.value,
+     "_mutedVolume": _mutedVolume,
+     "_isPaused": _isPaused,
+     "_x":_x,
+     "_y":_y,
+     "_z":_z,
+     "_xForward":_xForward,
+     "_yForward":_yForward,
+     "_zForward":_zForward,
+     "_xUp":_xUp,
+     "_yUp":_yUp,
+     "_zUp":_zUp,
+   };
+ }
+
+ AudioSource fromMap(Map map) {
+   _gainNode.gain.value = map["volume"];
+   _mutedVolume = map["_mutedVolume"];
+   _isPaused = map["_isPaused"];
+   _name = map["_name"];
+   _x = map["_x"];
+   _y = map["_y"];
+   _z = map["_z"];
+   setPosition(_x, _y, _z);
+   _xForward = map["_xForward"];
+   _yForward = map["_yForward"];
+   _zForward = map["_zForward"];
+   _xUp = map["_xUp"];
+   _yUp = map["_yUp"];
+   _zUp = map["_zUp"];
+   setOrientation(_xForward, _yForward, _zForward, _xUp, _yUp, _zUp);
+   return this;
  }
 
  /** Is the source muted? */
@@ -467,6 +506,33 @@ num get zUp =&gt; _zUp;
 </div>
 <div>
 <h3>Methods</h3>
+<div class="method"><h4 id="fromMap">
+<button class="show-code">Code</button>
+<a href="../simple_audio/AudioSource.html">AudioSource</a> <strong>fromMap</strong>(Map map) <a class="anchor-link" href="#fromMap"
+              title="Permalink to AudioSource.fromMap">#</a></h4>
+<div class="doc">
+<pre class="source">
+AudioSource fromMap(Map map) {
+ _gainNode.gain.value = map["volume"];
+ _mutedVolume = map["_mutedVolume"];
+ _isPaused = map["_isPaused"];
+ _name = map["_name"];
+ _x = map["_x"];
+ _y = map["_y"];
+ _z = map["_z"];
+ setPosition(_x, _y, _z);
+ _xForward = map["_xForward"];
+ _yForward = map["_yForward"];
+ _zForward = map["_zForward"];
+ _xUp = map["_xUp"];
+ _yUp = map["_yUp"];
+ _zUp = map["_zUp"];
+ setOrientation(_xForward, _yForward, _zForward, _xUp, _yUp, _zUp);
+ return this;
+}
+</pre>
+</div>
+</div>
 <div class="method"><h4 id="playLooped">
 <button class="show-code">Code</button>
 <a href="../simple_audio/AudioSound.html">AudioSound</a> <strong>playLooped</strong>(<a href="../simple_audio/AudioClip.html">AudioClip</a> clip) <a class="anchor-link" href="#playLooped"
@@ -601,13 +667,39 @@ void stop() {
 </pre>
 </div>
 </div>
+<div class="method"><h4 id="toJson">
+<button class="show-code">Code</button>
+Map <strong>toJson</strong>() <a class="anchor-link" href="#toJson"
+              title="Permalink to AudioSource.toJson">#</a></h4>
+<div class="doc">
+<pre class="source">
+Map toJson() {
+ return {
+   "_name": _name,
+   "volume": _gainNode.gain.value,
+   "_mutedVolume": _mutedVolume,
+   "_isPaused": _isPaused,
+   "_x":_x,
+   "_y":_y,
+   "_z":_z,
+   "_xForward":_xForward,
+   "_yForward":_yForward,
+   "_zForward":_zForward,
+   "_xUp":_xUp,
+   "_yUp":_yUp,
+   "_zUp":_zUp,
+ };
+}
+</pre>
+</div>
+</div>
 </div>
         </div>
         <div class="clear"></div>
         </div>
         
         <div class="footer">
-          <div>This page was generated at 2012-11-23 15:21:51.879</div>
+          <div>This page was generated at 2012-11-23 19:55:51.898</div>
         </div>
         <script async src="../client-static.js"></script>
         </body></html>
