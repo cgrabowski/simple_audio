@@ -28,6 +28,7 @@
 <li><a href="../simple_audio/AudioClip.html"><div class="icon-class"></div>AudioClip</a></li>
 <li><div class="icon-class"></div><strong>AudioManager</strong></li>
 <li><a href="../simple_audio/AudioMusic.html"><div class="icon-class"></div>AudioMusic</a></li>
+<li><a href="../simple_audio/AudioSnapshot.html"><div class="icon-class"></div>AudioSnapshot</a></li>
 <li><a href="../simple_audio/AudioSound.html"><div class="icon-class"></div>AudioSound</a></li>
 <li><a href="../simple_audio/AudioSource.html"><div class="icon-class"></div>AudioSource</a></li>
 </ul>
@@ -55,6 +56,8 @@ class AudioManager {
  GainNode _musicGain;
  GainNode _sourceGain;
 
+ String baseURL = '';
+
  Map&lt;String, AudioClip&gt; _clips = new Map&lt;String, AudioClip&gt;();
  Map&lt;String, AudioSource&gt; _sources = new Map&lt;String, AudioSource&gt;();
  AudioMusic _music;
@@ -74,6 +77,34 @@ class AudioManager {
    _sourceGain.connect(_masterGain, 0, 0);
 
    _music = new AudioMusic._internal(this, _musicGain);
+ }
+
+ Map toJson() {
+   Map map = new Map();
+   map['masterVolume'] = _masterGain.gain.value;
+   map['musicVolume'] = _musicGain.gain.value;
+   map['sourceVolume'] = _sourceGain.gain.value;
+   map['clips'] = _clips;
+   map['sources'] = _sources;
+   map['music'] = _music;
+
+   return map;
+ }
+
+ void fromMap(Map map) {
+   _masterGain.gain.value = map['masterVolume'];
+   _musicGain.gain.value = map['musicVolume'];
+   _sourceGain.gain.value = map['sourceVolume'];
+   _clips = new Map&lt;String,AudioClip&gt;();
+   map['clips'].forEach((k,v) {
+     _clips[k] = new AudioClip._internal(this, k).fromMap(v);
+     _clips[k].loadFrom(_clips[k].url);
+   });
+   _sources = new Map&lt;String,AudioSource&gt;();
+   map['sources'].forEach((k,v) {
+     _sources[k] = new AudioSource._internal(this, k, _sourceGain).fromMap(v);
+   });
+   _music.fromMap(map['music']);
  }
 
  /** Sample rate of the audio driver */
@@ -195,7 +226,7 @@ class AudioManager {
    if (source != null) {
      return source;
    }
-   source = new AudioSource._internal(this, _sourceGain);
+   source = new AudioSource._internal(this, name, _sourceGain);
    _sources[name] = source;
    return source;
  }
@@ -317,6 +348,18 @@ AudioManager() {
 </div>
 <div>
 <h3>Properties</h3>
+<div class="field"><h4 id="baseURL">
+<button class="show-code">Code</button>
+String         <strong>baseURL</strong> <a class="anchor-link"
+            href="#baseURL"
+            title="Permalink to AudioManager.baseURL">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+String baseURL = '';
+</pre>
+</div>
+</div>
 <div class="field"><h4 id="dopplerFactor">
 <button class="show-code">Code</button>
 num         <strong>dopplerFactor</strong> <a class="anchor-link"
@@ -519,6 +562,30 @@ AudioSource findSource(String name) {
 </pre>
 </div>
 </div>
+<div class="method"><h4 id="fromMap">
+<button class="show-code">Code</button>
+void <strong>fromMap</strong>(Map map) <a class="anchor-link" href="#fromMap"
+              title="Permalink to AudioManager.fromMap">#</a></h4>
+<div class="doc">
+<pre class="source">
+void fromMap(Map map) {
+ _masterGain.gain.value = map['masterVolume'];
+ _musicGain.gain.value = map['musicVolume'];
+ _sourceGain.gain.value = map['sourceVolume'];
+ _clips = new Map&lt;String,AudioClip&gt;();
+ map['clips'].forEach((k,v) {
+   _clips[k] = new AudioClip._internal(this, k).fromMap(v);
+   _clips[k].loadFrom(_clips[k].url);
+ });
+ _sources = new Map&lt;String,AudioSource&gt;();
+ map['sources'].forEach((k,v) {
+   _sources[k] = new AudioSource._internal(this, k, _sourceGain).fromMap(v);
+ });
+ _music.fromMap(map['music']);
+}
+</pre>
+</div>
+</div>
 <div class="method"><h4 id="makeClip">
 <button class="show-code">Code</button>
 <a href="../simple_audio/AudioClip.html">AudioClip</a> <strong>makeClip</strong>(String name) <a class="anchor-link" href="#makeClip"
@@ -552,7 +619,7 @@ AudioSource makeSource(String name) {
  if (source != null) {
    return source;
  }
- source = new AudioSource._internal(this, _sourceGain);
+ source = new AudioSource._internal(this, name, _sourceGain);
  _sources[name] = source;
  return source;
 }
@@ -792,13 +859,33 @@ void stopSource(String sourceName) {
 </pre>
 </div>
 </div>
+<div class="method"><h4 id="toJson">
+<button class="show-code">Code</button>
+Map <strong>toJson</strong>() <a class="anchor-link" href="#toJson"
+              title="Permalink to AudioManager.toJson">#</a></h4>
+<div class="doc">
+<pre class="source">
+Map toJson() {
+ Map map = new Map();
+ map['masterVolume'] = _masterGain.gain.value;
+ map['musicVolume'] = _musicGain.gain.value;
+ map['sourceVolume'] = _sourceGain.gain.value;
+ map['clips'] = _clips;
+ map['sources'] = _sources;
+ map['music'] = _music;
+
+ return map;
+}
+</pre>
+</div>
+</div>
 </div>
         </div>
         <div class="clear"></div>
         </div>
         
         <div class="footer">
-          <div>This page was generated at 2012-11-23 15:21:51.853</div>
+          <div>This page was generated at 2012-11-23 19:55:51.871</div>
         </div>
         <script async src="../client-static.js"></script>
         </body></html>
