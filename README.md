@@ -31,9 +31,9 @@ dependencies:
 import 'package:simple_audio/simple_audio.dart';
 ```
 
-## Document ##
+# Documentation #
 
-[API Document](http://johnmccutchan.github.com/simpleaudio/simple_audio.html)
+[API ](http://johnmccutchan.github.com/simpleaudio/simple_audio.html)
 
 ## Samples ##
 
