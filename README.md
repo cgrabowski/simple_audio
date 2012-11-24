@@ -3,7 +3,7 @@
 
 ## Introduction ##
 
-A simple to use audio library for video games. Supports 3D directional audio.
+A simple to use audio library for video games. Supports 3D positional audio.
 
 ## Features ##
 
