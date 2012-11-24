@@ -60,7 +60,7 @@ class AudioSound {
     }
     _sourceNode.gain.value = _volume;
     _sourceNode.loop = _loop;
-    _sourceNode.connect(_source._panNode, 0, 0);
+    _sourceNode.connect(_source._gainNode, 0, 0);
   }
 
   void _stop() {

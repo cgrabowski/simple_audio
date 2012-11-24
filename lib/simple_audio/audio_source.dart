@@ -21,13 +21,21 @@
 part of simple_audio;
 
 /** An [AudioSource] is analogous to a speaker in the game world.
- * It has a location and direction in the game world and can emit sound.
+ *
+ * The only way to play an [AudioClip] is with an [AudioSource].
+ *
+ * An [AudioSource] can be [positional] or not. Positional [AudioSource]s
+ * sound different depending on where the listener is. Non-positional
+ * [AudioSource]s sound the same regarldess of where the listener is.
  * The location of the listener can be controlled with an [AudioManager].
- * You must play an [AudioClip] from the [AudioSource].
+ *
+ *
+ * *NOTE:* By default an [AudioSource] is [positional].
  */
 class AudioSource {
   AudioManager _manager;
   String _name;
+  GainNode _output;
   GainNode _gainNode;
   PannerNode _panNode;
   List<AudioSound> _sounds;
@@ -36,19 +44,33 @@ class AudioSource {
   num _x = 0.0;
   num _y = 0.0;
   num _z = 0.0;
-  num _xForward = 0.0;
-  num _yForward = 0.0;
-  num _zForward = -1.0;
-  num _xUp = 0.0;
-  num _yUp = 1.0;
-  num _zUp = 0.0;
+  bool _positional = true;
 
-  AudioSource._internal(this._manager, this._name, GainNode output) {
+  void _setupNodes() {
+    _panNode.disconnect(0);
+    _gainNode.disconnect(0);
+    if (_positional) {
+      _gainNode.connect(_panNode, 0, 0);
+      _panNode.connect(_output, 0, 0);
+    } else {
+      // Not positioned, we skip the panner node.
+      _gainNode.connect(_output, 0, 0);
+    }
+  }
+
+  AudioSource._internal(this._manager, this._name, this._output) {
     _gainNode = _manager._context.createGain();
-    _gainNode.connect(output, 0, 0);
     _panNode = _manager._context.createPanner();
-    _panNode.connect(_gainNode, 0, 0);
+    _panNode.coneOuterGain = 1.0;
+    _setupNodes();
     _sounds = new List<AudioSound>();
+  }
+
+  bool get positional => _positional;
+
+  void set positioned(bool b) {
+    _positional = b;
+    _setupNodes();
   }
 
   /** Get the volume of the source. 0.0 <= volume <= 1.0. */
@@ -68,12 +90,6 @@ class AudioSource {
       "_x":_x,
       "_y":_y,
       "_z":_z,
-      "_xForward":_xForward,
-      "_yForward":_yForward,
-      "_zForward":_zForward,
-      "_xUp":_xUp,
-      "_yUp":_yUp,
-      "_zUp":_zUp,
     };
   }
 
@@ -86,13 +102,6 @@ class AudioSource {
     _y = map["_y"];
     _z = map["_z"];
     setPosition(_x, _y, _z);
-    _xForward = map["_xForward"];
-    _yForward = map["_yForward"];
-    _zForward = map["_zForward"];
-    _xUp = map["_xUp"];
-    _yUp = map["_yUp"];
-    _zUp = map["_zUp"];
-    setOrientation(_xForward, _yForward, _zForward, _xUp, _yUp, _zUp);
     return this;
   }
 
@@ -216,32 +225,6 @@ class AudioSource {
   num get y => _y;
   /** Z position of the source. */
   num get z => _z;
-  /** X forward direction of the source. */
-  num get xForward => _xForward;
-  /** Y forward direction of the source. */
-  num get yForward => _yForward;
-  /** Z forward direction of the source. */
-  num get zForward => _zForward;
-  /** X upward direction of the source. */
-  num get xUp => _xUp;
-  /** Y upward direction of the source. */
-  num get yUp => _yUp;
-  /** Z upward direction of the source. */
-  num get zUp => _zUp;
-
-  /** Set forward and up direction vectors of the source. Forward and up must
-   * be orthogonal to each other.
-   */
-  void setOrientation(num xForward, num yForward, num zForward,
-                      num xUp, num yUp, num zUp) {
-    _xForward = xForward;
-    _yForward = yForward;
-    _zForward = zForward;
-    _xUp = xUp;
-    _yUp = yUp;
-    _zUp = zUp;
-    _panNode.setOrientation(xForward, yForward, zForward);
-  }
 
   /**
    * Set the position of the source.
