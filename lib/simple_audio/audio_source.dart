@@ -7,6 +7,7 @@ part of simple_audio;
  */
 class AudioSource {
   AudioManager _manager;
+  String _name;
   GainNode _gainNode;
   PannerNode _panNode;
   List<AudioSound> _sounds;
@@ -22,7 +23,7 @@ class AudioSource {
   num _yUp = 1.0;
   num _zUp = 0.0;
 
-  AudioSource._internal(this._manager, GainNode output) {
+  AudioSource._internal(this._manager, this._name, GainNode output) {
     _gainNode = _manager._context.createGain();
     _gainNode.connect(output, 0, 0);
     _panNode = _manager._context.createPanner();
@@ -36,6 +37,43 @@ class AudioSource {
   /** Set the volume for the source. All sounds being played are affected. */
   void set volume(num v) {
     _gainNode.gain.value = v;
+  }
+
+  Map toJson() {
+    return {
+      "_name": _name,
+      "volume": _gainNode.gain.value,
+      "_mutedVolume": _mutedVolume,
+      "_isPaused": _isPaused,
+      "_x":_x,
+      "_y":_y,
+      "_z":_z,
+      "_xForward":_xForward,
+      "_yForward":_yForward,
+      "_zForward":_zForward,
+      "_xUp":_xUp,
+      "_yUp":_yUp,
+      "_zUp":_zUp,
+    };
+  }
+
+  AudioSource fromMap(Map map) {
+    _gainNode.gain.value = map["volume"];
+    _mutedVolume = map["_mutedVolume"];
+    _isPaused = map["_isPaused"];
+    _name = map["_name"];
+    _x = map["_x"];
+    _y = map["_y"];
+    _z = map["_z"];
+    setPosition(_x, _y, _z);
+    _xForward = map["_xForward"];
+    _yForward = map["_yForward"];
+    _zForward = map["_zForward"];
+    _xUp = map["_xUp"];
+    _yUp = map["_yUp"];
+    _zUp = map["_zUp"];
+    setOrientation(_xForward, _yForward, _zForward, _xUp, _yUp, _zUp);
+    return this;
   }
 
   /** Is the source muted? */

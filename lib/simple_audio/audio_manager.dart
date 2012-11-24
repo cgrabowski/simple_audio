@@ -18,6 +18,8 @@ class AudioManager {
   GainNode _musicGain;
   GainNode _sourceGain;
 
+  String baseURL = '';
+
   Map<String, AudioClip> _clips = new Map<String, AudioClip>();
   Map<String, AudioSource> _sources = new Map<String, AudioSource>();
   AudioMusic _music;
@@ -37,6 +39,34 @@ class AudioManager {
     _sourceGain.connect(_masterGain, 0, 0);
 
     _music = new AudioMusic._internal(this, _musicGain);
+  }
+
+  Map toJson() {
+    Map map = new Map();
+    map['masterVolume'] = _masterGain.gain.value;
+    map['musicVolume'] = _musicGain.gain.value;
+    map['sourceVolume'] = _sourceGain.gain.value;
+    map['clips'] = _clips;
+    map['sources'] = _sources;
+    map['music'] = _music;
+
+    return map;
+  }
+
+  void fromMap(Map map) {
+    _masterGain.gain.value = map['masterVolume'];
+    _musicGain.gain.value = map['musicVolume'];
+    _sourceGain.gain.value = map['sourceVolume'];
+    _clips = new Map<String,AudioClip>();
+    map['clips'].forEach((k,v) {
+      _clips[k] = new AudioClip._internal(this, k).fromMap(v);
+      _clips[k].loadFrom(_clips[k].url);
+    });
+    _sources = new Map<String,AudioSource>();
+    map['sources'].forEach((k,v) {
+      _sources[k] = new AudioSource._internal(this, k, _sourceGain).fromMap(v);
+    });
+    _music.fromMap(map['music']);
   }
 
   /** Sample rate of the audio driver */
@@ -158,7 +188,7 @@ class AudioManager {
     if (source != null) {
       return source;
     }
-    source = new AudioSource._internal(this, _sourceGain);
+    source = new AudioSource._internal(this, name, _sourceGain);
     _sources[name] = source;
     return source;
   }
@@ -250,8 +280,20 @@ class AudioManager {
 }
 
 /* TODO:
+ * Snapshot:
+ *  Ensure all properties are saved.
+ *
+ * Demo Common:
+ *  Clip Table
+ *    Draggable
+ *    Add a new Clip
+ *    Change a clip URL
+ *    Load a clip
+ *  Source Table
+ *    Add a new source
+ *    Change a source position and orientation
  * Basic Demo:
- *    Add clip selection drop down (not just scream).
- *    Add music selection drop down (1 more song).
- *    Add clip selection to each source.
+ *  Add clip selection drop down (not just scream).
+ *  Add music selection drop down (1 more song).
+ *  Add clip selection to each source.
  */

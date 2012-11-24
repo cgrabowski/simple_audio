@@ -3116,7 +3116,7 @@ $$.AbstractScanner = {"": [],
   } else
     isDynamicBuiltIn = false;
   if (typeof next !== 'number')
-    return this.tokenizeIdentifier$3$bailout(2, start, allowDollar, next, isDynamicBuiltIn);
+    return this.tokenizeIdentifier$3$bailout(2, start, allowDollar, isDynamicBuiltIn, next);
   for (isAscii = true; true; isDynamicBuiltIn = false) {
     if (!($.leB(97, next) && $.leB(next, 122)))
       if (!($.leB(65, next) && $.leB(next, 90)))
@@ -3167,8 +3167,8 @@ $$.AbstractScanner = {"": [],
       next = env0;
       break;
     case 2:
-      isDynamicBuiltIn = env3;
-      next = env2;
+      next = env3;
+      isDynamicBuiltIn = env2;
       allowDollar = env1;
       start = env0;
       break;
@@ -4304,7 +4304,7 @@ $$._convertDartToNative_PrepareForStructuredClone_walk = {"": ["writeSlot_8", "r
             t3.call$2(slot, copy);
           }
           if (typeof copy !== 'object' || copy === null || (copy.constructor !== Array || !!copy.immutable$list) && !copy.is$JavaScriptIndexingBehavior())
-            return this.call$1$bailout(2, e, i, t3, elementCopy, length$, copy, slot);
+            return this.call$1$bailout(2, e, t3, elementCopy, length$, copy, slot, i);
           for (t1 = e.length, t2 = copy.length, j = 0; j < i; ++j) {
             if (j >= t1)
               throw $.ioore(j);
@@ -4330,7 +4330,7 @@ $$._convertDartToNative_PrepareForStructuredClone_walk = {"": ["writeSlot_8", "r
       i = 0;
     }
     if (typeof copy !== 'object' || copy === null || (copy.constructor !== Array || !!copy.immutable$list) && !copy.is$JavaScriptIndexingBehavior())
-      return this.call$1$bailout(3, e, length$, i, copy);
+      return this.call$1$bailout(3, e, length$, copy, i);
     for (; i < length$; ++i) {
       if (i >= e.length)
         throw $.ioore(i);
@@ -4349,17 +4349,17 @@ $$._convertDartToNative_PrepareForStructuredClone_walk = {"": ["writeSlot_8", "r
       e = env0;
       break;
     case 2:
-      slot = env6;
-      copy = env5;
-      length$ = env4;
-      elementCopy = env3;
-      t3 = env2;
-      i = env1;
+      i = env6;
+      slot = env5;
+      copy = env4;
+      length$ = env3;
+      elementCopy = env2;
+      t3 = env1;
       e = env0;
       break;
     case 3:
-      copy = env3;
-      i = env2;
+      i = env3;
+      copy = env2;
       length$ = env1;
       e = env0;
       break;
@@ -4494,6 +4494,436 @@ $$.BoundClosure0 = {'':
 'super': 'Closure',
 call$1: function(p0) { return this.self[this.target](p0); }
 };
+$.DedicatedWorkerContextEvents$ = function(_ptr) {
+  return new $.DedicatedWorkerContextEvents(_ptr);
+};
+
+$.WorkerContextEvents$ = function(_ptr) {
+  return new $.WorkerContextEvents(_ptr);
+};
+
+$._Sort__doSort = function(a, left, right, compare) {
+  if ($.leB($.sub(right, left), 32))
+    $._Sort_insertionSort_(a, left, right, compare);
+  else
+    $._Sort__dualPivotQuicksort(a, left, right, compare);
+};
+
+$._Sort_insertionSort_ = function(a, left, right, compare) {
+  var i, el, j, t1, t2, j0;
+  if (typeof a !== 'object' || a === null || (a.constructor !== Array || !!a.immutable$list) && !a.is$JavaScriptIndexingBehavior())
+    return $._Sort_insertionSort_$bailout(1, a, left, right, compare);
+  if (typeof right !== 'number')
+    return $._Sort_insertionSort_$bailout(1, a, left, right, compare);
+  for (i = left + 1; i <= right; ++i) {
+    if (i !== (i | 0))
+      throw $.iae(i);
+    if (i < 0 || i >= a.length)
+      throw $.ioore(i);
+    el = a[i];
+    j = i;
+    while (true) {
+      if (j > left) {
+        t1 = j - 1;
+        if (t1 !== (t1 | 0))
+          throw $.iae(t1);
+        if (t1 < 0 || t1 >= a.length)
+          throw $.ioore(t1);
+        t2 = $.gtB(compare.call$2(a[t1], el), 0);
+        t1 = t2;
+      } else
+        t1 = false;
+      t2 = a.length;
+      if (!t1)
+        break;
+      j0 = j - 1;
+      if (j0 !== (j0 | 0))
+        throw $.iae(j0);
+      if (j0 < 0 || j0 >= t2)
+        throw $.ioore(j0);
+      t1 = a[j0];
+      if (j !== (j | 0))
+        throw $.iae(j);
+      if (j < 0 || j >= t2)
+        throw $.ioore(j);
+      a[j] = t1;
+      j = j0;
+    }
+    if (j !== (j | 0))
+      throw $.iae(j);
+    if (j < 0 || j >= t2)
+      throw $.ioore(j);
+    a[j] = el;
+  }
+};
+
+$._Sort__dualPivotQuicksort = function(a, left, right, compare) {
+  var sixth, index1, index5, index3, index2, index4, t1, el1, el2, el3, el4, el5, t0, t2, less, great, pivots_are_equal, k, ak, comp, great0, less0, t3;
+  if (typeof a !== 'object' || a === null || (a.constructor !== Array || !!a.immutable$list) && !a.is$JavaScriptIndexingBehavior())
+    return $._Sort__dualPivotQuicksort$bailout(1, a, left, right, compare);
+  sixth = $.tdiv($.add($.sub(right, left), 1), 6);
+  if (typeof sixth !== 'number')
+    throw $.iae(sixth);
+  index1 = left + sixth;
+  index5 = $.sub(right, sixth);
+  if (typeof right !== 'number')
+    throw $.iae(right);
+  index3 = $.tdiv(left + right, 2);
+  index2 = index3 - sixth;
+  index4 = index3 + sixth;
+  if (index1 !== (index1 | 0))
+    throw $.iae(index1);
+  t1 = a.length;
+  if (index1 < 0 || index1 >= t1)
+    throw $.ioore(index1);
+  el1 = a[index1];
+  if (index2 !== (index2 | 0))
+    throw $.iae(index2);
+  if (index2 < 0 || index2 >= t1)
+    throw $.ioore(index2);
+  el2 = a[index2];
+  if (index3 !== (index3 | 0))
+    throw $.iae(index3);
+  if (index3 < 0 || index3 >= t1)
+    throw $.ioore(index3);
+  el3 = a[index3];
+  if (index4 !== (index4 | 0))
+    throw $.iae(index4);
+  if (index4 < 0 || index4 >= t1)
+    throw $.ioore(index4);
+  el4 = a[index4];
+  if (index5 !== (index5 | 0))
+    throw $.iae(index5);
+  if (index5 < 0 || index5 >= t1)
+    throw $.ioore(index5);
+  el5 = a[index5];
+  if ($.gtB(compare.call$2(el1, el2), 0)) {
+    t0 = el1;
+    el1 = el2;
+    el2 = t0;
+  }
+  if ($.gtB(compare.call$2(el4, el5), 0)) {
+    t0 = el5;
+    el5 = el4;
+    el4 = t0;
+  }
+  if ($.gtB(compare.call$2(el1, el3), 0)) {
+    t0 = el1;
+    el1 = el3;
+    el3 = t0;
+  }
+  if ($.gtB(compare.call$2(el2, el3), 0)) {
+    t0 = el3;
+    el3 = el2;
+    el2 = t0;
+  }
+  if ($.gtB(compare.call$2(el1, el4), 0)) {
+    t0 = el1;
+    el1 = el4;
+    el4 = t0;
+  }
+  if ($.gtB(compare.call$2(el3, el4), 0)) {
+    t0 = el4;
+    el4 = el3;
+    el3 = t0;
+  }
+  if ($.gtB(compare.call$2(el2, el5), 0)) {
+    t0 = el5;
+    el5 = el2;
+    el2 = t0;
+  }
+  if ($.gtB(compare.call$2(el2, el3), 0)) {
+    t0 = el3;
+    el3 = el2;
+    el2 = t0;
+  }
+  if ($.gtB(compare.call$2(el4, el5), 0)) {
+    t0 = el5;
+    el5 = el4;
+    el4 = t0;
+  }
+  t1 = a.length;
+  if (index1 >= t1)
+    throw $.ioore(index1);
+  a[index1] = el1;
+  if (index3 >= t1)
+    throw $.ioore(index3);
+  a[index3] = el3;
+  if (index5 >= t1)
+    throw $.ioore(index5);
+  a[index5] = el5;
+  if (left !== (left | 0))
+    throw $.iae(left);
+  if (left < 0 || left >= t1)
+    throw $.ioore(left);
+  t2 = a[left];
+  if (index2 >= t1)
+    throw $.ioore(index2);
+  a[index2] = t2;
+  if (right !== (right | 0))
+    throw $.iae(right);
+  if (right < 0 || right >= t1)
+    throw $.ioore(right);
+  t2 = a[right];
+  if (index4 >= t1)
+    throw $.ioore(index4);
+  a[index4] = t2;
+  less = left + 1;
+  great = right - 1;
+  pivots_are_equal = $.eqB(compare.call$2(el2, el4), 0);
+  if (pivots_are_equal)
+    for (k = less; k <= great; ++k) {
+      if (k !== (k | 0))
+        throw $.iae(k);
+      if (k < 0 || k >= a.length)
+        throw $.ioore(k);
+      ak = a[k];
+      comp = compare.call$2(ak, el2);
+      if ($.eqB(comp, 0))
+        continue;
+      if ($.ltB(comp, 0)) {
+        if (!(k === less)) {
+          if (less !== (less | 0))
+            throw $.iae(less);
+          t1 = a.length;
+          if (less < 0 || less >= t1)
+            throw $.ioore(less);
+          t2 = a[less];
+          if (k >= t1)
+            throw $.ioore(k);
+          a[k] = t2;
+          a[less] = ak;
+        }
+        ++less;
+      } else
+        for (; true;) {
+          if (great !== (great | 0))
+            throw $.iae(great);
+          if (great < 0 || great >= a.length)
+            throw $.ioore(great);
+          comp = compare.call$2(a[great], el2);
+          if ($.gtB(comp, 0)) {
+            --great;
+            continue;
+          } else {
+            t1 = $.ltB(comp, 0);
+            t2 = a.length;
+            great0 = great - 1;
+            if (t1) {
+              if (less !== (less | 0))
+                throw $.iae(less);
+              if (less < 0 || less >= t2)
+                throw $.ioore(less);
+              t1 = a[less];
+              if (k >= t2)
+                throw $.ioore(k);
+              a[k] = t1;
+              less0 = less + 1;
+              if (great >= t2)
+                throw $.ioore(great);
+              a[less] = a[great];
+              a[great] = ak;
+              less = less0;
+              great = great0;
+              break;
+            } else {
+              if (great >= t2)
+                throw $.ioore(great);
+              t1 = a[great];
+              if (k >= t2)
+                throw $.ioore(k);
+              a[k] = t1;
+              a[great] = ak;
+              great = great0;
+              break;
+            }
+          }
+        }
+    }
+  else
+    for (k = less; k <= great; ++k) {
+      if (k !== (k | 0))
+        throw $.iae(k);
+      if (k < 0 || k >= a.length)
+        throw $.ioore(k);
+      ak = a[k];
+      if ($.ltB(compare.call$2(ak, el2), 0)) {
+        if (!(k === less)) {
+          if (less !== (less | 0))
+            throw $.iae(less);
+          t1 = a.length;
+          if (less < 0 || less >= t1)
+            throw $.ioore(less);
+          t2 = a[less];
+          if (k >= t1)
+            throw $.ioore(k);
+          a[k] = t2;
+          a[less] = ak;
+        }
+        ++less;
+      } else if ($.gtB(compare.call$2(ak, el4), 0))
+        for (; true;) {
+          if (great !== (great | 0))
+            throw $.iae(great);
+          if (great < 0 || great >= a.length)
+            throw $.ioore(great);
+          if ($.gtB(compare.call$2(a[great], el4), 0)) {
+            --great;
+            if (great < k)
+              break;
+            continue;
+          } else {
+            if (great >= a.length)
+              throw $.ioore(great);
+            t1 = $.ltB(compare.call$2(a[great], el2), 0);
+            t2 = a.length;
+            great0 = great - 1;
+            if (t1) {
+              if (less !== (less | 0))
+                throw $.iae(less);
+              if (less < 0 || less >= t2)
+                throw $.ioore(less);
+              t1 = a[less];
+              if (k >= t2)
+                throw $.ioore(k);
+              a[k] = t1;
+              less0 = less + 1;
+              if (great >= t2)
+                throw $.ioore(great);
+              a[less] = a[great];
+              a[great] = ak;
+              less = less0;
+              great = great0;
+            } else {
+              if (great >= t2)
+                throw $.ioore(great);
+              t1 = a[great];
+              if (k >= t2)
+                throw $.ioore(k);
+              a[k] = t1;
+              a[great] = ak;
+              great = great0;
+            }
+            break;
+          }
+        }
+    }
+  t1 = less - 1;
+  if (t1 !== (t1 | 0))
+    throw $.iae(t1);
+  t2 = a.length;
+  if (t1 < 0 || t1 >= t2)
+    throw $.ioore(t1);
+  t3 = a[t1];
+  if (left >= t2)
+    throw $.ioore(left);
+  a[left] = t3;
+  a[t1] = el2;
+  t1 = great + 1;
+  if (t1 !== (t1 | 0))
+    throw $.iae(t1);
+  if (t1 < 0 || t1 >= t2)
+    throw $.ioore(t1);
+  t3 = a[t1];
+  if (right >= t2)
+    throw $.ioore(right);
+  a[right] = t3;
+  a[t1] = el4;
+  $._Sort__doSort(a, left, less - 2, compare);
+  $._Sort__doSort(a, great + 2, right, compare);
+  if (pivots_are_equal)
+    return;
+  if (less < index1 && great > index5) {
+    while (true) {
+      if (less !== (less | 0))
+        throw $.iae(less);
+      if (less < 0 || less >= a.length)
+        throw $.ioore(less);
+      if (!$.eqB(compare.call$2(a[less], el2), 0))
+        break;
+      ++less;
+    }
+    while (true) {
+      if (great !== (great | 0))
+        throw $.iae(great);
+      if (great < 0 || great >= a.length)
+        throw $.ioore(great);
+      if (!$.eqB(compare.call$2(a[great], el4), 0))
+        break;
+      --great;
+    }
+    for (k = less; k <= great; ++k) {
+      if (k !== (k | 0))
+        throw $.iae(k);
+      if (k < 0 || k >= a.length)
+        throw $.ioore(k);
+      ak = a[k];
+      if ($.eqB(compare.call$2(ak, el2), 0)) {
+        if (!(k === less)) {
+          if (less !== (less | 0))
+            throw $.iae(less);
+          t1 = a.length;
+          if (less < 0 || less >= t1)
+            throw $.ioore(less);
+          t2 = a[less];
+          if (k >= t1)
+            throw $.ioore(k);
+          a[k] = t2;
+          a[less] = ak;
+        }
+        ++less;
+      } else if ($.eqB(compare.call$2(ak, el4), 0))
+        for (; true;) {
+          if (great !== (great | 0))
+            throw $.iae(great);
+          if (great < 0 || great >= a.length)
+            throw $.ioore(great);
+          if ($.eqB(compare.call$2(a[great], el4), 0)) {
+            --great;
+            if (great < k)
+              break;
+            continue;
+          } else {
+            if (great >= a.length)
+              throw $.ioore(great);
+            t1 = $.ltB(compare.call$2(a[great], el2), 0);
+            t2 = a.length;
+            great0 = great - 1;
+            if (t1) {
+              if (less !== (less | 0))
+                throw $.iae(less);
+              if (less < 0 || less >= t2)
+                throw $.ioore(less);
+              t1 = a[less];
+              if (k >= t2)
+                throw $.ioore(k);
+              a[k] = t1;
+              less0 = less + 1;
+              if (great >= t2)
+                throw $.ioore(great);
+              a[less] = a[great];
+              a[great] = ak;
+              less = less0;
+              great = great0;
+            } else {
+              if (great >= t2)
+                throw $.ioore(great);
+              t1 = a[great];
+              if (k >= t2)
+                throw $.ioore(k);
+              a[k] = t1;
+              a[great] = ak;
+              great = great0;
+            }
+            break;
+          }
+        }
+    }
+    $._Sort__doSort(a, less, great, compare);
+  } else
+    $._Sort__doSort(a, less, great, compare);
+};
+
 $.add = function(a, b) {
   return typeof a === 'number' && typeof b === 'number' ? a + b : $.add$slow(a, b);
 };
@@ -6017,7 +6447,7 @@ $.getTypeMemberUrl = function(libraryName, typeName, memberInfo) {
 };
 
 $.json = function() {
-  return [$.makeLiteralMap(['name', 'simple_audio', 'types', [$.makeLiteralMap(['name', 'AudioClip', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'errorString']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'frequency']), $.makeLiteralMap(['kind', 'method', 'name', 'getSampleFramesForChannel']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'hasError']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'isReadyToPlay']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'length']), $.makeLiteralMap(['kind', 'method', 'name', 'loadFrom']), $.makeLiteralMap(['kind', 'method', 'name', 'makeBuffer']), $.makeLiteralMap(['kind', 'field', 'name', 'name']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'numberOfChannels']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'samples'])]]), $.makeLiteralMap(['name', 'AudioManager', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'constructor', 'noparams', true, 'name', 'AudioManager']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'dopplerFactor']), $.makeLiteralMap(['kind', 'setter', 'name', 'dopplerFactor', 'link_name', 'dopplerFactor=']), $.makeLiteralMap(['kind', 'method', 'name', 'findClip']), $.makeLiteralMap(['kind', 'method', 'name', 'findSource']), $.makeLiteralMap(['kind', 'method', 'name', 'makeClip']), $.makeLiteralMap(['kind', 'method', 'name', 'makeSource']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'masterVolume']), $.makeLiteralMap(['kind', 'setter', 'name', 'masterVolume', 'link_name', 'masterVolume=']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'music']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'musicVolume']), $.makeLiteralMap(['kind', 'setter', 'name', 'musicVolume', 'link_name', 'musicVolume=']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'mute']), $.makeLiteralMap(['kind', 'setter', 'name', 'mute', 'link_name', 'mute=']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'pauseAll']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'pauseMusic']), $.makeLiteralMap(['kind', 'method', 'name', 'pauseSource']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'pauseSources']), $.makeLiteralMap(['kind', 'method', 'name', 'playClipFromSource']), $.makeLiteralMap(['kind', 'method', 'name', 'playClipFromSourceIn']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'resumeAll']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'resumeMusic']), $.makeLiteralMap(['kind', 'method', 'name', 'resumeSource']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'resumeSources']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'sampleRate']), $.makeLiteralMap(['kind', 'method', 'name', 'setOrientation']), $.makeLiteralMap(['kind', 'method', 'name', 'setPosition']), $.makeLiteralMap(['kind', 'method', 'name', 'setVelocity']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'sourceVolume']), $.makeLiteralMap(['kind', 'setter', 'name', 'sourceVolume', 'link_name', 'sourceVolume=']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'speedOfSound']), $.makeLiteralMap(['kind', 'setter', 'name', 'speedOfSound', 'link_name', 'speedOfSound=']), $.makeLiteralMap(['kind', 'method', 'name', 'stopSource'])]]), $.makeLiteralMap(['name', 'AudioMusic', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'pause']), $.makeLiteralMap(['kind', 'setter', 'name', 'pause', 'link_name', 'pause=']), $.makeLiteralMap(['kind', 'method', 'name', 'play']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'stop'])]]), $.makeLiteralMap(['name', 'AudioSound', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'isFinished']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'isPlaying']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'isScheduled']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'pause']), $.makeLiteralMap(['kind', 'setter', 'name', 'pause', 'link_name', 'pause=']), $.makeLiteralMap(['kind', 'method', 'name', 'play']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'stop']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'time']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'volume']), $.makeLiteralMap(['kind', 'setter', 'name', 'volume', 'link_name', 'volume='])]]), $.makeLiteralMap(['name', 'AudioSource', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'mute']), $.makeLiteralMap(['kind', 'setter', 'name', 'mute', 'link_name', 'mute=']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'pause']), $.makeLiteralMap(['kind', 'setter', 'name', 'pause', 'link_name', 'pause=']), $.makeLiteralMap(['kind', 'method', 'name', 'playLooped']), $.makeLiteralMap(['kind', 'method', 'name', 'playLoopedIn']), $.makeLiteralMap(['kind', 'method', 'name', 'playOnce']), $.makeLiteralMap(['kind', 'method', 'name', 'playOnceIn']), $.makeLiteralMap(['kind', 'method', 'name', 'setOrientation']), $.makeLiteralMap(['kind', 'method', 'name', 'setPosition']), $.makeLiteralMap(['kind', 'method', 'name', 'setVelocity']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'stop']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'volume']), $.makeLiteralMap(['kind', 'setter', 'name', 'volume', 'link_name', 'volume=']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'x']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'xForward']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'xUp']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'y']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'yForward']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'yUp']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'z']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'zForward']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'zUp'])]])]])];
+  return [$.makeLiteralMap(['name', 'simple_audio', 'types', [$.makeLiteralMap(['name', 'AudioClip', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'errorString']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'frequency']), $.makeLiteralMap(['kind', 'method', 'name', 'fromMap']), $.makeLiteralMap(['kind', 'method', 'name', 'getSampleFramesForChannel']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'hasError']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'isReadyToPlay']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'length']), $.makeLiteralMap(['kind', 'method', 'name', 'loadFrom']), $.makeLiteralMap(['kind', 'method', 'name', 'makeBuffer']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'numberOfChannels']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'samples']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'toJson']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'url'])]]), $.makeLiteralMap(['name', 'AudioManager', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'constructor', 'noparams', true, 'name', 'AudioManager']), $.makeLiteralMap(['kind', 'field', 'name', 'baseURL']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'dopplerFactor']), $.makeLiteralMap(['kind', 'setter', 'name', 'dopplerFactor', 'link_name', 'dopplerFactor=']), $.makeLiteralMap(['kind', 'method', 'name', 'findClip']), $.makeLiteralMap(['kind', 'method', 'name', 'findSource']), $.makeLiteralMap(['kind', 'method', 'name', 'fromMap']), $.makeLiteralMap(['kind', 'method', 'name', 'makeClip']), $.makeLiteralMap(['kind', 'method', 'name', 'makeSource']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'masterVolume']), $.makeLiteralMap(['kind', 'setter', 'name', 'masterVolume', 'link_name', 'masterVolume=']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'music']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'musicVolume']), $.makeLiteralMap(['kind', 'setter', 'name', 'musicVolume', 'link_name', 'musicVolume=']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'mute']), $.makeLiteralMap(['kind', 'setter', 'name', 'mute', 'link_name', 'mute=']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'pauseAll']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'pauseMusic']), $.makeLiteralMap(['kind', 'method', 'name', 'pauseSource']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'pauseSources']), $.makeLiteralMap(['kind', 'method', 'name', 'playClipFromSource']), $.makeLiteralMap(['kind', 'method', 'name', 'playClipFromSourceIn']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'resumeAll']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'resumeMusic']), $.makeLiteralMap(['kind', 'method', 'name', 'resumeSource']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'resumeSources']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'sampleRate']), $.makeLiteralMap(['kind', 'method', 'name', 'setOrientation']), $.makeLiteralMap(['kind', 'method', 'name', 'setPosition']), $.makeLiteralMap(['kind', 'method', 'name', 'setVelocity']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'sourceVolume']), $.makeLiteralMap(['kind', 'setter', 'name', 'sourceVolume', 'link_name', 'sourceVolume=']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'speedOfSound']), $.makeLiteralMap(['kind', 'setter', 'name', 'speedOfSound', 'link_name', 'speedOfSound=']), $.makeLiteralMap(['kind', 'method', 'name', 'stopSource']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'toJson'])]]), $.makeLiteralMap(['name', 'AudioMusic', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'clip']), $.makeLiteralMap(['kind', 'setter', 'name', 'clip', 'link_name', 'clip=']), $.makeLiteralMap(['kind', 'method', 'name', 'fromMap']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'pause']), $.makeLiteralMap(['kind', 'setter', 'name', 'pause', 'link_name', 'pause=']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'play']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'stop']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'toJson'])]]), $.makeLiteralMap(['name', 'AudioSnapshot', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'constructor', 'name', 'AudioSnapshot']), $.makeLiteralMap(['kind', 'method', 'name', 'loadSnapshot']), $.makeLiteralMap(['kind', 'field', 'name', 'manager']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'takeSnapshot'])]]), $.makeLiteralMap(['name', 'AudioSound', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'isFinished']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'isPlaying']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'isScheduled']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'pause']), $.makeLiteralMap(['kind', 'setter', 'name', 'pause', 'link_name', 'pause=']), $.makeLiteralMap(['kind', 'method', 'name', 'play']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'stop']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'time']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'volume']), $.makeLiteralMap(['kind', 'setter', 'name', 'volume', 'link_name', 'volume='])]]), $.makeLiteralMap(['name', 'AudioSource', 'kind', 'class', 'members', [$.makeLiteralMap(['kind', 'method', 'name', 'fromMap']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'mute']), $.makeLiteralMap(['kind', 'setter', 'name', 'mute', 'link_name', 'mute=']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'pause']), $.makeLiteralMap(['kind', 'setter', 'name', 'pause', 'link_name', 'pause=']), $.makeLiteralMap(['kind', 'method', 'name', 'playLooped']), $.makeLiteralMap(['kind', 'method', 'name', 'playLoopedIn']), $.makeLiteralMap(['kind', 'method', 'name', 'playOnce']), $.makeLiteralMap(['kind', 'method', 'name', 'playOnceIn']), $.makeLiteralMap(['kind', 'method', 'name', 'setOrientation']), $.makeLiteralMap(['kind', 'method', 'name', 'setPosition']), $.makeLiteralMap(['kind', 'method', 'name', 'setVelocity']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'stop']), $.makeLiteralMap(['kind', 'method', 'noparams', true, 'name', 'toJson']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'volume']), $.makeLiteralMap(['kind', 'setter', 'name', 'volume', 'link_name', 'volume=']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'x']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'xForward']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'xUp']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'y']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'yForward']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'yUp']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'z']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'zForward']), $.makeLiteralMap(['kind', 'getter', 'noparams', true, 'name', 'zUp'])]])]])];
 };
 
 $.window = function() {
@@ -6184,10 +6614,10 @@ $.InputElementEvents$ = function(_ptr) {
 };
 
 $.classifySource = function(text) {
-  var html, token, whitespaceOffset, inString, whitespaceOffset0, kind, escapedText, stringClass;
+  var html, token, inString, whitespaceOffset, whitespaceOffset0, kind, escapedText, stringClass;
   html = $.StringBuffer_StringBuffer('');
   token = $.StringScanner$(text, true).tokenize$0();
-  for (whitespaceOffset = 0, inString = false; !$.eqB(token.get$kind(), 0); whitespaceOffset = whitespaceOffset0) {
+  for (inString = false, whitespaceOffset = 0; !$.eqB(token.get$kind(), 0); whitespaceOffset = whitespaceOffset0) {
     $.getInterceptor(html).add$1(html, $.getInterceptor(text).substring$2(text, whitespaceOffset, token.get$charOffset()));
     whitespaceOffset0 = $.add(token.get$charOffset(), token.get$slowCharCount());
     switch (token.get$kind()) {
@@ -6526,17 +6956,17 @@ $.KeywordState_computeKeywordStateTable = function(start, strings, offset, lengt
       throw $.ioore(i);
     t3 = $.get$length(strings[i]);
     if (typeof t3 !== 'number')
-      return $.KeywordState_computeKeywordStateTable$bailout(1, start, strings, offset, length$, t3, result, t1, chunk, chunkStart, isLeaf, i, t2);
+      return $.KeywordState_computeKeywordStateTable$bailout(1, start, strings, offset, length$, t3, result, t1, i, chunk, chunkStart, isLeaf, t2);
     if (t3 === start)
       isLeaf = true;
     t3 = $.get$length(strings[i]);
     if (typeof t3 !== 'number')
-      return $.KeywordState_computeKeywordStateTable$bailout(2, start, strings, offset, length$, result, isLeaf, t1, t3, chunkStart, chunk, i, t2);
+      return $.KeywordState_computeKeywordStateTable$bailout(2, start, strings, offset, length$, result, isLeaf, t1, i, t3, chunk, chunkStart, t2);
     if (t3 > start) {
       t3 = strings[i];
       c = $.getInterceptor(t3).charCodeAt$1(t3, start);
       if (c !== (c | 0))
-        return $.KeywordState_computeKeywordStateTable$bailout(3, start, strings, offset, length$, result, isLeaf, t1, chunk, chunkStart, i, t2, c);
+        return $.KeywordState_computeKeywordStateTable$bailout(3, start, strings, offset, length$, result, isLeaf, t1, i, chunk, chunkStart, t2, c);
       if (chunk !== c) {
         if (chunkStart !== -1) {
           t3 = chunk - 97;
@@ -6840,12 +7270,12 @@ $.StateError$ = function(message) {
   return new $.StateError(message);
 };
 
-$.ListIterator$ = function(list) {
-  return new $.ListIterator(0, list);
-};
-
 $._ExceptionImplementation$ = function(message) {
   return new $._ExceptionImplementation(message);
+};
+
+$.ListIterator$ = function(list) {
+  return new $.ListIterator(0, list);
 };
 
 $.Primitives_objectHashCode = function(object) {
@@ -6884,6 +7314,10 @@ $.Primitives_newList = function(length$) {
   return result;
 };
 
+$.StackOverflowError$ = function() {
+  return new $.StackOverflowError();
+};
+
 $.Primitives_stringFromCharCodes = function(charCodes) {
   var t1, t2;
   for (t1 = $.iterator(charCodes); t1.get$hasNext() === true;) {
@@ -6892,10 +7326,6 @@ $.Primitives_stringFromCharCodes = function(charCodes) {
       throw $.$$throw($.ArgumentError$(t2));
   }
   return String.fromCharCode.apply(null, charCodes);
-};
-
-$.StackOverflowError$ = function() {
-  return new $.StackOverflowError();
 };
 
 $.DOMApplicationCacheEvents$ = function(_ptr) {
@@ -6969,479 +7399,6 @@ $._NodeListWrapper$ = function(list) {
   return new $._NodeListWrapper(list);
 };
 
-$.DedicatedWorkerContextEvents$ = function(_ptr) {
-  return new $.DedicatedWorkerContextEvents(_ptr);
-};
-
-$.WorkerContextEvents$ = function(_ptr) {
-  return new $.WorkerContextEvents(_ptr);
-};
-
-$._Sort__doSort = function(a, left, right, compare) {
-  if ($.leB($.sub(right, left), 32))
-    $._Sort_insertionSort_(a, left, right, compare);
-  else
-    $._Sort__dualPivotQuicksort(a, left, right, compare);
-};
-
-$._Sort_insertionSort_ = function(a, left, right, compare) {
-  var i, el, j, t1, t2, j0;
-  if (typeof a !== 'object' || a === null || (a.constructor !== Array || !!a.immutable$list) && !a.is$JavaScriptIndexingBehavior())
-    return $._Sort_insertionSort_$bailout(1, a, left, right, compare);
-  if (typeof right !== 'number')
-    return $._Sort_insertionSort_$bailout(1, a, left, right, compare);
-  for (i = left + 1; i <= right; ++i) {
-    if (i !== (i | 0))
-      throw $.iae(i);
-    if (i < 0 || i >= a.length)
-      throw $.ioore(i);
-    el = a[i];
-    j = i;
-    while (true) {
-      if (j > left) {
-        t1 = j - 1;
-        if (t1 !== (t1 | 0))
-          throw $.iae(t1);
-        if (t1 < 0 || t1 >= a.length)
-          throw $.ioore(t1);
-        t2 = $.gtB(compare.call$2(a[t1], el), 0);
-        t1 = t2;
-      } else
-        t1 = false;
-      t2 = a.length;
-      if (!t1)
-        break;
-      j0 = j - 1;
-      if (j0 !== (j0 | 0))
-        throw $.iae(j0);
-      if (j0 < 0 || j0 >= t2)
-        throw $.ioore(j0);
-      t1 = a[j0];
-      if (j !== (j | 0))
-        throw $.iae(j);
-      if (j < 0 || j >= t2)
-        throw $.ioore(j);
-      a[j] = t1;
-      j = j0;
-    }
-    if (j !== (j | 0))
-      throw $.iae(j);
-    if (j < 0 || j >= t2)
-      throw $.ioore(j);
-    a[j] = el;
-  }
-};
-
-$._Sort__dualPivotQuicksort = function(a, left, right, compare) {
-  var sixth, index1, index5, index3, index2, index4, t1, el1, el2, el3, el4, el5, t0, t2, less, great, pivots_are_equal, k, ak, comp, great0, less0, t3;
-  if (typeof a !== 'object' || a === null || (a.constructor !== Array || !!a.immutable$list) && !a.is$JavaScriptIndexingBehavior())
-    return $._Sort__dualPivotQuicksort$bailout(1, a, left, right, compare);
-  sixth = $.tdiv($.add($.sub(right, left), 1), 6);
-  if (typeof sixth !== 'number')
-    throw $.iae(sixth);
-  index1 = left + sixth;
-  index5 = $.sub(right, sixth);
-  if (typeof right !== 'number')
-    throw $.iae(right);
-  index3 = $.tdiv(left + right, 2);
-  index2 = index3 - sixth;
-  index4 = index3 + sixth;
-  if (index1 !== (index1 | 0))
-    throw $.iae(index1);
-  t1 = a.length;
-  if (index1 < 0 || index1 >= t1)
-    throw $.ioore(index1);
-  el1 = a[index1];
-  if (index2 !== (index2 | 0))
-    throw $.iae(index2);
-  if (index2 < 0 || index2 >= t1)
-    throw $.ioore(index2);
-  el2 = a[index2];
-  if (index3 !== (index3 | 0))
-    throw $.iae(index3);
-  if (index3 < 0 || index3 >= t1)
-    throw $.ioore(index3);
-  el3 = a[index3];
-  if (index4 !== (index4 | 0))
-    throw $.iae(index4);
-  if (index4 < 0 || index4 >= t1)
-    throw $.ioore(index4);
-  el4 = a[index4];
-  if (index5 !== (index5 | 0))
-    throw $.iae(index5);
-  if (index5 < 0 || index5 >= t1)
-    throw $.ioore(index5);
-  el5 = a[index5];
-  if ($.gtB(compare.call$2(el1, el2), 0)) {
-    t0 = el2;
-    el2 = el1;
-    el1 = t0;
-  }
-  if ($.gtB(compare.call$2(el4, el5), 0)) {
-    t0 = el5;
-    el5 = el4;
-    el4 = t0;
-  }
-  if ($.gtB(compare.call$2(el1, el3), 0)) {
-    t0 = el3;
-    el3 = el1;
-    el1 = t0;
-  }
-  if ($.gtB(compare.call$2(el2, el3), 0)) {
-    t0 = el3;
-    el3 = el2;
-    el2 = t0;
-  }
-  if ($.gtB(compare.call$2(el1, el4), 0)) {
-    t0 = el4;
-    el4 = el1;
-    el1 = t0;
-  }
-  if ($.gtB(compare.call$2(el3, el4), 0)) {
-    t0 = el4;
-    el4 = el3;
-    el3 = t0;
-  }
-  if ($.gtB(compare.call$2(el2, el5), 0)) {
-    t0 = el5;
-    el5 = el2;
-    el2 = t0;
-  }
-  if ($.gtB(compare.call$2(el2, el3), 0)) {
-    t0 = el3;
-    el3 = el2;
-    el2 = t0;
-  }
-  if ($.gtB(compare.call$2(el4, el5), 0)) {
-    t0 = el5;
-    el5 = el4;
-    el4 = t0;
-  }
-  t1 = a.length;
-  if (index1 >= t1)
-    throw $.ioore(index1);
-  a[index1] = el1;
-  if (index3 >= t1)
-    throw $.ioore(index3);
-  a[index3] = el3;
-  if (index5 >= t1)
-    throw $.ioore(index5);
-  a[index5] = el5;
-  if (left !== (left | 0))
-    throw $.iae(left);
-  if (left < 0 || left >= t1)
-    throw $.ioore(left);
-  t2 = a[left];
-  if (index2 >= t1)
-    throw $.ioore(index2);
-  a[index2] = t2;
-  if (right !== (right | 0))
-    throw $.iae(right);
-  if (right < 0 || right >= t1)
-    throw $.ioore(right);
-  t2 = a[right];
-  if (index4 >= t1)
-    throw $.ioore(index4);
-  a[index4] = t2;
-  less = left + 1;
-  great = right - 1;
-  pivots_are_equal = $.eqB(compare.call$2(el2, el4), 0);
-  if (pivots_are_equal)
-    for (k = less; k <= great; ++k) {
-      if (k !== (k | 0))
-        throw $.iae(k);
-      if (k < 0 || k >= a.length)
-        throw $.ioore(k);
-      ak = a[k];
-      comp = compare.call$2(ak, el2);
-      if ($.eqB(comp, 0))
-        continue;
-      if ($.ltB(comp, 0)) {
-        if (!(k === less)) {
-          if (less !== (less | 0))
-            throw $.iae(less);
-          t1 = a.length;
-          if (less < 0 || less >= t1)
-            throw $.ioore(less);
-          t2 = a[less];
-          if (k >= t1)
-            throw $.ioore(k);
-          a[k] = t2;
-          a[less] = ak;
-        }
-        ++less;
-      } else
-        for (; true;) {
-          if (great !== (great | 0))
-            throw $.iae(great);
-          if (great < 0 || great >= a.length)
-            throw $.ioore(great);
-          comp = compare.call$2(a[great], el2);
-          if ($.gtB(comp, 0)) {
-            --great;
-            continue;
-          } else {
-            t1 = $.ltB(comp, 0);
-            t2 = a.length;
-            great0 = great - 1;
-            if (t1) {
-              if (less !== (less | 0))
-                throw $.iae(less);
-              if (less < 0 || less >= t2)
-                throw $.ioore(less);
-              t1 = a[less];
-              if (k >= t2)
-                throw $.ioore(k);
-              a[k] = t1;
-              less0 = less + 1;
-              if (great >= t2)
-                throw $.ioore(great);
-              a[less] = a[great];
-              a[great] = ak;
-              great = great0;
-              less = less0;
-              break;
-            } else {
-              if (great >= t2)
-                throw $.ioore(great);
-              t1 = a[great];
-              if (k >= t2)
-                throw $.ioore(k);
-              a[k] = t1;
-              a[great] = ak;
-              great = great0;
-              break;
-            }
-          }
-        }
-    }
-  else
-    for (k = less; k <= great; ++k) {
-      if (k !== (k | 0))
-        throw $.iae(k);
-      if (k < 0 || k >= a.length)
-        throw $.ioore(k);
-      ak = a[k];
-      if ($.ltB(compare.call$2(ak, el2), 0)) {
-        if (!(k === less)) {
-          if (less !== (less | 0))
-            throw $.iae(less);
-          t1 = a.length;
-          if (less < 0 || less >= t1)
-            throw $.ioore(less);
-          t2 = a[less];
-          if (k >= t1)
-            throw $.ioore(k);
-          a[k] = t2;
-          a[less] = ak;
-        }
-        ++less;
-      } else if ($.gtB(compare.call$2(ak, el4), 0))
-        for (; true;) {
-          if (great !== (great | 0))
-            throw $.iae(great);
-          if (great < 0 || great >= a.length)
-            throw $.ioore(great);
-          if ($.gtB(compare.call$2(a[great], el4), 0)) {
-            --great;
-            if (great < k)
-              break;
-            continue;
-          } else {
-            if (great >= a.length)
-              throw $.ioore(great);
-            t1 = $.ltB(compare.call$2(a[great], el2), 0);
-            t2 = a.length;
-            great0 = great - 1;
-            if (t1) {
-              if (less !== (less | 0))
-                throw $.iae(less);
-              if (less < 0 || less >= t2)
-                throw $.ioore(less);
-              t1 = a[less];
-              if (k >= t2)
-                throw $.ioore(k);
-              a[k] = t1;
-              less0 = less + 1;
-              if (great >= t2)
-                throw $.ioore(great);
-              a[less] = a[great];
-              a[great] = ak;
-              great = great0;
-              less = less0;
-            } else {
-              if (great >= t2)
-                throw $.ioore(great);
-              t1 = a[great];
-              if (k >= t2)
-                throw $.ioore(k);
-              a[k] = t1;
-              a[great] = ak;
-              great = great0;
-            }
-            break;
-          }
-        }
-    }
-  t1 = less - 1;
-  if (t1 !== (t1 | 0))
-    throw $.iae(t1);
-  t2 = a.length;
-  if (t1 < 0 || t1 >= t2)
-    throw $.ioore(t1);
-  t3 = a[t1];
-  if (left >= t2)
-    throw $.ioore(left);
-  a[left] = t3;
-  a[t1] = el2;
-  t1 = great + 1;
-  if (t1 !== (t1 | 0))
-    throw $.iae(t1);
-  if (t1 < 0 || t1 >= t2)
-    throw $.ioore(t1);
-  t3 = a[t1];
-  if (right >= t2)
-    throw $.ioore(right);
-  a[right] = t3;
-  a[t1] = el4;
-  $._Sort__doSort(a, left, less - 2, compare);
-  $._Sort__doSort(a, great + 2, right, compare);
-  if (pivots_are_equal)
-    return;
-  if (less < index1 && great > index5) {
-    while (true) {
-      if (less !== (less | 0))
-        throw $.iae(less);
-      if (less < 0 || less >= a.length)
-        throw $.ioore(less);
-      if (!$.eqB(compare.call$2(a[less], el2), 0))
-        break;
-      ++less;
-    }
-    while (true) {
-      if (great !== (great | 0))
-        throw $.iae(great);
-      if (great < 0 || great >= a.length)
-        throw $.ioore(great);
-      if (!$.eqB(compare.call$2(a[great], el4), 0))
-        break;
-      --great;
-    }
-    for (k = less; k <= great; ++k) {
-      if (k !== (k | 0))
-        throw $.iae(k);
-      if (k < 0 || k >= a.length)
-        throw $.ioore(k);
-      ak = a[k];
-      if ($.eqB(compare.call$2(ak, el2), 0)) {
-        if (!(k === less)) {
-          if (less !== (less | 0))
-            throw $.iae(less);
-          t1 = a.length;
-          if (less < 0 || less >= t1)
-            throw $.ioore(less);
-          t2 = a[less];
-          if (k >= t1)
-            throw $.ioore(k);
-          a[k] = t2;
-          a[less] = ak;
-        }
-        ++less;
-      } else if ($.eqB(compare.call$2(ak, el4), 0))
-        for (; true;) {
-          if (great !== (great | 0))
-            throw $.iae(great);
-          if (great < 0 || great >= a.length)
-            throw $.ioore(great);
-          if ($.eqB(compare.call$2(a[great], el4), 0)) {
-            --great;
-            if (great < k)
-              break;
-            continue;
-          } else {
-            if (great >= a.length)
-              throw $.ioore(great);
-            t1 = $.ltB(compare.call$2(a[great], el2), 0);
-            t2 = a.length;
-            great0 = great - 1;
-            if (t1) {
-              if (less !== (less | 0))
-                throw $.iae(less);
-              if (less < 0 || less >= t2)
-                throw $.ioore(less);
-              t1 = a[less];
-              if (k >= t2)
-                throw $.ioore(k);
-              a[k] = t1;
-              less0 = less + 1;
-              if (great >= t2)
-                throw $.ioore(great);
-              a[less] = a[great];
-              a[great] = ak;
-              great = great0;
-              less = less0;
-            } else {
-              if (great >= t2)
-                throw $.ioore(great);
-              t1 = a[great];
-              if (k >= t2)
-                throw $.ioore(k);
-              a[k] = t1;
-              a[great] = ak;
-              great = great0;
-            }
-            break;
-          }
-        }
-    }
-    $._Sort__doSort(a, less, great, compare);
-  } else
-    $._Sort__doSort(a, less, great, compare);
-};
-
-$.Strings__toJsStringArray$bailout = function(state0, strings) {
-  var length$, i, string, array;
-  $.checkNull(strings);
-  length$ = $.get$length(strings);
-  if ($.isJsArray(strings)) {
-    for (i = 0; $.ltB(i, length$); ++i) {
-      string = $.index(strings, i);
-      $.checkNull(string);
-      if (!(typeof string === 'string'))
-        throw $.$$throw($.ArgumentError$(string));
-    }
-    array = strings;
-  } else {
-    array = $._ListImpl_List(length$);
-    for (i = 0; $.ltB(i, length$); ++i) {
-      string = $.index(strings, i);
-      $.checkNull(string);
-      if (!(typeof string === 'string'))
-        throw $.$$throw($.ArgumentError$(string));
-      if (i >= array.length)
-        throw $.ioore(i);
-      array[i] = string;
-    }
-  }
-  return array;
-};
-
-$.allMatchesInStringUnchecked$bailout = function(state0, needle, haystack, patternLength, result, length$) {
-  var startIndex, position, endIndex;
-  for (startIndex = 0; true;) {
-    position = $.indexOf$2(haystack, needle, startIndex);
-    if ($.eqB(position, -1))
-      break;
-    $.getInterceptor(result).add$1(result, $.StringMatch$(position, haystack, needle));
-    endIndex = $.add(position, patternLength);
-    if ($.eqB(endIndex, length$))
-      break;
-    else
-      startIndex = $.eqB(position, endIndex) ? $.add(startIndex, 1) : endIndex;
-  }
-  return result;
-};
-
 $.stringReplaceAllUnchecked$bailout = function(state0, receiver, from, to) {
   var result, length$, i;
   if (typeof from === 'string')
@@ -7485,10 +7442,10 @@ $.KeywordState_computeKeywordStateTable$bailout = function(state0, env0, env1, e
   switch (state0) {
     case 1:
       t2 = env11;
-      i = env10;
-      isLeaf = env9;
-      chunkStart = env8;
-      chunk = env7;
+      isLeaf = env10;
+      chunkStart = env9;
+      chunk = env8;
+      i = env7;
       t1 = env6;
       result = env5;
       t3 = env4;
@@ -7499,10 +7456,10 @@ $.KeywordState_computeKeywordStateTable$bailout = function(state0, env0, env1, e
       break;
     case 2:
       t2 = env11;
-      i = env10;
+      chunkStart = env10;
       chunk = env9;
-      chunkStart = env8;
-      t3 = env7;
+      t3 = env8;
+      i = env7;
       t1 = env6;
       isLeaf = env5;
       result = env4;
@@ -7514,9 +7471,9 @@ $.KeywordState_computeKeywordStateTable$bailout = function(state0, env0, env1, e
     case 3:
       c = env11;
       t2 = env10;
-      i = env9;
-      chunkStart = env8;
-      chunk = env7;
+      chunkStart = env9;
+      chunk = env8;
+      i = env7;
       t1 = env6;
       isLeaf = env5;
       result = env4;
@@ -7644,9 +7601,9 @@ $._Sort__dualPivotQuicksort$bailout = function(state0, a, left, right, compare) 
   el4 = $.index(a, index4);
   el5 = $.index(a, index5);
   if ($.gtB(compare.call$2(el1, el2), 0)) {
-    t0 = el2;
-    el2 = el1;
-    el1 = t0;
+    t0 = el1;
+    el1 = el2;
+    el2 = t0;
   }
   if ($.gtB(compare.call$2(el4, el5), 0)) {
     t0 = el5;
@@ -7654,9 +7611,9 @@ $._Sort__dualPivotQuicksort$bailout = function(state0, a, left, right, compare) 
     el4 = t0;
   }
   if ($.gtB(compare.call$2(el1, el3), 0)) {
-    t0 = el3;
-    el3 = el1;
-    el1 = t0;
+    t0 = el1;
+    el1 = el3;
+    el3 = t0;
   }
   if ($.gtB(compare.call$2(el2, el3), 0)) {
     t0 = el3;
@@ -7664,9 +7621,9 @@ $._Sort__dualPivotQuicksort$bailout = function(state0, a, left, right, compare) 
     el2 = t0;
   }
   if ($.gtB(compare.call$2(el1, el4), 0)) {
-    t0 = el4;
-    el4 = el1;
-    el1 = t0;
+    t0 = el1;
+    el1 = el4;
+    el4 = t0;
   }
   if ($.gtB(compare.call$2(el3, el4), 0)) {
     t0 = el4;
@@ -7720,8 +7677,8 @@ $._Sort__dualPivotQuicksort$bailout = function(state0, a, left, right, compare) 
             $.indexSet(a, less, $.index(a, great));
             great0 = great - 1;
             $.indexSet(a, great, ak);
-            great = great0;
             less = less0;
+            great = great0;
             break;
           } else {
             $.indexSet(a, k, $.index(a, great));
@@ -7755,8 +7712,8 @@ $._Sort__dualPivotQuicksort$bailout = function(state0, a, left, right, compare) 
               $.indexSet(a, less, $.index(a, great));
               great0 = great - 1;
               $.indexSet(a, great, ak);
-              great = great0;
               less = less0;
+              great = great0;
             } else {
               $.indexSet(a, k, $.index(a, great));
               great0 = great - 1;
@@ -7802,8 +7759,8 @@ $._Sort__dualPivotQuicksort$bailout = function(state0, a, left, right, compare) 
               $.indexSet(a, less, $.index(a, great));
               great0 = great - 1;
               $.indexSet(a, great, ak);
-              great = great0;
               less = less0;
+              great = great0;
             } else {
               $.indexSet(a, k, $.index(a, great));
               great0 = great - 1;
@@ -7846,6 +7803,53 @@ $._Sort_insertionSort_$bailout = function(state0, a, left, right, compare) {
   }
 };
 
+$.Strings__toJsStringArray$bailout = function(state0, strings) {
+  var length$, i, string, array;
+  $.checkNull(strings);
+  length$ = $.get$length(strings);
+  if ($.isJsArray(strings)) {
+    for (i = 0; $.ltB(i, length$); ++i) {
+      string = $.index(strings, i);
+      $.checkNull(string);
+      if (!(typeof string === 'string'))
+        throw $.$$throw($.ArgumentError$(string));
+    }
+    array = strings;
+  } else {
+    array = $._ListImpl_List(length$);
+    for (i = 0; $.ltB(i, length$); ++i) {
+      string = $.index(strings, i);
+      $.checkNull(string);
+      if (!(typeof string === 'string'))
+        throw $.$$throw($.ArgumentError$(string));
+      if (i >= array.length)
+        throw $.ioore(i);
+      array[i] = string;
+    }
+  }
+  return array;
+};
+
+$.allMatchesInStringUnchecked$bailout = function(state0, needle, haystack, patternLength, result, length$) {
+  var startIndex, position, endIndex;
+  for (startIndex = 0; true;) {
+    position = $.indexOf$2(haystack, needle, startIndex);
+    if ($.eqB(position, -1))
+      break;
+    $.getInterceptor(result).add$1(result, $.StringMatch$(position, haystack, needle));
+    endIndex = $.add(position, patternLength);
+    if ($.eqB(endIndex, length$))
+      break;
+    else
+      startIndex = $.eqB(position, endIndex) ? $.add(startIndex, 1) : endIndex;
+  }
+  return result;
+};
+
+$.Comparable_compare.call$2 = $.Comparable_compare;
+$.Comparable_compare.$name = "Comparable_compare";
+$.handleUpDown.call$1 = $.handleUpDown;
+$.handleUpDown.$name = "handleUpDown";
 $.dynamicBind.call$4 = $.dynamicBind;
 $.dynamicBind.$name = "dynamicBind";
 $.shortcutHandler.call$1 = $.shortcutHandler;
@@ -7870,10 +7874,6 @@ $.typeNameInIE.call$1 = $.typeNameInIE;
 $.typeNameInIE.$name = "typeNameInIE";
 $.constructorNameFallback.call$1 = $.constructorNameFallback;
 $.constructorNameFallback.$name = "constructorNameFallback";
-$.Comparable_compare.call$2 = $.Comparable_compare;
-$.Comparable_compare.$name = "Comparable_compare";
-$.handleUpDown.call$1 = $.handleUpDown;
-$.handleUpDown.$name = "handleUpDown";
 Isolate.$finishClasses($$);
 $$ = {};
 Isolate.makeConstantList = function(list) {
@@ -8088,6 +8088,13 @@ $.CTC69 = new Isolate.$isolateProperties.PrecedenceInfo(Isolate.$isolateProperti
 $.CTC68 = new Isolate.$isolateProperties.PrecedenceInfo(Isolate.$isolateProperties.CTC201, 11, 156);
 $.CTC45 = new Isolate.$isolateProperties.PrecedenceInfo(Isolate.$isolateProperties.CTC91, 6, 124);
 $.CTC64 = new Isolate.$isolateProperties.PrecedenceInfo(Isolate.$isolateProperties.CTC202, 0, 130);
+$.HEXADECIMAL_INFO = Isolate.$isolateProperties.CTC25;
+$.COMMENT_INFO = Isolate.$isolateProperties.CTC33;
+$.$$EOF = 0;
+$._Sort__INSERTION_SORT_THRESHOLD = 32;
+$.$$STX = 2;
+$.$$TAB = 9;
+$.$$LF = 10;
 $.$$CR = 13;
 $.$$SPACE = 32;
 $.$$BANG = 33;
@@ -8183,8 +8190,8 @@ $.INTERFACE = 'interface';
 $.TYPEDEF = 'typedef';
 $.MEMBERS = 'members';
 $.TYPES = 'types';
-$.ARGS = 'args';
 $.NAME = 'name';
+$.ARGS = 'args';
 $.KIND = 'kind';
 $.FIELD = 'field';
 $.CONSTRUCTOR = 'constructor';
@@ -8345,13 +8352,6 @@ $.CLOSE_SQUARE_BRACKET_INFO = Isolate.$isolateProperties.CTC13;
 $.DOUBLE_INFO = Isolate.$isolateProperties.CTC22;
 $.STRING_INTERPOLATION_INFO = Isolate.$isolateProperties.CTC29;
 $.STRING_INTERPOLATION_IDENTIFIER_INFO = Isolate.$isolateProperties.CTC28;
-$.HEXADECIMAL_INFO = Isolate.$isolateProperties.CTC25;
-$.COMMENT_INFO = Isolate.$isolateProperties.CTC33;
-$.$$EOF = 0;
-$._Sort__INSERTION_SORT_THRESHOLD = 32;
-$.$$STX = 2;
-$.$$TAB = 9;
-$.$$LF = 10;
 Isolate.$lazy($, 'quoteRegExp', 'quoteRegExp', 'get$quoteRegExp', function() {
   return $.JSSyntaxRegExp$('[-[\\]{}()*+?.,\\\\^$|#\\s]', false, false);
 });

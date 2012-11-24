@@ -28,6 +28,7 @@
 <li><a href="../simple_audio/AudioClip.html"><div class="icon-class"></div>AudioClip</a></li>
 <li><a href="../simple_audio/AudioManager.html"><div class="icon-class"></div>AudioManager</a></li>
 <li><div class="icon-class"></div><strong>AudioMusic</strong></li>
+<li><a href="../simple_audio/AudioSnapshot.html"><div class="icon-class"></div>AudioSnapshot</a></li>
 <li><a href="../simple_audio/AudioSound.html"><div class="icon-class"></div>AudioSound</a></li>
 <li><a href="../simple_audio/AudioSource.html"><div class="icon-class"></div>AudioSource</a></li>
 </ul>
@@ -45,8 +46,19 @@ class AudioMusic {
  final AudioManager _manager;
  AudioSource _source;
  AudioSound _sound;
+ AudioClip _clip;
  AudioMusic._internal(this._manager, GainNode output) {
-   _source = new AudioSource._internal(_manager, output);
+   _source = new AudioSource._internal(_manager, 'music', output);
+ }
+
+ Map toJson() {
+   Map map = new Map();
+   map['clipName'] = _clip._name;
+   return map;
+ }
+
+ void fromMap(Map map) {
+   _clip = _manager.findClip(map['clipName']);
  }
 
  void _stop() {
@@ -65,10 +77,16 @@ class AudioMusic {
    }
  }
 
- /** Play the music [clip]. The music will loop. */
- void play(AudioClip clip) {
+ AudioClip get clip =&gt; _clip;
+
+ void set clip(AudioClip clip) {
+   _clip = clip;
+ }
+
+ /** Play the music clip. The music will loop. */
+ void play() {
    _stop();
-   _sound = new AudioSound._internal(_source, clip, true);
+   _sound = new AudioSound._internal(_source, _clip, true);
    _sound.play();
  }
 
@@ -81,6 +99,23 @@ class AudioMusic {
 </div>
 <div>
 <h3>Properties</h3>
+<div class="field"><h4 id="clip">
+<button class="show-code">Code</button>
+<a href="../simple_audio/AudioClip.html">AudioClip</a>         <strong>clip</strong> <a class="anchor-link"
+            href="#clip"
+            title="Permalink to AudioMusic.clip">#</a>
+        </h4>
+        <div class="doc">
+<pre class="source">
+AudioClip get clip =&gt; _clip;
+</pre>
+<pre class="source">
+void set clip(AudioClip clip) {
+ _clip = clip;
+}
+</pre>
+</div>
+</div>
 <div class="method"><h4 id="pause">
 <button class="show-code">Code</button>
 bool <strong>get pause</strong> <a class="anchor-link" href="#pause"
@@ -110,17 +145,28 @@ void set pause(bool b) {
 </div>
 <div>
 <h3>Methods</h3>
+<div class="method"><h4 id="fromMap">
+<button class="show-code">Code</button>
+void <strong>fromMap</strong>(Map map) <a class="anchor-link" href="#fromMap"
+              title="Permalink to AudioMusic.fromMap">#</a></h4>
+<div class="doc">
+<pre class="source">
+void fromMap(Map map) {
+ _clip = _manager.findClip(map['clipName']);
+}
+</pre>
+</div>
+</div>
 <div class="method"><h4 id="play">
 <button class="show-code">Code</button>
-void <strong>play</strong>(<a href="../simple_audio/AudioClip.html">AudioClip</a> clip) <a class="anchor-link" href="#play"
+void <strong>play</strong>() <a class="anchor-link" href="#play"
               title="Permalink to AudioMusic.play">#</a></h4>
 <div class="doc">
-<p>Play the music 
-<span class="param">clip</span>. The music will loop.</p>
+<p>Play the music clip. The music will loop.</p>
 <pre class="source">
-void play(AudioClip clip) {
+void play() {
  _stop();
- _sound = new AudioSound._internal(_source, clip, true);
+ _sound = new AudioSound._internal(_source, _clip, true);
  _sound.play();
 }
 </pre>
@@ -139,13 +185,27 @@ void stop() {
 </pre>
 </div>
 </div>
+<div class="method"><h4 id="toJson">
+<button class="show-code">Code</button>
+Map <strong>toJson</strong>() <a class="anchor-link" href="#toJson"
+              title="Permalink to AudioMusic.toJson">#</a></h4>
+<div class="doc">
+<pre class="source">
+Map toJson() {
+ Map map = new Map();
+ map['clipName'] = _clip._name;
+ return map;
+}
+</pre>
+</div>
+</div>
 </div>
         </div>
         <div class="clear"></div>
         </div>
         
         <div class="footer">
-          <div>This page was generated at 2012-11-23 15:21:51.862</div>
+          <div>This page was generated at 2012-11-23 19:55:51.881</div>
         </div>
         <script async src="../client-static.js"></script>
         </body></html>

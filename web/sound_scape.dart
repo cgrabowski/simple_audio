@@ -1,5 +1,6 @@
 import 'dart:html';
-import 'package:audio/simple_audio.dart';
+import 'package:simple_audio/simple_audio.dart';
+import 'common.dart';
 
 AudioManager audioManager = new AudioManager();
 AudioSound loopingSound = null;
@@ -13,22 +14,13 @@ String musicClipURL = 'clips/deeper.ogg';
 
 List<AudioSource> globalSources = new List<AudioSource>();
 
-void setBaseURL() {
-  String location = window.location.href;
-  location = location.substring(0, location.length-"sound_scape.html".length);
-  baseURL = location;
-}
-
-String urlFor(String clip) {
-  return '$baseURL/$clip';
-}
-
 void main() {
-  setBaseURL();
+  setBaseURL(audioManager);
   audioManager.makeClip(clipName);
   audioManager.makeClip(musicClipName);
-  audioManager.findClip(clipName).loadFrom(urlFor(clipURL));
-  audioManager.findClip(musicClipName).loadFrom(urlFor(musicClipURL));
+  audioManager.findClip(clipName).loadFrom(clipURL);
+  audioManager.findClip(musicClipName).loadFrom(musicClipURL);
+  audioManager.music.clip = audioManager.findClip(musicClipName);
 
   globalSources.add(audioManager.makeSource("front left"));
   globalSources.add(audioManager.makeSource("front right"));
@@ -105,6 +97,8 @@ void main() {
   canvas.width = canvas.clientWidth;
   canvas.height = canvas.clientHeight;
   drawStage();
+  AudioSnapshot snapshot = new AudioSnapshot(audioManager);
+  snapshot.loadSnapshot(snapshot.takeSnapshot());
 }
 
 void drawStage() {
@@ -240,7 +234,7 @@ void pauseLoop(Event event) {
 }
 
 void startMusic(Event event) {
-  audioManager.music.play(audioManager.findClip(musicClipName));
+  audioManager.music.play();
 }
 
 bool _allPaused = false;

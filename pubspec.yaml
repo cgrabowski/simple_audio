@@ -1,5 +1,5 @@
-name:  audio
-description:  A sample application
+name:  simple_audio
+description:  A simple audio library for video games.
 
 #dependencies:
 #  js: any
