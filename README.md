@@ -19,7 +19,7 @@ A simple to use audio library for video games. Supports 3D positional audio.
 
 1\. Add the following to your project's **pubspec.yaml** and run ```pub install```.
 
-```
+```yaml
 dependencies:
   simple_audio:
     git: https://github.com/johnmccutchan/simpleaudio.git
@@ -27,7 +27,7 @@ dependencies:
 
 2\. Add the correct import for your project. 
 
-```
+```dart
 import 'package:simple_audio/simple_audio.dart';
 ```
 
@@ -52,7 +52,7 @@ four sources positioned around the listener.
 
 1\. Initialize an AudioManager.
 
-```
+```dart
 main() {
   // Construct a new AudioManager.
   AudioManager audioManager = new AudioManager();
@@ -63,7 +63,7 @@ main() {
 
 2\. Load a clip.
 
-```
+```dart
 main() {
   // Construct a new AudioManager.
   AudioManager audioManager = new AudioManager();
@@ -78,7 +78,7 @@ main() {
 
 3\. Play music
 
-```
+```dart
 main() {
   // Construct a new AudioManager.
   AudioManager audioManager = new AudioManager();
@@ -98,7 +98,7 @@ main() {
 
 4\. Create a source and place it in the scene.
 
-```
+```dart
 main() {
   // Construct a new AudioManager.
   AudioManager audioManager = new AudioManager();
@@ -113,7 +113,7 @@ main() {
 
 5\. Play a clip from a source.
 
-```
+```dart
 main() {
   // Construct a new AudioManager.
   AudioManager audioManager = new AudioManager();
