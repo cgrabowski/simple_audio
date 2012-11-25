@@ -13,6 +13,23 @@ A simple to use audio library for video games. Supports 3D positional audio.
 * High level manager (AudioManager)
 * Save and load snapshots which includes all settings, clips, and sources.
 
+## Compared to Web Audio ##
+
+The simple_audio library offers a simpler API that is targetted at video game
+use cases. These use cases include games consisting of global sounds
+(music, game state sound effects) and positional sounds (bullet hitting
+a wall, etc).
+
+Also, important features missing from Web Audio are present in simple_audio.
+For example, simple_audio supports pausing and resuming playback of all sounds,
+functionality that must be implemented on top of Web Audio.
+
+The simple_audio library uses Web Audio internally but does not expose
+the Web Audio API. This abstraction makes applications using the simple_audio
+library portable to other low level audio APIs without changing the application.
+Developers embedding Dart into a larger application can expose a low level audio
+playback API and port simple_audio to it.
+
 ## Status: Beta ##
 
 ## Getting Started ##
