@@ -8,27 +8,50 @@ A simple to use audio library for video games. Supports 3D positional audio.
 ## Features ##
 
 * 3D positional sound emitters (AudioSource)
-* Audio clips storing sound data (AudioClip)
+* Audio clips storing sound data loaded from audio files (AudioClip)
 * Looped music playback (AudioMusic)
 * High level manager (AudioManager)
 * Save and load snapshots which includes all settings, clips, and sources.
 
-## Compared to Web Audio ##
+## Why simple_audio over Web Audio? ##
 
-The simple_audio library offers a simpler API that is targetted at video game
-use cases. These use cases include games consisting of global sounds
-(music, game state sound effects) and positional sounds (bullet hitting
-a wall, etc).
+1\. simple_audio offers a much smaller API designed for games.
 
-Also, important features missing from Web Audio are present in simple_audio.
-For example, simple_audio supports pausing and resuming playback of all sounds,
-functionality that must be implemented on top of Web Audio.
+Web Audio is a powerful audio processing system. Web Audio has more than
+20 classes with many properties and methods in each. Compare that with
+the 6 classes in simple_audio. Because the API is targetting game applications
+you'll end up writing far fewer lines of code with simple_audio.
 
-The simple_audio library uses Web Audio internally but does not expose
-the Web Audio API. This abstraction makes applications using the simple_audio
-library portable to other low level audio APIs without changing the application.
-Developers embedding Dart into a larger application can expose a low level audio
-playback API and port simple_audio to it.
+2\. Pause and resume
+
+Web Audio does not have the ability to pause and resume sounds. Don't spend 
+time implementing pause and resume on top of Web Audio, just use simple_audio.
+
+3\. Portability
+
+Web Audio is a low level sound API that is only available in the browser.
+Embedded applications, console applications, and mobile applications do not
+have access to the Web Audio API. By targetting simple_audio your game
+can be more easily ported to other platforms.
+
+4\. Easy loading of sound data
+
+Using Web Audio you need to write around 20 lines of code with multiple
+callback functions to load a single MP3 file. With simple_audio you only
+write two:
+
+```dart
+  // Make a clip named 'music'.
+  AudioClip musicClip = audioManager.makeClip('music', '/music.mp3');
+  // Load sound data into clip.
+  musicClip.load();
+```
+
+5\. Snapshots
+
+The simple_audio library supports saving its state in a snapshot. The
+saved state includes all audio clips, sources, and other settings. This
+snapshot can be loaded the next time the application starts.
 
 ## Status: Beta ##
 
@@ -86,7 +109,7 @@ main() {
   AudioManager audioManager = new AudioManager();
   // Set the base URL used when loading AudioClips.
   setBaseURL(audioManager);
-  // Make a clip named.
+  // Make a clip named 'music'.
   AudioClip musicClip = audioManager.makeClip('music', '/music.mp3');
   // Load sound data into clip.
   musicClip.load();
