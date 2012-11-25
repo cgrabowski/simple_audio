@@ -27,14 +27,7 @@ you'll end up writing far fewer lines of code with simple_audio.
 Web Audio does not have the ability to pause and resume sounds. Don't spend 
 time implementing pause and resume on top of Web Audio, just use simple_audio.
 
-3\. Portability
-
-Web Audio is a low level sound API that is only available in the browser.
-Embedded applications, console applications, and mobile applications do not
-have access to the Web Audio API. By targetting simple_audio your game
-can be more easily ported to other platforms.
-
-4\. Easy loading of sound data
+3\. Easy loading of sound data
 
 Using Web Audio you need to write around 20 lines of code with multiple
 callback functions to load a single MP3 file. With simple_audio you only
@@ -47,11 +40,19 @@ write two:
   musicClip.load();
 ```
 
-5\. Snapshots
+4\. Snapshots
 
 The simple_audio library supports saving its state in a snapshot. The
 saved state includes all audio clips, sources, and other settings. This
 snapshot can be loaded the next time the application starts.
+
+5\. Portability
+
+Web Audio is a low level sound API that is only available in the browser.
+Embedded applications, console applications, and mobile applications do not
+have access to the Web Audio API. By targetting simple_audio your game
+can be more easily ported to other platforms.
+
 
 ## Status: Beta ##
 
