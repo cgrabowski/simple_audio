@@ -97,8 +97,6 @@ four sources positioned around the listener.
 main() {
   // Construct a new AudioManager.
   AudioManager audioManager = new AudioManager();
-  // Set the base URL used when loading AudioClips.
-  setBaseURL(audioManager);
 }
 ```
 
@@ -106,10 +104,8 @@ main() {
 
 ```dart
 main() {
-  // Construct a new AudioManager.
-  AudioManager audioManager = new AudioManager();
-  // Set the base URL used when loading AudioClips.
-  setBaseURL(audioManager);
+  // Construct a new AudioManager with a clip URL prefix.
+  AudioManager audioManager = new AudioManager('/music_folder/');
   // Make a clip named 'music'.
   AudioClip musicClip = audioManager.makeClip('music', '/music.mp3');
   // Load sound data into clip.
@@ -123,8 +119,6 @@ main() {
 main() {
   // Construct a new AudioManager.
   AudioManager audioManager = new AudioManager();
-  // Set the base URL used when loading AudioClips.
-  setBaseURL(audioManager);
   // Make a clip.
   AudioClip musicClip = audioManager.makeClip('music', '/music.mp3');
   // Load sound data into clip.
@@ -143,8 +137,6 @@ main() {
 main() {
   // Construct a new AudioManager.
   AudioManager audioManager = new AudioManager();
-  // Set the base URL used when loading AudioClips.
-  setBaseURL(audioManager);
   // Make a source called 'Source A'
   AudioSource source = audioManager.makeSource('Source A');
   // Place the source at (1, 0, 1).
@@ -158,8 +150,6 @@ main() {
 main() {
   // Construct a new AudioManager.
   AudioManager audioManager = new AudioManager();
-  // Set the base URL used when loading AudioClips.
-  setBaseURL(audioManager);
   // Make a source called 'Source A'
   AudioSource source = audioManager.makeSource('Source A');
   // This source is not affected by the position of the listener.

@@ -37,14 +37,17 @@ class AudioManager {
   GainNode _musicGain;
   GainNode _sourceGain;
 
-  String baseURL = '';
+  String baseURL;
 
   Map<String, AudioClip> _clips = new Map<String, AudioClip>();
   Map<String, AudioSource> _sources = new Map<String, AudioSource>();
   AudioMusic _music;
 
-  /** Construct a new AudioManager */
-  AudioManager() {
+  /** Construct a new AudioManager,
+   * can specify [baseURL] which is prepended to all clip URLs.
+   * [baseURL] defaults t= '/'
+   */
+  AudioManager([this.baseURL = '/']) {
     _context = new AudioContext();
     _destination = _context.destination;
     _listener = _context.listener;

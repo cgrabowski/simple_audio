@@ -2,8 +2,8 @@ import 'dart:html';
 import 'package:simple_audio/simple_audio.dart';
 import 'common.dart';
 
-AudioManager audioManager = new AudioManager();
-AudioSound loopingSound = null;
+AudioManager audioManager;
+AudioSound loopingSound;
 String sourceName = 'Page';
 
 String baseURL = null; // Automatically set.
@@ -15,7 +15,7 @@ String musicClipURL = 'clips/deeper.ogg';
 List<AudioSource> globalSources = new List<AudioSource>();
 
 void main() {
-  setBaseURL(audioManager);
+  audioManager = new AudioManager(getDemoBaseURL());
   audioManager.makeClip(clipName, clipURL).load();
   audioManager.makeClip(musicClipName, musicClipURL).load();
   audioManager.music.clip = audioManager.findClip(musicClipName);
