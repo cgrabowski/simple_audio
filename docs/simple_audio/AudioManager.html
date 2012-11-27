@@ -64,7 +64,7 @@ class AudioManager {
 
  /** Construct a new AudioManager,
   * can specify [baseURL] which is prepended to all clip URLs.
-  * [baseURL] defaults t= '/'
+  * [baseURL] defaults to '/'
   */
  AudioManager([this.baseURL = '/']) {
    _context = new AudioContext();
@@ -223,6 +223,31 @@ class AudioManager {
    return clip;
  }
 
+ /** Batch create many clips. */
+ List&lt;AudioClip&gt; makeClips(List&lt;String&gt; names, List&lt;String&gt; urls) {
+   if (names == null || urls == null ||
+       (names.length != urls.length)) {
+     throw new ArgumentError('Invalid arguments.');
+   }
+   List&lt;AudioClip&gt; clips = new List&lt;AudioClip&gt;();
+   for (int i = 0; i &lt; names.length; i++) {
+     clips.add(makeClip(names[i], urls[i]));
+   }
+ }
+
+ /** Batch load all clips not marked as ready to play.
+  * Returns a single Future which will complete once all the clips have loaded.
+  */
+ Future&lt;List&lt;AudioClip&gt;&gt; loadClips() {
+   List&lt;Future&lt;AudioClip&gt;&gt; loaded = new List&lt;Future&lt;AudioClip&gt;&gt;();
+   _clips.forEach((name, clip) {
+     if (clip.isReadyToPlay == false) {
+       loaded.add(clip.load());
+     }
+   });
+   return Futures.wait(loaded);
+ }
+
  /** Create an [AudioSource] and assign it [name] */
  AudioSource makeSource(String name) {
    AudioSource source = _sources[name];
@@ -326,7 +351,7 @@ new <strong>AudioManager</strong>([String baseURL = '/']) <a class="anchor-link"
 can specify 
 <span class="param">baseURL</span> which is prepended to all clip URLs.
 
-<span class="param">baseURL</span> defaults t= '/'</p>
+<span class="param">baseURL</span> defaults to '/'</p>
 <pre class="source">
 AudioManager([this.baseURL = '/']) {
  _context = new AudioContext();
@@ -587,6 +612,26 @@ void fromMap(Map map) {
 </pre>
 </div>
 </div>
+<div class="method"><h4 id="loadClips">
+<button class="show-code">Code</button>
+Future&lt;List&lt;<a href="../simple_audio/AudioClip.html">AudioClip</a>&gt;&gt; <strong>loadClips</strong>() <a class="anchor-link" href="#loadClips"
+              title="Permalink to AudioManager.loadClips">#</a></h4>
+<div class="doc">
+<p>Batch load all clips not marked as ready to play.
+Returns a single Future which will complete once all the clips have loaded.</p>
+<pre class="source">
+Future&lt;List&lt;AudioClip&gt;&gt; loadClips() {
+ List&lt;Future&lt;AudioClip&gt;&gt; loaded = new List&lt;Future&lt;AudioClip&gt;&gt;();
+ _clips.forEach((name, clip) {
+   if (clip.isReadyToPlay == false) {
+     loaded.add(clip.load());
+   }
+ });
+ return Futures.wait(loaded);
+}
+</pre>
+</div>
+</div>
 <div class="method"><h4 id="makeClip">
 <button class="show-code">Code</button>
 <a href="../simple_audio/AudioClip.html">AudioClip</a> <strong>makeClip</strong>(String name, String url) <a class="anchor-link" href="#makeClip"
@@ -603,6 +648,26 @@ AudioClip makeClip(String name, String url) {
  clip = new AudioClip._internal(this, name, url);
  _clips[name] = clip;
  return clip;
+}
+</pre>
+</div>
+</div>
+<div class="method"><h4 id="makeClips">
+<button class="show-code">Code</button>
+List&lt;<a href="../simple_audio/AudioClip.html">AudioClip</a>&gt; <strong>makeClips</strong>(List&lt;String&gt; names, List&lt;String&gt; urls) <a class="anchor-link" href="#makeClips"
+              title="Permalink to AudioManager.makeClips">#</a></h4>
+<div class="doc">
+<p>Batch create many clips.</p>
+<pre class="source">
+List&lt;AudioClip&gt; makeClips(List&lt;String&gt; names, List&lt;String&gt; urls) {
+ if (names == null || urls == null ||
+     (names.length != urls.length)) {
+   throw new ArgumentError('Invalid arguments.');
+ }
+ List&lt;AudioClip&gt; clips = new List&lt;AudioClip&gt;();
+ for (int i = 0; i &lt; names.length; i++) {
+   clips.add(makeClip(names[i], urls[i]));
+ }
 }
 </pre>
 </div>
@@ -872,7 +937,7 @@ Map toJson() {
         </div>
         
         <div class="footer">
-          <div>This page was generated at 2012-11-26 18:44:31.500</div>
+          <div>This page was generated at 2012-11-26 18:53:04.041</div>
         </div>
         <script async src="../client-static.js"></script>
         </body></html>
