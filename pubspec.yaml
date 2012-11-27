@@ -1,4 +1,5 @@
 name:  simple_audio
+version: 0.9.0
 description:  A simple audio library for video games.
 
 #dependencies:
