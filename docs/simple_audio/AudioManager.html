@@ -56,14 +56,17 @@ class AudioManager {
  GainNode _musicGain;
  GainNode _sourceGain;
 
- String baseURL = '';
+ String baseURL;
 
  Map&lt;String, AudioClip&gt; _clips = new Map&lt;String, AudioClip&gt;();
  Map&lt;String, AudioSource&gt; _sources = new Map&lt;String, AudioSource&gt;();
  AudioMusic _music;
 
- /** Construct a new AudioManager */
- AudioManager() {
+ /** Construct a new AudioManager,
+  * can specify [baseURL] which is prepended to all clip URLs.
+  * [baseURL] defaults t= '/'
+  */
+ AudioManager([this.baseURL = '/']) {
    _context = new AudioContext();
    _destination = _context.destination;
    _listener = _context.listener;
@@ -302,12 +305,6 @@ class AudioManager {
    _listener.speedOfSound = sos;
  }
 
- void setOrientation(num xForward, num yForward, num zForward,
-                     num xUp, num yUp, num zUp) {
-   _listener.setOrientation(xForward, yForward, zForward,
-                            xUp, yUp, zUp);
- }
-
  void setPosition(num x, num y, num z) {
    _listener.setPosition(x, y, z);
  }
@@ -322,12 +319,16 @@ class AudioManager {
 <h3>Constructors</h3>
 <div class="method"><h4 id="AudioManager">
 <button class="show-code">Code</button>
-new <strong>AudioManager</strong>() <a class="anchor-link" href="#AudioManager"
+new <strong>AudioManager</strong>([String baseURL = '/']) <a class="anchor-link" href="#AudioManager"
               title="Permalink to AudioManager.AudioManager">#</a></h4>
 <div class="doc">
-<p>Construct a new AudioManager</p>
+<p>Construct a new AudioManager,
+can specify 
+<span class="param">baseURL</span> which is prepended to all clip URLs.
+
+<span class="param">baseURL</span> defaults t= '/'</p>
 <pre class="source">
-AudioManager() {
+AudioManager([this.baseURL = '/']) {
  _context = new AudioContext();
  _destination = _context.destination;
  _listener = _context.listener;
@@ -356,7 +357,7 @@ String         <strong>baseURL</strong> <a class="anchor-link"
         </h4>
         <div class="doc">
 <pre class="source">
-String baseURL = '';
+String baseURL;
 </pre>
 </div>
 </div>
@@ -801,20 +802,6 @@ void resumeSources() {
 </pre>
 </div>
 </div>
-<div class="method"><h4 id="setOrientation">
-<button class="show-code">Code</button>
-void <strong>setOrientation</strong>(num xForward, num yForward, num zForward, num xUp, num yUp, num zUp) <a class="anchor-link" href="#setOrientation"
-              title="Permalink to AudioManager.setOrientation">#</a></h4>
-<div class="doc">
-<pre class="source">
-void setOrientation(num xForward, num yForward, num zForward,
-                   num xUp, num yUp, num zUp) {
- _listener.setOrientation(xForward, yForward, zForward,
-                          xUp, yUp, zUp);
-}
-</pre>
-</div>
-</div>
 <div class="method"><h4 id="setPosition">
 <button class="show-code">Code</button>
 void <strong>setPosition</strong>(num x, num y, num z) <a class="anchor-link" href="#setPosition"
@@ -885,7 +872,7 @@ Map toJson() {
         </div>
         
         <div class="footer">
-          <div>This page was generated at 2012-11-24 12:50:48.546</div>
+          <div>This page was generated at 2012-11-26 18:44:31.500</div>
         </div>
         <script async src="../client-static.js"></script>
         </body></html>
