@@ -1,0 +1,2976 @@
+
+[
+  {
+    "kind": "library",
+    "name": "simple_audio",
+    "children": [
+      {
+        "superclass": {
+          "name": "Object",
+          "refId": "Object"
+        },
+        "kind": "class",
+        "name": "AudioSnapshot",
+        "children": [
+          {
+            "returnType": {
+              "name": "Dynamic_",
+              "refId": "Dynamic_"
+            },
+            "kind": "method",
+            "name": "AudioSnapshot",
+            "children": [
+              {
+                "ref": {
+                  "name": "AudioManager",
+                  "refId": "AudioManager"
+                },
+                "kind": "param",
+                "name": "manager",
+                "id": "manager"
+              }
+            ],
+            "id": "AudioSnapshot1()"
+          },
+          {
+            "returnType": {
+              "name": "String",
+              "refId": "String"
+            },
+            "kind": "method",
+            "comment": "Take a snapshot of the manager. Snapshot includes:\nLoaded clips\nSources\nVolume\n\n",
+            "name": "takeSnapshot",
+            "id": "takeSnapshot0()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Load a snapshot of the manager.\n\n",
+            "name": "loadSnapshot",
+            "children": [
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "kind": "param",
+                "name": "snapshot",
+                "id": "snapshot"
+              }
+            ],
+            "id": "loadSnapshot1()"
+          },
+          {
+            "ref": {
+              "name": "AudioManager",
+              "refId": "AudioManager"
+            },
+            "kind": "property",
+            "name": "manager",
+            "id": "manager"
+          },
+          {
+            "returnType": {
+              "name": "Dynamic_",
+              "refId": "Dynamic_"
+            },
+            "kind": "constructor",
+            "name": "AudioSnapshot",
+            "children": [
+              {
+                "ref": {
+                  "name": "AudioManager",
+                  "refId": "AudioManager"
+                },
+                "kind": "param",
+                "name": "manager",
+                "id": "manager"
+              }
+            ],
+            "id": "AudioSnapshot1()"
+          }
+        ],
+        "id": "AudioSnapshot"
+      },
+      {
+        "superclass": {
+          "name": "Object",
+          "refId": "Object"
+        },
+        "kind": "class",
+        "comment": "The [AudioManager] class is the main entry point to the [simple_audio]\nlibrary. You can create [AudioClip]s and [AudioSource]s with the manager.\nYou can play clips from sources with the manager.\n\nThe [AudioManager] also has a listener which picks up sounds from\n[AudioSource]s. The sound picked up by the listener from the [AudioSource]s\nis played through the real, physical speakers attached to the computer.\n\n\n",
+        "name": "AudioManager",
+        "children": [
+          {
+            "returnType": {
+              "name": "Dynamic_",
+              "refId": "Dynamic_"
+            },
+            "kind": "method",
+            "comment": "Construct a new AudioManager,\ncan specify [baseURL] which is prepended to all clip URLs.\n[baseURL] defaults to '/'\n\n",
+            "name": "AudioManager",
+            "children": [
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "isOptional": true,
+                "kind": "param",
+                "name": "baseURL",
+                "id": "baseURL"
+              }
+            ],
+            "id": "AudioManager1()"
+          },
+          {
+            "returnType": {
+              "name": "Map",
+              "refId": "Map"
+            },
+            "kind": "method",
+            "name": "toJson",
+            "id": "toJson0()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "name": "fromMap",
+            "children": [
+              {
+                "ref": {
+                  "name": "Map",
+                  "refId": "Map"
+                },
+                "kind": "param",
+                "name": "map",
+                "id": "map"
+              }
+            ],
+            "id": "fromMap1()"
+          },
+          {
+            "returnType": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "method",
+            "comment": "Sample rate of the audio driver\n",
+            "name": "sampleRate",
+            "id": "sampleRate0()"
+          },
+          {
+            "returnType": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "method",
+            "comment": "Get the music volume.\n",
+            "name": "musicVolume",
+            "id": "musicVolume0()"
+          },
+          {
+            "isSetter": true,
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Set the music volume.\n",
+            "name": "musicVolume=",
+            "children": [
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "mv",
+                "id": "mv"
+              }
+            ],
+            "id": "musicVolume=1()"
+          },
+          {
+            "returnType": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "method",
+            "comment": "Get the master volume.\n",
+            "name": "masterVolume",
+            "id": "masterVolume0()"
+          },
+          {
+            "isSetter": true,
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Set the master volume.\n",
+            "name": "masterVolume=",
+            "children": [
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "mv",
+                "id": "mv"
+              }
+            ],
+            "id": "masterVolume=1()"
+          },
+          {
+            "returnType": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "method",
+            "comment": "Get the sources volume\n",
+            "name": "sourceVolume",
+            "id": "sourceVolume0()"
+          },
+          {
+            "isSetter": true,
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Set the sources volume\n",
+            "name": "sourceVolume=",
+            "children": [
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "mv",
+                "id": "mv"
+              }
+            ],
+            "id": "sourceVolume=1()"
+          },
+          {
+            "returnType": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "method",
+            "comment": "Is the master volume muted?\n",
+            "name": "mute",
+            "id": "mute0()"
+          },
+          {
+            "isSetter": true,
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Control the master mute\n",
+            "name": "mute=",
+            "children": [
+              {
+                "ref": {
+                  "name": "bool",
+                  "refId": "bool"
+                },
+                "kind": "param",
+                "name": "b",
+                "id": "b"
+              }
+            ],
+            "id": "mute=1()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Pause both music and source based sounds.\n",
+            "name": "pauseAll",
+            "id": "pauseAll0()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Resume both music and source based sounds.\n",
+            "name": "resumeAll",
+            "id": "resumeAll0()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Pause music sounds\n",
+            "name": "pauseMusic",
+            "id": "pauseMusic0()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Resume music sounds\n",
+            "name": "resumeMusic",
+            "id": "resumeMusic0()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Pause source base sounds.\n",
+            "name": "pauseSources",
+            "id": "pauseSources0()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Resume source base sounds.\n",
+            "name": "resumeSources",
+            "id": "resumeSources0()"
+          },
+          {
+            "returnType": {
+              "name": "AudioClip",
+              "refId": "AudioClip"
+            },
+            "kind": "method",
+            "comment": "Find the audio clip with [name]\n",
+            "name": "findClip",
+            "children": [
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "kind": "param",
+                "name": "name",
+                "id": "name"
+              }
+            ],
+            "id": "findClip1()"
+          },
+          {
+            "returnType": {
+              "name": "AudioSource",
+              "refId": "AudioSource"
+            },
+            "kind": "method",
+            "comment": "Find the audio source with [name]\n",
+            "name": "findSource",
+            "children": [
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "kind": "param",
+                "name": "name",
+                "id": "name"
+              }
+            ],
+            "id": "findSource1()"
+          },
+          {
+            "returnType": {
+              "name": "AudioMusic",
+              "refId": "AudioMusic"
+            },
+            "kind": "method",
+            "comment": "Get the [AudioMusic] singleton.\n",
+            "name": "music",
+            "id": "music0()"
+          },
+          {
+            "returnType": {
+              "name": "AudioClip",
+              "refId": "AudioClip"
+            },
+            "kind": "method",
+            "comment": "Create an [AudioClip] with [name].\n",
+            "name": "makeClip",
+            "children": [
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "kind": "param",
+                "name": "name",
+                "id": "name"
+              },
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "kind": "param",
+                "name": "url",
+                "id": "url"
+              }
+            ],
+            "id": "makeClip2()"
+          },
+          {
+            "returnType": {
+              "name": "List",
+              "refId": "List",
+              "arguments": [
+                {
+                  "name": "AudioClip",
+                  "refId": "AudioClip"
+                }
+              ]
+            },
+            "kind": "method",
+            "comment": "Batch create many clips.\n",
+            "name": "makeClips",
+            "children": [
+              {
+                "ref": {
+                  "name": "List",
+                  "refId": "List",
+                  "arguments": [
+                    {
+                      "name": "String",
+                      "refId": "String"
+                    }
+                  ]
+                },
+                "kind": "param",
+                "name": "names",
+                "id": "names"
+              },
+              {
+                "ref": {
+                  "name": "List",
+                  "refId": "List",
+                  "arguments": [
+                    {
+                      "name": "String",
+                      "refId": "String"
+                    }
+                  ]
+                },
+                "kind": "param",
+                "name": "urls",
+                "id": "urls"
+              }
+            ],
+            "id": "makeClips2()"
+          },
+          {
+            "returnType": {
+              "name": "Future",
+              "refId": "Future",
+              "arguments": [
+                {
+                  "name": "List",
+                  "refId": "List",
+                  "arguments": [
+                    {
+                      "name": "AudioClip",
+                      "refId": "AudioClip"
+                    }
+                  ]
+                }
+              ]
+            },
+            "kind": "method",
+            "comment": "Batch load all clips not marked as ready to play.\nReturns a single Future which will complete once all the clips have loaded.\n\n",
+            "name": "loadClips",
+            "id": "loadClips0()"
+          },
+          {
+            "returnType": {
+              "name": "AudioSource",
+              "refId": "AudioSource"
+            },
+            "kind": "method",
+            "comment": "Create an [AudioSource] and assign it [name]\n",
+            "name": "makeSource",
+            "children": [
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "kind": "param",
+                "name": "name",
+                "id": "name"
+              }
+            ],
+            "id": "makeSource1()"
+          },
+          {
+            "returnType": {
+              "name": "AudioSound",
+              "refId": "AudioSound"
+            },
+            "kind": "method",
+            "comment": "Play [clipName] from [sourceName].\n",
+            "name": "playClipFromSource",
+            "children": [
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "kind": "param",
+                "name": "sourceName",
+                "id": "sourceName"
+              },
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "kind": "param",
+                "name": "clipName",
+                "id": "clipName"
+              },
+              {
+                "ref": {
+                  "name": "bool",
+                  "refId": "bool"
+                },
+                "isOptional": true,
+                "kind": "param",
+                "name": "looped",
+                "id": "looped"
+              }
+            ],
+            "id": "playClipFromSource3()"
+          },
+          {
+            "returnType": {
+              "name": "AudioSound",
+              "refId": "AudioSound"
+            },
+            "kind": "method",
+            "comment": "Play [clipName] from [sourceName] in [delay] seconds.\n",
+            "name": "playClipFromSourceIn",
+            "children": [
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "delay",
+                "id": "delay"
+              },
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "kind": "param",
+                "name": "sourceName",
+                "id": "sourceName"
+              },
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "kind": "param",
+                "name": "clipName",
+                "id": "clipName"
+              },
+              {
+                "ref": {
+                  "name": "bool",
+                  "refId": "bool"
+                },
+                "isOptional": true,
+                "kind": "param",
+                "name": "looped",
+                "id": "looped"
+              }
+            ],
+            "id": "playClipFromSourceIn4()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Stop all sounds originating from [sourceName]\n",
+            "name": "stopSource",
+            "children": [
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "kind": "param",
+                "name": "sourceName",
+                "id": "sourceName"
+              }
+            ],
+            "id": "stopSource1()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Pause all sounds originating from [sourceName]\n",
+            "name": "pauseSource",
+            "children": [
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "kind": "param",
+                "name": "sourceName",
+                "id": "sourceName"
+              }
+            ],
+            "id": "pauseSource1()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Resume all sounds originating from [sourceName]\n",
+            "name": "resumeSource",
+            "children": [
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "kind": "param",
+                "name": "sourceName",
+                "id": "sourceName"
+              }
+            ],
+            "id": "resumeSource1()"
+          },
+          {
+            "returnType": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "method",
+            "name": "dopplerFactor",
+            "id": "dopplerFactor0()"
+          },
+          {
+            "isSetter": true,
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "name": "dopplerFactor=",
+            "children": [
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "df",
+                "id": "df"
+              }
+            ],
+            "id": "dopplerFactor=1()"
+          },
+          {
+            "returnType": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "method",
+            "name": "speedOfSound",
+            "id": "speedOfSound0()"
+          },
+          {
+            "isSetter": true,
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "name": "speedOfSound=",
+            "children": [
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "sos",
+                "id": "sos"
+              }
+            ],
+            "id": "speedOfSound=1()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "name": "setPosition",
+            "children": [
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "x",
+                "id": "x"
+              },
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "y",
+                "id": "y"
+              },
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "z",
+                "id": "z"
+              }
+            ],
+            "id": "setPosition3()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "name": "setVelocity",
+            "children": [
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "x",
+                "id": "x"
+              },
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "y",
+                "id": "y"
+              },
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "z",
+                "id": "z"
+              }
+            ],
+            "id": "setVelocity3()"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "comment": "Sample rate of the audio driver\n",
+            "name": "sampleRate",
+            "id": "sampleRate"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "comment": "Get the music volume.\n",
+            "name": "musicVolume",
+            "id": "musicVolume"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "comment": "Get the master volume.\n",
+            "name": "masterVolume",
+            "id": "masterVolume"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "comment": "Get the sources volume\n",
+            "name": "sourceVolume",
+            "id": "sourceVolume"
+          },
+          {
+            "ref": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "property",
+            "comment": "Is the master volume muted?\n",
+            "name": "mute",
+            "id": "mute"
+          },
+          {
+            "ref": {
+              "name": "AudioMusic",
+              "refId": "AudioMusic"
+            },
+            "kind": "property",
+            "comment": "Get the [AudioMusic] singleton.\n",
+            "name": "music",
+            "id": "music"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "name": "dopplerFactor",
+            "id": "dopplerFactor"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "name": "speedOfSound",
+            "id": "speedOfSound"
+          },
+          {
+            "ref": {
+              "name": "AudioContext",
+              "refId": "AudioContext"
+            },
+            "kind": "property",
+            "name": "_context",
+            "id": "_context"
+          },
+          {
+            "ref": {
+              "name": "AudioDestinationNode",
+              "refId": "AudioDestinationNode"
+            },
+            "kind": "property",
+            "name": "_destination",
+            "id": "_destination"
+          },
+          {
+            "ref": {
+              "name": "AudioListener",
+              "refId": "AudioListener"
+            },
+            "kind": "property",
+            "name": "_listener",
+            "id": "_listener"
+          },
+          {
+            "ref": {
+              "name": "GainNode",
+              "refId": "GainNode"
+            },
+            "kind": "property",
+            "name": "_masterGain",
+            "id": "_masterGain"
+          },
+          {
+            "ref": {
+              "name": "GainNode",
+              "refId": "GainNode"
+            },
+            "kind": "property",
+            "name": "_musicGain",
+            "id": "_musicGain"
+          },
+          {
+            "ref": {
+              "name": "GainNode",
+              "refId": "GainNode"
+            },
+            "kind": "property",
+            "name": "_sourceGain",
+            "id": "_sourceGain"
+          },
+          {
+            "ref": {
+              "name": "String",
+              "refId": "String"
+            },
+            "kind": "property",
+            "name": "baseURL",
+            "id": "baseURL"
+          },
+          {
+            "ref": {
+              "name": "Map",
+              "refId": "Map",
+              "arguments": [
+                {
+                  "name": "String",
+                  "refId": "String"
+                },
+                {
+                  "name": "AudioClip",
+                  "refId": "AudioClip"
+                }
+              ]
+            },
+            "kind": "property",
+            "name": "_clips",
+            "id": "_clips"
+          },
+          {
+            "ref": {
+              "name": "Map",
+              "refId": "Map",
+              "arguments": [
+                {
+                  "name": "String",
+                  "refId": "String"
+                },
+                {
+                  "name": "AudioSource",
+                  "refId": "AudioSource"
+                }
+              ]
+            },
+            "kind": "property",
+            "name": "_sources",
+            "id": "_sources"
+          },
+          {
+            "ref": {
+              "name": "AudioMusic",
+              "refId": "AudioMusic"
+            },
+            "kind": "property",
+            "name": "_music",
+            "id": "_music"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "name": "_mutedVolume",
+            "id": "_mutedVolume"
+          },
+          {
+            "ref": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "property",
+            "name": "_musicPaused",
+            "id": "_musicPaused"
+          },
+          {
+            "ref": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "property",
+            "name": "_sourcesPaused",
+            "id": "_sourcesPaused"
+          },
+          {
+            "returnType": {
+              "name": "Dynamic_",
+              "refId": "Dynamic_"
+            },
+            "kind": "constructor",
+            "comment": "Construct a new AudioManager,\ncan specify [baseURL] which is prepended to all clip URLs.\n[baseURL] defaults to '/'\n\n",
+            "name": "AudioManager",
+            "children": [
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "isOptional": true,
+                "kind": "param",
+                "name": "baseURL",
+                "id": "baseURL"
+              }
+            ],
+            "id": "AudioManager1()"
+          }
+        ],
+        "id": "AudioManager"
+      },
+      {
+        "superclass": {
+          "name": "Object",
+          "refId": "Object"
+        },
+        "kind": "class",
+        "comment": "[AudioMusic] plays a clip from an omnidirectional [AudioSource].\n\n",
+        "name": "AudioMusic",
+        "children": [
+          {
+            "returnType": {
+              "name": "Dynamic_",
+              "refId": "Dynamic_"
+            },
+            "kind": "method",
+            "name": "AudioMusic._internal",
+            "children": [
+              {
+                "ref": {
+                  "name": "AudioManager",
+                  "refId": "AudioManager"
+                },
+                "kind": "param",
+                "name": "_manager",
+                "id": "_manager"
+              },
+              {
+                "ref": {
+                  "name": "GainNode",
+                  "refId": "GainNode"
+                },
+                "kind": "param",
+                "name": "output",
+                "id": "output"
+              }
+            ],
+            "id": "AudioMusic._internal2()"
+          },
+          {
+            "returnType": {
+              "name": "Map",
+              "refId": "Map"
+            },
+            "kind": "method",
+            "name": "toJson",
+            "id": "toJson0()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "name": "fromMap",
+            "children": [
+              {
+                "ref": {
+                  "name": "Map",
+                  "refId": "Map"
+                },
+                "kind": "param",
+                "name": "map",
+                "id": "map"
+              }
+            ],
+            "id": "fromMap1()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "name": "_stop",
+            "id": "_stop0()"
+          },
+          {
+            "returnType": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "method",
+            "comment": "Is the music paused?\n",
+            "name": "pause",
+            "id": "pause0()"
+          },
+          {
+            "isSetter": true,
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Pause or unpause the music\n",
+            "name": "pause=",
+            "children": [
+              {
+                "ref": {
+                  "name": "bool",
+                  "refId": "bool"
+                },
+                "kind": "param",
+                "name": "b",
+                "id": "b"
+              }
+            ],
+            "id": "pause=1()"
+          },
+          {
+            "returnType": {
+              "name": "AudioClip",
+              "refId": "AudioClip"
+            },
+            "kind": "method",
+            "name": "clip",
+            "id": "clip0()"
+          },
+          {
+            "isSetter": true,
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "name": "clip=",
+            "children": [
+              {
+                "ref": {
+                  "name": "AudioClip",
+                  "refId": "AudioClip"
+                },
+                "kind": "param",
+                "name": "clip",
+                "id": "clip"
+              }
+            ],
+            "id": "clip=1()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Play the music clip. The music will loop.\n",
+            "name": "play",
+            "id": "play0()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Stop the music.\n",
+            "name": "stop",
+            "id": "stop0()"
+          },
+          {
+            "ref": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "property",
+            "comment": "Is the music paused?\n",
+            "name": "pause",
+            "id": "pause"
+          },
+          {
+            "ref": {
+              "name": "AudioClip",
+              "refId": "AudioClip"
+            },
+            "kind": "property",
+            "name": "clip",
+            "id": "clip"
+          },
+          {
+            "ref": {
+              "name": "AudioManager",
+              "refId": "AudioManager"
+            },
+            "kind": "property",
+            "name": "_manager",
+            "id": "_manager"
+          },
+          {
+            "ref": {
+              "name": "AudioSource",
+              "refId": "AudioSource"
+            },
+            "kind": "property",
+            "name": "_source",
+            "id": "_source"
+          },
+          {
+            "ref": {
+              "name": "AudioSound",
+              "refId": "AudioSound"
+            },
+            "kind": "property",
+            "name": "_sound",
+            "id": "_sound"
+          },
+          {
+            "ref": {
+              "name": "AudioClip",
+              "refId": "AudioClip"
+            },
+            "kind": "property",
+            "name": "_clip",
+            "id": "_clip"
+          },
+          {
+            "returnType": {
+              "name": "Dynamic_",
+              "refId": "Dynamic_"
+            },
+            "kind": "constructor",
+            "name": "AudioMusic._internal",
+            "children": [
+              {
+                "ref": {
+                  "name": "AudioManager",
+                  "refId": "AudioManager"
+                },
+                "kind": "param",
+                "name": "_manager",
+                "id": "_manager"
+              },
+              {
+                "ref": {
+                  "name": "GainNode",
+                  "refId": "GainNode"
+                },
+                "kind": "param",
+                "name": "output",
+                "id": "output"
+              }
+            ],
+            "id": "AudioMusic._internal2()"
+          }
+        ],
+        "id": "AudioMusic"
+      },
+      {
+        "superclass": {
+          "name": "Object",
+          "refId": "Object"
+        },
+        "kind": "class",
+        "comment": "[AudioSound] is an [AudioClip] scheduled to be played on an [AudioSource].\nYou cannot construct an instance of the [AudioSound] class directly, it can only be\ndone by playing an [AudioClip] from an [AudioSource] (See [AudioSource], [AudioMusic], and [AudioManager]).\n\n",
+        "name": "AudioSound",
+        "children": [
+          {
+            "returnType": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "method",
+            "comment": "Is the sound scheduled to be played?\n",
+            "name": "isScheduled",
+            "id": "isScheduled0()"
+          },
+          {
+            "returnType": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "method",
+            "comment": "Is the sound playing right now?\n",
+            "name": "isPlaying",
+            "id": "isPlaying0()"
+          },
+          {
+            "returnType": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "method",
+            "comment": "Is the sound finished being played?\n",
+            "name": "isFinished",
+            "id": "isFinished0()"
+          },
+          {
+            "returnType": {
+              "name": "Dynamic_",
+              "refId": "Dynamic_"
+            },
+            "kind": "method",
+            "name": "AudioSound._internal",
+            "children": [
+              {
+                "ref": {
+                  "name": "AudioSource",
+                  "refId": "AudioSource"
+                },
+                "kind": "param",
+                "name": "_source",
+                "id": "_source"
+              },
+              {
+                "ref": {
+                  "name": "AudioClip",
+                  "refId": "AudioClip"
+                },
+                "kind": "param",
+                "name": "_clip",
+                "id": "_clip"
+              },
+              {
+                "ref": {
+                  "name": "bool",
+                  "refId": "bool"
+                },
+                "kind": "param",
+                "name": "_loop",
+                "id": "_loop"
+              }
+            ],
+            "id": "AudioSound._internal3()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "name": "_dumpSourceNode",
+            "id": "_dumpSourceNode0()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "name": "_setupSourceNodeForPlayback",
+            "id": "_setupSourceNodeForPlayback0()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "name": "_stop",
+            "id": "_stop0()"
+          },
+          {
+            "returnType": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "method",
+            "comment": "Is the sound paused?\n",
+            "name": "pause",
+            "id": "pause0()"
+          },
+          {
+            "isSetter": true,
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Pause or unpause the sound.\n",
+            "name": "pause=",
+            "children": [
+              {
+                "ref": {
+                  "name": "bool",
+                  "refId": "bool"
+                },
+                "kind": "param",
+                "name": "b",
+                "id": "b"
+              }
+            ],
+            "id": "pause=1()"
+          },
+          {
+            "returnType": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "method",
+            "comment": "\nTime cursor for sound. Will be negative is sound is scheduled\nto be played. Positive if playing.\n\n",
+            "name": "time",
+            "id": "time0()"
+          },
+          {
+            "returnType": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "method",
+            "name": "_computePausedTime",
+            "id": "_computePausedTime0()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "name": "_pause",
+            "id": "_pause0()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "name": "_resume",
+            "id": "_resume0()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Start playing this sound in [when] seconds.\n",
+            "name": "play",
+            "children": [
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "isOptional": true,
+                "kind": "param",
+                "name": "when",
+                "id": "when"
+              }
+            ],
+            "id": "play1()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Stop playing this sound\n",
+            "name": "stop",
+            "id": "stop0()"
+          },
+          {
+            "returnType": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "method",
+            "comment": "Get the volume of the sound. 0.0 <= volume <= 1.0.\n",
+            "name": "volume",
+            "id": "volume0()"
+          },
+          {
+            "isSetter": true,
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Set the volume for the sound.\n",
+            "name": "volume=",
+            "children": [
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "v",
+                "id": "v"
+              }
+            ],
+            "id": "volume=1()"
+          },
+          {
+            "ref": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "property",
+            "comment": "Is the sound scheduled to be played?\n",
+            "name": "isScheduled",
+            "id": "isScheduled"
+          },
+          {
+            "ref": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "property",
+            "comment": "Is the sound playing right now?\n",
+            "name": "isPlaying",
+            "id": "isPlaying"
+          },
+          {
+            "ref": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "property",
+            "comment": "Is the sound finished being played?\n",
+            "name": "isFinished",
+            "id": "isFinished"
+          },
+          {
+            "ref": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "property",
+            "comment": "Is the sound paused?\n",
+            "name": "pause",
+            "id": "pause"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "comment": "\nTime cursor for sound. Will be negative is sound is scheduled\nto be played. Positive if playing.\n\n",
+            "name": "time",
+            "id": "time"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "comment": "Get the volume of the sound. 0.0 <= volume <= 1.0.\n",
+            "name": "volume",
+            "id": "volume"
+          },
+          {
+            "ref": {
+              "name": "AudioSource",
+              "refId": "AudioSource"
+            },
+            "kind": "property",
+            "name": "_source",
+            "id": "_source"
+          },
+          {
+            "ref": {
+              "name": "AudioClip",
+              "refId": "AudioClip"
+            },
+            "kind": "property",
+            "name": "_clip",
+            "id": "_clip"
+          },
+          {
+            "ref": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "property",
+            "name": "_loop",
+            "id": "_loop"
+          },
+          {
+            "ref": {
+              "name": "AudioBufferSourceNode",
+              "refId": "AudioBufferSourceNode"
+            },
+            "kind": "property",
+            "name": "_sourceNode",
+            "id": "_sourceNode"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "name": "_pausedTime",
+            "id": "_pausedTime"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "name": "_startTime",
+            "id": "_startTime"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "name": "_scheduledTime",
+            "id": "_scheduledTime"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "name": "_volume",
+            "id": "_volume"
+          },
+          {
+            "returnType": {
+              "name": "Dynamic_",
+              "refId": "Dynamic_"
+            },
+            "kind": "constructor",
+            "name": "AudioSound._internal",
+            "children": [
+              {
+                "ref": {
+                  "name": "AudioSource",
+                  "refId": "AudioSource"
+                },
+                "kind": "param",
+                "name": "_source",
+                "id": "_source"
+              },
+              {
+                "ref": {
+                  "name": "AudioClip",
+                  "refId": "AudioClip"
+                },
+                "kind": "param",
+                "name": "_clip",
+                "id": "_clip"
+              },
+              {
+                "ref": {
+                  "name": "bool",
+                  "refId": "bool"
+                },
+                "kind": "param",
+                "name": "_loop",
+                "id": "_loop"
+              }
+            ],
+            "id": "AudioSound._internal3()"
+          }
+        ],
+        "id": "AudioSound"
+      },
+      {
+        "superclass": {
+          "name": "Object",
+          "refId": "Object"
+        },
+        "kind": "class",
+        "comment": "An [AudioSource] is analogous to a speaker in the game world.\n\nThe only way to play an [AudioClip] is with an [AudioSource].\n\nAn [AudioSource] can be [positional] or not. Positional [AudioSource]s\nsound different depending on where the listener is. Non-positional\n[AudioSource]s sound the same regarldess of where the listener is.\nThe location of the listener can be controlled with an [AudioManager].\n\n\n*NOTE:* By default an [AudioSource] is [positional].\n\n",
+        "name": "AudioSource",
+        "children": [
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "name": "_setupNodes",
+            "id": "_setupNodes0()"
+          },
+          {
+            "returnType": {
+              "name": "Dynamic_",
+              "refId": "Dynamic_"
+            },
+            "kind": "method",
+            "name": "AudioSource._internal",
+            "children": [
+              {
+                "ref": {
+                  "name": "AudioManager",
+                  "refId": "AudioManager"
+                },
+                "kind": "param",
+                "name": "_manager",
+                "id": "_manager"
+              },
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "kind": "param",
+                "name": "_name",
+                "id": "_name"
+              },
+              {
+                "ref": {
+                  "name": "GainNode",
+                  "refId": "GainNode"
+                },
+                "kind": "param",
+                "name": "_output",
+                "id": "_output"
+              }
+            ],
+            "id": "AudioSource._internal3()"
+          },
+          {
+            "returnType": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "method",
+            "name": "positional",
+            "id": "positional0()"
+          },
+          {
+            "isSetter": true,
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "name": "positional=",
+            "children": [
+              {
+                "ref": {
+                  "name": "bool",
+                  "refId": "bool"
+                },
+                "kind": "param",
+                "name": "b",
+                "id": "b"
+              }
+            ],
+            "id": "positional=1()"
+          },
+          {
+            "returnType": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "method",
+            "comment": "Get the volume of the source. 0.0 <= volume <= 1.0.\n",
+            "name": "volume",
+            "id": "volume0()"
+          },
+          {
+            "isSetter": true,
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Set the volume for the source. All sounds being played are affected.\n",
+            "name": "volume=",
+            "children": [
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "v",
+                "id": "v"
+              }
+            ],
+            "id": "volume=1()"
+          },
+          {
+            "returnType": {
+              "name": "Map",
+              "refId": "Map"
+            },
+            "kind": "method",
+            "name": "toJson",
+            "id": "toJson0()"
+          },
+          {
+            "returnType": {
+              "name": "AudioSource",
+              "refId": "AudioSource"
+            },
+            "kind": "method",
+            "name": "fromMap",
+            "children": [
+              {
+                "ref": {
+                  "name": "Map",
+                  "refId": "Map"
+                },
+                "kind": "param",
+                "name": "map",
+                "id": "map"
+              }
+            ],
+            "id": "fromMap1()"
+          },
+          {
+            "returnType": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "method",
+            "comment": "Is the source muted?\n",
+            "name": "mute",
+            "id": "mute0()"
+          },
+          {
+            "isSetter": true,
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Mute or unmute the source.\n",
+            "name": "mute=",
+            "children": [
+              {
+                "ref": {
+                  "name": "bool",
+                  "refId": "bool"
+                },
+                "kind": "param",
+                "name": "b",
+                "id": "b"
+              }
+            ],
+            "id": "mute=1()"
+          },
+          {
+            "returnType": {
+              "name": "AudioSound",
+              "refId": "AudioSound"
+            },
+            "kind": "method",
+            "comment": "Play [clip] from the source.\n",
+            "name": "playOnce",
+            "children": [
+              {
+                "ref": {
+                  "name": "AudioClip",
+                  "refId": "AudioClip"
+                },
+                "kind": "param",
+                "name": "clip",
+                "id": "clip"
+              }
+            ],
+            "id": "playOnce1()"
+          },
+          {
+            "returnType": {
+              "name": "AudioSound",
+              "refId": "AudioSound"
+            },
+            "kind": "method",
+            "comment": "Play [clip] from the source starting in [delay] seconds.\n",
+            "name": "playOnceIn",
+            "children": [
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "delay",
+                "id": "delay"
+              },
+              {
+                "ref": {
+                  "name": "AudioClip",
+                  "refId": "AudioClip"
+                },
+                "kind": "param",
+                "name": "clip",
+                "id": "clip"
+              }
+            ],
+            "id": "playOnceIn2()"
+          },
+          {
+            "returnType": {
+              "name": "AudioSound",
+              "refId": "AudioSound"
+            },
+            "kind": "method",
+            "comment": "Play [clip] from the source in a loop.\n",
+            "name": "playLooped",
+            "children": [
+              {
+                "ref": {
+                  "name": "AudioClip",
+                  "refId": "AudioClip"
+                },
+                "kind": "param",
+                "name": "clip",
+                "id": "clip"
+              }
+            ],
+            "id": "playLooped1()"
+          },
+          {
+            "returnType": {
+              "name": "AudioSound",
+              "refId": "AudioSound"
+            },
+            "kind": "method",
+            "comment": "Play [clip] from the source in a loop starting in [delay]\nseconds.\n\n",
+            "name": "playLoopedIn",
+            "children": [
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "delay",
+                "id": "delay"
+              },
+              {
+                "ref": {
+                  "name": "AudioClip",
+                  "refId": "AudioClip"
+                },
+                "kind": "param",
+                "name": "clip",
+                "id": "clip"
+              }
+            ],
+            "id": "playLoopedIn2()"
+          },
+          {
+            "returnType": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "method",
+            "name": "_scanSounds",
+            "id": "_scanSounds0()"
+          },
+          {
+            "returnType": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "method",
+            "comment": "Is the source currently paused?\n",
+            "name": "pause",
+            "id": "pause0()"
+          },
+          {
+            "isSetter": true,
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Pause or resume the source\n",
+            "name": "pause=",
+            "children": [
+              {
+                "ref": {
+                  "name": "bool",
+                  "refId": "bool"
+                },
+                "kind": "param",
+                "name": "b",
+                "id": "b"
+              }
+            ],
+            "id": "pause=1()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "name": "_pause",
+            "id": "_pause0()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "name": "_resume",
+            "id": "_resume0()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Stop the source. Affects all playing and scheduled sounds.\n",
+            "name": "stop",
+            "id": "stop0()"
+          },
+          {
+            "returnType": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "method",
+            "comment": "X position of the source.\n",
+            "name": "x",
+            "id": "x0()"
+          },
+          {
+            "returnType": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "method",
+            "comment": "Y position of the source.\n",
+            "name": "y",
+            "id": "y0()"
+          },
+          {
+            "returnType": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "method",
+            "comment": "Z position of the source.\n",
+            "name": "z",
+            "id": "z0()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "\nSet the position of the source.\n\n",
+            "name": "setPosition",
+            "children": [
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "x",
+                "id": "x"
+              },
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "y",
+                "id": "y"
+              },
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "z",
+                "id": "z"
+              }
+            ],
+            "id": "setPosition3()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "\nSet the linear velocity of the source.\n\n",
+            "name": "setVelocity",
+            "children": [
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "x",
+                "id": "x"
+              },
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "y",
+                "id": "y"
+              },
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "z",
+                "id": "z"
+              }
+            ],
+            "id": "setVelocity3()"
+          },
+          {
+            "ref": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "property",
+            "name": "positional",
+            "id": "positional"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "comment": "Get the volume of the source. 0.0 <= volume <= 1.0.\n",
+            "name": "volume",
+            "id": "volume"
+          },
+          {
+            "ref": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "property",
+            "comment": "Is the source muted?\n",
+            "name": "mute",
+            "id": "mute"
+          },
+          {
+            "ref": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "property",
+            "comment": "Is the source currently paused?\n",
+            "name": "pause",
+            "id": "pause"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "comment": "X position of the source.\n",
+            "name": "x",
+            "id": "x"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "comment": "Y position of the source.\n",
+            "name": "y",
+            "id": "y"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "comment": "Z position of the source.\n",
+            "name": "z",
+            "id": "z"
+          },
+          {
+            "ref": {
+              "name": "AudioManager",
+              "refId": "AudioManager"
+            },
+            "kind": "property",
+            "name": "_manager",
+            "id": "_manager"
+          },
+          {
+            "ref": {
+              "name": "String",
+              "refId": "String"
+            },
+            "kind": "property",
+            "name": "_name",
+            "id": "_name"
+          },
+          {
+            "ref": {
+              "name": "GainNode",
+              "refId": "GainNode"
+            },
+            "kind": "property",
+            "name": "_output",
+            "id": "_output"
+          },
+          {
+            "ref": {
+              "name": "GainNode",
+              "refId": "GainNode"
+            },
+            "kind": "property",
+            "name": "_gainNode",
+            "id": "_gainNode"
+          },
+          {
+            "ref": {
+              "name": "PannerNode",
+              "refId": "PannerNode"
+            },
+            "kind": "property",
+            "name": "_panNode",
+            "id": "_panNode"
+          },
+          {
+            "ref": {
+              "name": "List",
+              "refId": "List",
+              "arguments": [
+                {
+                  "name": "AudioSound",
+                  "refId": "AudioSound"
+                }
+              ]
+            },
+            "kind": "property",
+            "name": "_sounds",
+            "id": "_sounds"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "name": "_mutedVolume",
+            "id": "_mutedVolume"
+          },
+          {
+            "ref": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "property",
+            "name": "_isPaused",
+            "id": "_isPaused"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "name": "_x",
+            "id": "_x"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "name": "_y",
+            "id": "_y"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "name": "_z",
+            "id": "_z"
+          },
+          {
+            "ref": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "property",
+            "name": "_positional",
+            "id": "_positional"
+          },
+          {
+            "returnType": {
+              "name": "Dynamic_",
+              "refId": "Dynamic_"
+            },
+            "kind": "constructor",
+            "name": "AudioSource._internal",
+            "children": [
+              {
+                "ref": {
+                  "name": "AudioManager",
+                  "refId": "AudioManager"
+                },
+                "kind": "param",
+                "name": "_manager",
+                "id": "_manager"
+              },
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "kind": "param",
+                "name": "_name",
+                "id": "_name"
+              },
+              {
+                "ref": {
+                  "name": "GainNode",
+                  "refId": "GainNode"
+                },
+                "kind": "param",
+                "name": "_output",
+                "id": "_output"
+              }
+            ],
+            "id": "AudioSource._internal3()"
+          }
+        ],
+        "id": "AudioSource"
+      },
+      {
+        "superclass": {
+          "name": "Object",
+          "refId": "Object"
+        },
+        "kind": "class",
+        "comment": "An [AudioClip] stores sound data. To play an [AudioClip],\nsee [AudioSource], [AudioMusic], and [AudioManager].\n\n",
+        "name": "AudioClip",
+        "children": [
+          {
+            "isSetter": true,
+            "returnType": {
+              "name": "Dynamic_",
+              "refId": "Dynamic_"
+            },
+            "kind": "method",
+            "name": "url=",
+            "children": [
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "kind": "param",
+                "name": "u",
+                "id": "u"
+              }
+            ],
+            "id": "url=1()"
+          },
+          {
+            "returnType": {
+              "name": "String",
+              "refId": "String"
+            },
+            "kind": "method",
+            "name": "url",
+            "id": "url0()"
+          },
+          {
+            "returnType": {
+              "name": "Dynamic_",
+              "refId": "Dynamic_"
+            },
+            "kind": "method",
+            "name": "AudioClip._internal",
+            "children": [
+              {
+                "ref": {
+                  "name": "AudioManager",
+                  "refId": "AudioManager"
+                },
+                "kind": "param",
+                "name": "_manager",
+                "id": "_manager"
+              },
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "kind": "param",
+                "name": "_name",
+                "id": "_name"
+              },
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "kind": "param",
+                "name": "_url",
+                "id": "_url"
+              }
+            ],
+            "id": "AudioClip._internal3()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "name": "_empty",
+            "id": "_empty0()"
+          },
+          {
+            "returnType": {
+              "name": "Map",
+              "refId": "Map"
+            },
+            "kind": "method",
+            "name": "toJson",
+            "id": "toJson0()"
+          },
+          {
+            "returnType": {
+              "name": "AudioClip",
+              "refId": "AudioClip"
+            },
+            "kind": "method",
+            "name": "fromMap",
+            "children": [
+              {
+                "ref": {
+                  "name": "Map",
+                  "refId": "Map"
+                },
+                "kind": "param",
+                "name": "map",
+                "id": "map"
+              }
+            ],
+            "id": "fromMap1()"
+          },
+          {
+            "returnType": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "method",
+            "comment": "Does the clip have an error?\n",
+            "name": "hasError",
+            "id": "hasError0()"
+          },
+          {
+            "returnType": {
+              "name": "String",
+              "refId": "String"
+            },
+            "kind": "method",
+            "comment": "Human readable error\n",
+            "name": "errorString",
+            "id": "errorString0()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Clear any error.\n",
+            "name": "clearError",
+            "id": "clearError0()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "name": "_setError",
+            "children": [
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "kind": "param",
+                "name": "error",
+                "id": "error"
+              }
+            ],
+            "id": "_setError1()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "name": "_onDecode",
+            "children": [
+              {
+                "ref": {
+                  "name": "AudioBuffer",
+                  "refId": "AudioBuffer"
+                },
+                "kind": "param",
+                "name": "buffer",
+                "id": "buffer"
+              },
+              {
+                "ref": {
+                  "name": "Completer",
+                  "refId": "Completer",
+                  "arguments": [
+                    {
+                      "name": "AudioClip",
+                      "refId": "AudioClip"
+                    }
+                  ]
+                },
+                "kind": "param",
+                "name": "completer",
+                "id": "completer"
+              }
+            ],
+            "id": "_onDecode2()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "name": "_onRequestSuccess",
+            "children": [
+              {
+                "ref": {
+                  "name": "HttpRequest",
+                  "refId": "HttpRequest"
+                },
+                "kind": "param",
+                "name": "request",
+                "id": "request"
+              },
+              {
+                "ref": {
+                  "name": "Completer",
+                  "refId": "Completer",
+                  "arguments": [
+                    {
+                      "name": "AudioClip",
+                      "refId": "AudioClip"
+                    }
+                  ]
+                },
+                "kind": "param",
+                "name": "completer",
+                "id": "completer"
+              }
+            ],
+            "id": "_onRequestSuccess2()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "name": "_onRequestError",
+            "children": [
+              {
+                "ref": {
+                  "name": "HttpRequest",
+                  "refId": "HttpRequest"
+                },
+                "kind": "param",
+                "name": "request",
+                "id": "request"
+              },
+              {
+                "ref": {
+                  "name": "Completer",
+                  "refId": "Completer",
+                  "arguments": [
+                    {
+                      "name": "AudioClip",
+                      "refId": "AudioClip"
+                    }
+                  ]
+                },
+                "kind": "param",
+                "name": "completer",
+                "id": "completer"
+              }
+            ],
+            "id": "_onRequestError2()"
+          },
+          {
+            "returnType": {
+              "name": "Future",
+              "refId": "Future",
+              "arguments": [
+                {
+                  "name": "AudioClip",
+                  "refId": "AudioClip"
+                }
+              ]
+            },
+            "kind": "method",
+            "comment": "Fetch and decode the clip's [url] into the clip buffer.\nReturns a [Future<AudioClip>] which completes to *this*.\n[hasError] and [errorString] will indicate and explain respetively\nany load errors.\n\n",
+            "name": "load",
+            "id": "load0()"
+          },
+          {
+            "returnType": {
+              "name": "void",
+              "refId": "void"
+            },
+            "kind": "method",
+            "comment": "Make an empty clip buffer with [numberOfSampleFrames] in\neach [numberOfChannels]. The buffer plays at a rate of [sampleRate].\nThe duration (in seconds) of the buffer is equal to:\nnumberOfSampleFrames / sampleRate\n\n",
+            "name": "makeBuffer",
+            "children": [
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "numberOfSampleFrames",
+                "id": "numberOfSampleFrames"
+              },
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "numberOfChannels",
+                "id": "numberOfChannels"
+              },
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "sampleRate",
+                "id": "sampleRate"
+              }
+            ],
+            "id": "makeBuffer3()"
+          },
+          {
+            "returnType": {
+              "name": "Float32Array",
+              "refId": "Float32Array"
+            },
+            "kind": "method",
+            "comment": "Return the sample frames array for [channel]. Assuming a stereo setup,\nthe left and right speakers are mapped to channel 0 and 1 respectively.\n",
+            "name": "getSampleFramesForChannel",
+            "children": [
+              {
+                "ref": {
+                  "name": "num",
+                  "refId": "num"
+                },
+                "kind": "param",
+                "name": "channel",
+                "id": "channel"
+              }
+            ],
+            "id": "getSampleFramesForChannel1()"
+          },
+          {
+            "returnType": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "method",
+            "comment": "Number of clip channels.\n",
+            "name": "numberOfChannels",
+            "id": "numberOfChannels0()"
+          },
+          {
+            "returnType": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "method",
+            "comment": "Length of clip in seconds.\n",
+            "name": "length",
+            "id": "length0()"
+          },
+          {
+            "returnType": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "method",
+            "comment": "Length of clip in samples.\n",
+            "name": "samples",
+            "id": "samples0()"
+          },
+          {
+            "returnType": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "method",
+            "comment": "Samples per second.\n",
+            "name": "frequency",
+            "id": "frequency0()"
+          },
+          {
+            "returnType": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "method",
+            "comment": "Is the clip ready to be played?\n",
+            "name": "isReadyToPlay",
+            "id": "isReadyToPlay0()"
+          },
+          {
+            "ref": {
+              "name": "String",
+              "refId": "String"
+            },
+            "kind": "property",
+            "name": "url",
+            "id": "url"
+          },
+          {
+            "ref": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "property",
+            "comment": "Does the clip have an error?\n",
+            "name": "hasError",
+            "id": "hasError"
+          },
+          {
+            "ref": {
+              "name": "String",
+              "refId": "String"
+            },
+            "kind": "property",
+            "comment": "Human readable error\n",
+            "name": "errorString",
+            "id": "errorString"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "comment": "Number of clip channels.\n",
+            "name": "numberOfChannels",
+            "id": "numberOfChannels"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "comment": "Length of clip in seconds.\n",
+            "name": "length",
+            "id": "length"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "comment": "Length of clip in samples.\n",
+            "name": "samples",
+            "id": "samples"
+          },
+          {
+            "ref": {
+              "name": "num",
+              "refId": "num"
+            },
+            "kind": "property",
+            "comment": "Samples per second.\n",
+            "name": "frequency",
+            "id": "frequency"
+          },
+          {
+            "ref": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "property",
+            "comment": "Is the clip ready to be played?\n",
+            "name": "isReadyToPlay",
+            "id": "isReadyToPlay"
+          },
+          {
+            "ref": {
+              "name": "AudioManager",
+              "refId": "AudioManager"
+            },
+            "kind": "property",
+            "name": "_manager",
+            "id": "_manager"
+          },
+          {
+            "ref": {
+              "name": "String",
+              "refId": "String"
+            },
+            "kind": "property",
+            "name": "_name",
+            "id": "_name"
+          },
+          {
+            "ref": {
+              "name": "String",
+              "refId": "String"
+            },
+            "kind": "property",
+            "name": "_url",
+            "id": "_url"
+          },
+          {
+            "ref": {
+              "name": "AudioBuffer",
+              "refId": "AudioBuffer"
+            },
+            "kind": "property",
+            "name": "_buffer",
+            "id": "_buffer"
+          },
+          {
+            "ref": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "property",
+            "name": "_hasError",
+            "id": "_hasError"
+          },
+          {
+            "ref": {
+              "name": "String",
+              "refId": "String"
+            },
+            "kind": "property",
+            "name": "_errorString",
+            "id": "_errorString"
+          },
+          {
+            "ref": {
+              "name": "bool",
+              "refId": "bool"
+            },
+            "kind": "property",
+            "name": "_isReadyToPlay",
+            "id": "_isReadyToPlay"
+          },
+          {
+            "returnType": {
+              "name": "Dynamic_",
+              "refId": "Dynamic_"
+            },
+            "kind": "constructor",
+            "name": "AudioClip._internal",
+            "children": [
+              {
+                "ref": {
+                  "name": "AudioManager",
+                  "refId": "AudioManager"
+                },
+                "kind": "param",
+                "name": "_manager",
+                "id": "_manager"
+              },
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "kind": "param",
+                "name": "_name",
+                "id": "_name"
+              },
+              {
+                "ref": {
+                  "name": "String",
+                  "refId": "String"
+                },
+                "kind": "param",
+                "name": "_url",
+                "id": "_url"
+              }
+            ],
+            "id": "AudioClip._internal3()"
+          }
+        ],
+        "id": "AudioClip"
+      }
+    ],
+    "id": "file:///Users/johnmccutchan/workspace/simpleaudio/lib/simple_audio.dart"
+  }
+]
