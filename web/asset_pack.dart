@@ -1,34 +1,35 @@
 import 'dart:html';
 import 'package:simple_audio/simple_audio.dart';
+import 'package:simple_audio/simple_audio_asset_pack.dart';
+import 'package:asset_pack/asset_pack.dart';
 import 'common.dart';
 
+// asset_pack AssetManager.
+AssetManager assetManager = new AssetManager();
+// simple_audio AudioManager.
 AudioManager audioManager = new AudioManager();
+
 AudioSound loopingSound = null;
 String sourceName = 'Page';
 
-String clipName = 'Wilhelm';
-String clipURL = 'clippack/clips/wilhelm.ogg';
-String musicClipName = 'Deeper';
-String musicClipURL = 'clippack/clips/deeper.ogg';
+String packName = 'clippack.pack';
 
+void post_pack_loaded() {
+  audioManager.music.clip = assetManager.clips.deeper;
+}
 
 void main() {
   audioManager = new AudioManager(getDemoBaseURL());
-  audioManager.makeClip(clipName, clipURL).load();
-  audioManager.makeClip(musicClipName, musicClipURL).load();
-  audioManager.music.clip = audioManager.findClip(musicClipName);
+  registerSimpleAudioWithAssetManager(audioManager, assetManager);
+  assetManager.loadPack('clips', '${getDemoBaseURL()}/$packName').then((_) {
+    post_pack_loaded();
+    print('pack loaded.');
+  });
+
   audioManager.makeSource(sourceName);
 
   query("#clip_once")
     ..on.click.add(playOnce);
-  query("#clip_once_delay")
-  ..on.click.add(playOnceDelay);
-  query("#clip_loop_start")
-    ..on.click.add(startLoop);
-  query("#clip_loop_stop")
-    ..on.click.add(stopLoop);
-  query("#pause_sources")
-    ..on.click.add(pauseLoop);
   query("#pause_all")
     ..on.click.add(pauseAll);
 
@@ -59,26 +60,8 @@ void main() {
 }
 
 void playOnce(Event event) {
-  audioManager.playClipFromSourceIn(0.0, sourceName, clipName);
-}
-
-void playOnceDelay(Event event) {
-  audioManager.playClipFromSourceIn(2.0, sourceName, clipName);
-}
-
-void startLoop(Event event) {
-  if (loopingSound != null) {
-    loopingSound.stop();
-  }
-  loopingSound = audioManager.playClipFromSource(sourceName, clipName, true);
-}
-
-void stopLoop(Event event) {
-  loopingSound.stop();
-}
-
-void pauseLoop(Event event) {
-  audioManager.findSource(sourceName).pause = !audioManager.findSource(sourceName).pause;
+  AudioSource source = audioManager.findSource(sourceName);
+  source.playOnce(assetManager.clips.wilhelm);
 }
 
 void startMusic(Event event) {
