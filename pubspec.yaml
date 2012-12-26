@@ -2,6 +2,6 @@ name:  simple_audio
 version: 0.9.0
 description:  A simple audio library for video games.
 
-#dependencies:
-#  js: any
-#  unittest: { sdk: unittest }
+dependencies:
+    asset_pack:
+        git: https://github.com/johnmccutchan/assetpack
