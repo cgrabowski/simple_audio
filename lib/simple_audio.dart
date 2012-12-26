@@ -22,6 +22,7 @@ library simple_audio;
 import 'dart:json';
 import 'dart:web_audio';
 import 'dart:html';
+import 'dart:web_audio';
 
 part 'simple_audio/audio_clip.dart';
 part 'simple_audio/audio_source.dart';

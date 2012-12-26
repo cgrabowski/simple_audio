@@ -146,7 +146,7 @@ class AudioClip {
    _buffer = _manager._context.createBuffer(numberOfChannels,
                                             numberOfChannels,
                                             sampleRate);
-   isReadyToPlay = true;
+   _isReadyToPlay = true;
  }
 
  /** Return the sample frames array for [channel]. Assuming a stereo setup,
@@ -418,7 +418,7 @@ void makeBuffer(num numberOfSampleFrames, num numberOfChannels, num sampleRate) 
  _buffer = _manager._context.createBuffer(numberOfChannels,
                                           numberOfChannels,
                                           sampleRate);
- isReadyToPlay = true;
+ _isReadyToPlay = true;
 }
 </pre>
 </div>
@@ -445,7 +445,7 @@ Map toJson() {
         </div>
         
         <div class="footer">
-          <div>This page was generated at 2012-11-26 18:53:04.076</div>
+          <div>This page was generated at 2012-12-05 10:17:38.832</div>
         </div>
         <script async src="../client-static.js"></script>
         </body></html>

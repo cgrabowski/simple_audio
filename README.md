@@ -3,7 +3,8 @@
 
 ## Introduction ##
 
-A simple to use audio library for video games. Supports 3D positional audio.
+A simple to use audio library for video games written in Dart.
+Supports 3D positional audio.
 
 ## Features ##
 
