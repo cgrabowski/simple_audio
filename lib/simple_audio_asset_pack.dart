@@ -27,9 +27,9 @@ class _AssetLoaderClip extends AssetLoader {
   final AudioManager audioManager;
   _AssetLoaderClip(this.audioManager);
 
-  Future<dynamic> load(String name, String url, String type,
-                       Map loadArguments) {
-    AudioClip clip = new AudioClip.external(audioManager, name, url);
+  Future<dynamic> load(AssetRequest assetRequest) {
+    AudioClip clip = new AudioClip.external(audioManager, assetRequest.name,
+                                            assetRequest.URL);
     return clip.load();
   }
 
@@ -39,8 +39,7 @@ class _AssetLoaderClip extends AssetLoader {
 
 class _AssetImporterClip extends AssetImporter {
   dynamic get fallback => null;
-  Future<dynamic> import(dynamic payload, String name, String url, String type,
-                         Map<String, dynamic> importArguments) {
+  Future<dynamic> import(dynamic payload, AssetRequest assetRequest) {
     // NO-OP. Handled in the loader.
     return new Future.immediate(payload);
   }
