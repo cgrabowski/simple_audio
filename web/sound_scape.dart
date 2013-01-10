@@ -8,9 +8,9 @@ String sourceName = 'Page';
 
 String baseURL = null; // Automatically set.
 String clipName = 'Wilhelm';
-String clipURL = 'clips/wilhelm.ogg';
+String clipURL = 'clippack/clips/wilhelm.ogg';
 String musicClipName = 'Deeper';
-String musicClipURL = 'clips/deeper.ogg';
+String musicClipURL = 'clippack/clips/deeper.ogg';
 
 List<AudioSource> globalSources = new List<AudioSource>();
 
