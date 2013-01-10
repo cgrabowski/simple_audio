@@ -14,8 +14,8 @@
         "children": [
           {
             "returnType": {
-              "name": "Dynamic_",
-              "refId": "Dynamic_"
+              "name": "dynamic",
+              "refId": "dynamic"
             },
             "kind": "method",
             "name": "AudioSnapshot",
@@ -74,8 +74,8 @@
           },
           {
             "returnType": {
-              "name": "Dynamic_",
-              "refId": "Dynamic_"
+              "name": "dynamic",
+              "refId": "dynamic"
             },
             "kind": "constructor",
             "name": "AudioSnapshot",
@@ -106,8 +106,8 @@
         "children": [
           {
             "returnType": {
-              "name": "Dynamic_",
-              "refId": "Dynamic_"
+              "name": "dynamic",
+              "refId": "dynamic"
             },
             "kind": "method",
             "comment": "Construct a new AudioManager,\ncan specify [baseURL] which is prepended to all clip URLs.\n[baseURL] defaults to '/'\n\n",
@@ -1031,8 +1031,8 @@
           },
           {
             "returnType": {
-              "name": "Dynamic_",
-              "refId": "Dynamic_"
+              "name": "dynamic",
+              "refId": "dynamic"
             },
             "kind": "constructor",
             "comment": "Construct a new AudioManager,\ncan specify [baseURL] which is prepended to all clip URLs.\n[baseURL] defaults to '/'\n\n",
@@ -1065,8 +1065,8 @@
         "children": [
           {
             "returnType": {
-              "name": "Dynamic_",
-              "refId": "Dynamic_"
+              "name": "dynamic",
+              "refId": "dynamic"
             },
             "kind": "method",
             "name": "AudioMusic._internal",
@@ -1269,8 +1269,8 @@
           },
           {
             "returnType": {
-              "name": "Dynamic_",
-              "refId": "Dynamic_"
+              "name": "dynamic",
+              "refId": "dynamic"
             },
             "kind": "constructor",
             "name": "AudioMusic._internal",
@@ -1340,8 +1340,8 @@
           },
           {
             "returnType": {
-              "name": "Dynamic_",
-              "refId": "Dynamic_"
+              "name": "dynamic",
+              "refId": "dynamic"
             },
             "kind": "method",
             "name": "AudioSound._internal",
@@ -1670,8 +1670,8 @@
           },
           {
             "returnType": {
-              "name": "Dynamic_",
-              "refId": "Dynamic_"
+              "name": "dynamic",
+              "refId": "dynamic"
             },
             "kind": "constructor",
             "name": "AudioSound._internal",
@@ -1729,8 +1729,8 @@
           },
           {
             "returnType": {
-              "name": "Dynamic_",
-              "refId": "Dynamic_"
+              "name": "dynamic",
+              "refId": "dynamic"
             },
             "kind": "method",
             "name": "AudioSource._internal",
@@ -2352,8 +2352,8 @@
           },
           {
             "returnType": {
-              "name": "Dynamic_",
-              "refId": "Dynamic_"
+              "name": "dynamic",
+              "refId": "dynamic"
             },
             "kind": "constructor",
             "name": "AudioSource._internal",
@@ -2403,8 +2403,8 @@
           {
             "isSetter": true,
             "returnType": {
-              "name": "Dynamic_",
-              "refId": "Dynamic_"
+              "name": "dynamic",
+              "refId": "dynamic"
             },
             "kind": "method",
             "name": "url=",
@@ -2432,8 +2432,8 @@
           },
           {
             "returnType": {
-              "name": "Dynamic_",
-              "refId": "Dynamic_"
+              "name": "dynamic",
+              "refId": "dynamic"
             },
             "kind": "method",
             "name": "AudioClip._internal",
@@ -2931,8 +2931,8 @@
           },
           {
             "returnType": {
-              "name": "Dynamic_",
-              "refId": "Dynamic_"
+              "name": "dynamic",
+              "refId": "dynamic"
             },
             "kind": "constructor",
             "name": "AudioClip._internal",
