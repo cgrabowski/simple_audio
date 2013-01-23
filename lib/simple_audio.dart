@@ -19,9 +19,10 @@
 */
 
 library simple_audio;
-import 'dart:json';
+import 'dart:json' as JSON;
 import 'dart:html';
 import 'dart:web_audio';
+import 'dart:async';
 
 part 'simple_audio/audio_clip.dart';
 part 'simple_audio/audio_source.dart';

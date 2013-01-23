@@ -226,7 +226,7 @@ class AudioManager {
         loaded.add(clip.load());
       }
     });
-    return Futures.wait(loaded);
+    return Future.wait(loaded);
   }
 
   /** Create an [AudioSource] and assign it [name] */

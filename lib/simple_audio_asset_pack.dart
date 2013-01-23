@@ -20,6 +20,7 @@
 
 library simple_audio_asset_pack;
 import 'dart:web_audio';
+import 'dart:async';
 import 'package:simple_audio/simple_audio.dart';
 import 'package:asset_pack/asset_pack.dart';
 
