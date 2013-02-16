@@ -45,58 +45,58 @@ void main() {
   source.positional = false;
 
   query("#pause_sources")
-    ..on.click.add(pauseLoop);
+    ..onClick.listen(pauseLoop);
 
   query("#music_play")
-    ..on.click.add(startMusic);
+    ..onClick.listen(startMusic);
   query("#music_stop")
-    ..on.click.add(stopMusic);
+    ..onClick.listen(stopMusic);
   query("#pause_music")
-    ..on.click.add(pauseMusic);
+    ..onClick.listen(pauseMusic);
 
   {
     InputElement ie;
     ie = query("#play0");
-    ie.on.click.add((e) => playClipOn(ie.value));
+    ie.onClick.listen((e) => playClipOn(ie.value));
   }
   {
     InputElement ie;
     ie = query("#play1");
-    ie.on.click.add((e) => playClipOn(ie.value));
+    ie.onClick.listen((e) => playClipOn(ie.value));
   }
   {
     InputElement ie;
     ie = query("#play2");
-    ie.on.click.add((e) => playClipOn(ie.value));
+    ie.onClick.listen((e) => playClipOn(ie.value));
   }
   {
     InputElement ie;
     ie = query("#play3");
-    ie.on.click.add((e) => playClipOn(ie.value));
+    ie.onClick.listen((e) => playClipOn(ie.value));
   }
   {
     InputElement ie;
     ie = query("#play4");
-    ie.on.click.add((e) => playClipOn(ie.value));
+    ie.onClick.listen((e) => playClipOn(ie.value));
   }
 
   {
     InputElement ie;
     ie = query("#masterVolume");
-    ie.on.change.add((e) => adjustVolume("master", ie));
+    ie.onChange.listen((e) => adjustVolume("master", ie));
   }
   {
     InputElement ie;
     ie = query("#musicVolume");
-    ie.on.change.add((e) => adjustVolume("music", ie));
+    ie.onChange.listen((e) => adjustVolume("music", ie));
   }
   {
     InputElement ie;
     ie = query("#sourceVolume");
-    ie.on.change.add((e) => adjustVolume("source", ie));
+    ie.onChange.listen((e) => adjustVolume("source", ie));
   }
   query("#mute")
-    ..on.click.add(muteEverything);
+    ..onClick.listen(muteEverything);
   CanvasElement canvas = query("#stage");
   canvas.width = canvas.clientWidth;
   canvas.height = canvas.clientHeight;

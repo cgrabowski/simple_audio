@@ -112,9 +112,9 @@ class AudioClip {
     var request = new HttpRequest();
     var completer = new Completer<AudioClip>();
     request.responseType = 'arraybuffer';
-    request.on.load.add((e) => _onRequestSuccess(request, completer));
-    request.on.error.add((e) => _onRequestError(request, completer));
-    request.on.abort.add((e) => _onRequestError(request, completer));
+    request.onLoad.listen((e) => _onRequestSuccess(request, completer));
+    request.onError.listen((e) => _onRequestError(request, completer));
+    request.onAbort.listen((e) => _onRequestError(request, completer));
     if (_urlAbsolute) {
       request.open('GET', url);
     } else {
