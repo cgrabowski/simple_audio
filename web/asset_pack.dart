@@ -29,34 +29,34 @@ void main() {
   audioManager.makeSource(sourceName);
 
   query("#clip_once")
-    ..on.click.add(playOnce);
+    ..onClick.listen(playOnce);
   query("#pause_all")
-    ..on.click.add(pauseAll);
+    ..onClick.listen(pauseAll);
 
   query("#music_play")
-    ..on.click.add(startMusic);
+    ..onClick.listen(startMusic);
   query("#music_stop")
-    ..on.click.add(stopMusic);
+    ..onClick.listen(stopMusic);
   query("#pause_music")
-    ..on.click.add(pauseMusic);
+    ..onClick.listen(pauseMusic);
 
   {
     InputElement ie;
     ie = query("#masterVolume");
-    ie.on.change.add((e) => adjustVolume("master", ie));
+    ie.onChange.listen((e) => adjustVolume("master", ie));
   }
   {
     InputElement ie;
     ie = query("#musicVolume");
-    ie.on.change.add((e) => adjustVolume("music", ie));
+    ie.onChange.listen((e) => adjustVolume("music", ie));
   }
   {
     InputElement ie;
     ie = query("#sourceVolume");
-    ie.on.change.add((e) => adjustVolume("source", ie));
+    ie.onChange.listen((e) => adjustVolume("source", ie));
   }
   query("#mute")
-    ..on.click.add(muteEverything);
+    ..onClick.listen(muteEverything);
 }
 
 void playOnce(Event event) {
