@@ -23,6 +23,7 @@ import 'dart:json' as JSON;
 import 'dart:html';
 import 'dart:web_audio';
 import 'dart:async';
+import 'dart:math' as math;
 
 part 'simple_audio/audio_clip.dart';
 part 'simple_audio/audio_source.dart';
@@ -30,3 +31,4 @@ part 'simple_audio/audio_sound.dart';
 part 'simple_audio/audio_music.dart';
 part 'simple_audio/audio_manager.dart';
 part 'simple_audio/audio_snapshot.dart';
+part 'simple_audio/audio_sfxr.dart';

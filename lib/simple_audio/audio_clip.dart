@@ -23,6 +23,8 @@ part of simple_audio;
  * see [AudioSource], [AudioMusic], and [AudioManager].
  */
 class AudioClip {
+  static const SFXR_PREFIX = "sfxr:";
+
   final AudioManager _manager;
   String _name;
   String _url;
@@ -109,17 +111,24 @@ class AudioClip {
       return new Future<AudioClip>.immediate(this);
     }
     _empty();
+    if (url.startsWith(SFXR_PREFIX)) {
+      return new Future<AudioClip>.of((){
+        _buffer = SfxrSynth.toAudioBuffer(_manager._context, url.substring(SFXR_PREFIX.length));
+        _isReadyToPlay = true;
+        return this;
+      });
+    }
     var request = new HttpRequest();
     var completer = new Completer<AudioClip>();
-    request.responseType = 'arraybuffer';
-    request.onLoad.listen((e) => _onRequestSuccess(request, completer));
-    request.onError.listen((e) => _onRequestError(request, completer));
-    request.onAbort.listen((e) => _onRequestError(request, completer));
     if (_urlAbsolute) {
       request.open('GET', url);
     } else {
       request.open('GET', '${_manager.baseURL}/$url');
     }
+    request.responseType = 'arraybuffer';
+    request.onLoad.listen((e) => _onRequestSuccess(request, completer));
+    request.onError.listen((e) => _onRequestError(request, completer));
+    request.onAbort.listen((e) => _onRequestError(request, completer));
     request.send();
     return completer.future;
   }

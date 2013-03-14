@@ -216,6 +216,8 @@ class AudioManager {
     }
   }
 
+  AudioClip removeClip(String name) => _clips.remove(name);
+
   /** Batch load all clips not marked as ready to play.
    * Returns a single Future which will complete once all the clips have loaded.
    */
