@@ -502,7 +502,8 @@ class SfxrSynth {
       _superSample *= .125 * _envelopeVolume * _masterVolume;
 
       // Clipping if too loud [-1, 1]
-      buffer[i] = _superSample >= 1 ? 1 : _superSample <= -1 ? -1 : _superSample; //* 32767 /*| 0*/;
+      _superSample =_superSample >= 1 ? 1.0 : _superSample <= -1 ? -1.0 : _superSample; //* 32767 /*| 0*/;
+      buffer[i] = _superSample;
     }
 
     return false;
@@ -511,9 +512,12 @@ class SfxrSynth {
   static AudioBuffer toAudioBuffer(AudioContext audioContext, String data) {
     var synth = new SfxrSynth(new SfxrParams.fromString(data));
     var envelopeFullLength = synth.totalReset();
-    var buffer = audioContext.createBuffer(1, envelopeFullLength, 44100);
+    var buffer = audioContext.createBuffer(2, envelopeFullLength, 44100);
     assert(envelopeFullLength <= buffer.length);
     synth.synthWave(buffer.getChannelData(0), envelopeFullLength);
+    //var b = new Float32Array(envelopeFullLength);
+    //synth.synthWave(b, envelopeFullLength);
+    //var buffer = audioContext.createBuffer(b.buffer, true);
     return buffer;
   }
 }
