@@ -19,32 +19,56 @@
 */
 part of simple_audio;
 
-// Port of https://github.com/mneubrand/jsfxr
+// Port of https://github.com/mneubrand/jsfxr and https://code.google.com/p/as3sfxr/
 
 class SfxrParams {
+  /// Shape of the wave (0:square, 1:saw, 2:sin or 3:noise)
   int waveType               = 0;
+  /// Length of the volume envelope attack (0 to 1)
   double attackTime          = 0.0;
+  /// Length of the volume envelope sustain (0 to 1)
   double sustainTime         = 0.0;
+  /// Tilts the sustain envelope for more 'pop' (0 to 1)
   double sustainPunch        = 0.0;
+  /// Length of the volume envelope decay (yes, I know it's called release) (0 to 1)
   double decayTime           = 0.0;
-  double startFrequency      = 0.0;
+  /// Base note of the sound (0 to 1)
+  double startFrequency      = 0.3;
+  /// If sliding, the sound will stop at this frequency, to prevent really low notes (0 to 1)
   double minFrequency        = 0.0;
+  /// Slides the note up or down (-1 to 1)
   double slide               = 0.0;
+  /// Accelerates the slide (-1 to 1)
   double deltaSlide          = 0.0;
+  /// Strength of the vibrato effect (0 to 1)
   double vibratoDepth        = 0.0;
+  /// Speed of the vibrato effect (i.e. frequency) (0 to 1)
   double vibratoSpeed        = 0.0;
+  /// Shift in note, either up or down (-1 to 1)
   double changeAmount        = 0.0;
+  /// How fast the note shift happens (only happens once) (0 to 1)
   double changeSpeed         = 0.0;
+  /// Controls the ratio between the up and down states of the square wave, changing the tibre (0 to 1)
   double squareDuty          = 0.0;
+  /// Sweeps the duty up or down (-1 to 1)
   double dutySweep           = 0.0;
+  /// Speed of the note repeating - certain variables are reset each time (0 to 1)
   double repeatSpeed         = 0.0;
+  /// Offsets a second copy of the wave by a small phase, changing the tibre (-1 to 1)
   double phaserOffset        = 0.0;
+  /// Sweeps the phase up or down (-1 to 1)
   double phaserSweep         = 0.0;
+  /// Frequency at which the low-pass filter starts attenuating higher frequencies (0 to 1)
   double lpFilterCutoff      = 0.0;
+  /// Sweeps the low-pass cutoff up or down (-1 to 1)
   double lpFilterCutoffSweep = 0.0;
+  /// Changes the attenuation rate for the low-pass filter, changing the timbre (0 to 1)
   double lpFilterResonance   = 0.0;
+  /// Frequency at which the high-pass filter starts attenuating lower frequencies (0 to 1)
   double hpFilterCutoff      = 0.0;
+  /// Sweeps the high-pass cutoff up or down (-1 to 1)
   double hpFilterCutoffSweep = 0.0;
+  /// Overall volume of the sound (0 to 1)
   double masterVolume        = 0.0;
 
   //--------------------------------------------------------------------------
@@ -58,7 +82,7 @@ class SfxrParams {
    * @param string Settings string to parse
    * @return If the string successfully parsed
    */
-  SfxrParams(String string) {
+  SfxrParams.fromString(String string) {
     var values = string.split(",");
     this.waveType            = _toInt(values[ 0]);
     this.attackTime          = _toDouble(values[ 1]);
@@ -99,6 +123,24 @@ class SfxrParams {
     }
   }
 
+  /**
+   * Sets the parameters to generate a pickup/coin sound
+   */
+  SfxrParams.generatePickupCoin() {
+    var random = new math.Random();
+
+    startFrequency = 0.4 + random.nextDouble() * 0.5;
+
+    sustainTime = random.nextDouble() * 0.1;
+    decayTime = 0.1 + random.nextDouble() * 0.4;
+    sustainPunch = 0.3 + random.nextDouble() * 0.3;
+
+    if(random.nextDouble() < 0.5){
+      changeSpeed = 0.5 + random.nextDouble() * 0.2;
+      changeAmount = 0.2 + random.nextDouble() * 0.4;
+    }
+  }
+
   static int _toInt(String v) {
     if (v == null || v.length == 0) {
       return 0;
@@ -124,7 +166,8 @@ class SfxrSynth {
   //
   //--------------------------------------------------------------------------
 
-  var _envelopeLength0, // Length of the attack stage
+  double
+      _envelopeLength0, // Length of the attack stage
       _envelopeLength1, // Length of the sustain stage
       _envelopeLength2, // Length of the decay stage
 
@@ -135,11 +178,11 @@ class SfxrSynth {
       _deltaSlide,      // Change in slide
 
       _changeAmount,    // Amount to change the note by
-      _changeTime,      // Counter for the note change
-      _changeLimit,     // Once the time reaches this limit, the note changes
 
       _squareDuty,      // Offset of center switching point in the square wave
       _dutySweep;       // Amount to change the duty by
+  int _changeTime,      // Counter for the note change
+      _changeLimit;     // Once the time reaches this limit, the note changes
 
   //--------------------------------------------------------------------------
   //
@@ -162,14 +205,14 @@ class SfxrSynth {
     _slide        = 1 - p.slide * p.slide * p.slide * .01;
     _deltaSlide   = -p.deltaSlide * p.deltaSlide * p.deltaSlide * .000001;
 
-    if (p.waveType != 0) {
+    if (p.waveType == 0) {
       _squareDuty = .5 - p.squareDuty / 2;
       _dutySweep  = -p.dutySweep * .00005;
     }
 
     _changeAmount = p.changeAmount > 0 ? 1 - p.changeAmount * p.changeAmount * .9 : 1 + p.changeAmount * p.changeAmount * 10;
     _changeTime   = 0;
-    _changeLimit  = p.changeSpeed == 1 ? 0 : (1 - p.changeSpeed) * (1 - p.changeSpeed) * 20000 + 32;
+    _changeLimit  = (p.changeSpeed == 1 ? 0 : (1 - p.changeSpeed) * (1 - p.changeSpeed) * 20000 + 32).toInt();
   }
 
   // I split the reset() function into two functions for better readability
@@ -192,7 +235,7 @@ class SfxrSynth {
    * @param buffer A ByteArray to write the wave to
    * @return If the wave is finished
    */
-  int synthWave(Float32Array buffer, length) {
+  bool synthWave(Float32Array buffer, int length) {
     // Shorter reference
     var p = this._params;
 
@@ -219,7 +262,7 @@ class SfxrSynth {
         // Phase offset for phaser effect
         _phaserOffset = p.phaserOffset * p.phaserOffset * (p.phaserOffset < 0 ? -1020 : 1020),
         // Once the time reaches this limit, some of the    iables are reset
-        _repeatLimit = (p.repeatSpeed != 0) ? ((1 - p.repeatSpeed) * (1 - p.repeatSpeed) * 20000 /*| 0*/) + 32 : 0,
+        _repeatLimit = (p.repeatSpeed != 0) ? (((1 - p.repeatSpeed) * (1 - p.repeatSpeed) * 20000).toInt()) + 32 : 0,
         // The punch factor (louder at begining of sustain)
         _sustainPunch = p.sustainPunch,
         // Amount to change the period of the wave by at the peak of the vibrato wave
@@ -250,13 +293,14 @@ class SfxrSynth {
         _lpFilterDeltaPos = 0.0,// Change in low-pass wave position, as allowed by the cutoff and damping
         _lpFilterOldPos = 0.0,  // Previous low-pass wave position
         _lpFilterPos = 0.0,     // Adjusted wave position after low-pass filter
-        _phase = 0.0,           // Phase through the wave
         _pos = 0.0,             // Phase expresed as a Number from 0-1, used for fast sin approx
         _sample = 0.0,          // Sub-sample calculated 8 times per actual sample, averaged out to get the super sample
         _superSample = 0.0,     // Actual sample writen to the wave
-        _periodTemp = 0.0,      // Period modified by vibrato
+        _periodTemp0 = 0.0,     // Period modified by vibrato
         _vibratoPhase = 0.0;    // Phase through the vibrato sine wave
     int
+        _periodTemp = 0,        // Period modified by vibrato (as int)
+        _phase = 0,             // Phase through the wave
         _envelopeStage = 0,     // Current stage of the envelope (attack, sustain, decay, end)
         _phaserPos = 0,         // Position through the phaser buffer
         _phaserInt = 0,         // Integer phaser offset, for bit maths
@@ -268,6 +312,7 @@ class SfxrSynth {
     var _phaserBuffer = new List<double>(1024),
         // Buffer of random values used to generate noise
         _noiseBuffer  = new List<double>(32);
+
     for (var i = _phaserBuffer.length - 1 ; i > -1; i--) {
       _phaserBuffer[i] = 0.0;
     }
@@ -278,7 +323,7 @@ class SfxrSynth {
 
     for (var i = 0; i < length; i++) {
       if (_finished) {
-        return i;
+        return true;
       }
 
       // Repeats every _repeatLimit times, partially resetting the sound parameters
@@ -309,24 +354,24 @@ class SfxrSynth {
         }
       }
 
-      _periodTemp = _period;
+      _periodTemp0 = _period;
 
       // Applies the vibrato effect
       if (_vibratoAmplitude > 0) {
         _vibratoPhase += _vibratoSpeed;
-        _periodTemp *= 1 + math.sin(_vibratoPhase) * _vibratoAmplitude;
+        _periodTemp0 *= 1 + math.sin(_vibratoPhase) * _vibratoAmplitude;
       }
 
-      //_periodTemp |= 0;
+      _periodTemp = _periodTemp0.toInt();
       if (_periodTemp < 8) {
-        _periodTemp = 8.0;
+        _periodTemp = 8;
       }
 
       // Sweeps the square duty
       if (_waveType == 0) {
         _squareDuty += _dutySweep;
         if (_squareDuty < 0) {
-          _squareDuty = 0;
+          _squareDuty = 0.0;
         } else if (_squareDuty > .5) {
           _squareDuty = .5;
         }
@@ -375,7 +420,7 @@ class SfxrSynth {
       }
 
       // Moves the high-pass filter cutoff
-      if (_filters && _hpFilterDeltaCutoff != 0) {
+      if (_filters && _hpFilterDeltaCutoff != 0.0) {
         _hpFilterCutoff *= _hpFilterDeltaCutoff;
         if (_hpFilterCutoff < .00001) {
           _hpFilterCutoff = .00001;
@@ -385,7 +430,7 @@ class SfxrSynth {
       }
 
       _superSample = 0.0;
-      for (var j = 7; j > -1; j--) {
+      for (var j = 0; j < 8; j++) {
         // Cycles through the period
         _phase++;
         if (_phase >= _periodTemp) {
@@ -405,7 +450,7 @@ class SfxrSynth {
             _sample = ((_phase / _periodTemp) < _squareDuty) ? .5 : -.5;
             break;
           case 1: // Saw wave
-            _sample = 1 - _phase / _periodTemp * 2;
+            _sample = 1 - (_phase / _periodTemp) * 2;
             break;
           case 2: // Sine wave (fast and accurate approx)
             _pos = _phase / _periodTemp;
@@ -456,15 +501,15 @@ class SfxrSynth {
       // Averages out the super samples and applies volumes
       _superSample *= .125 * _envelopeVolume * _masterVolume;
 
-      // Clipping if too loud
+      // Clipping if too loud [-1, 1]
       buffer[i] = _superSample >= 1 ? 1 : _superSample <= -1 ? -1 : _superSample; //* 32767 /*| 0*/;
     }
 
-    return length;
+    return false;
   }
 
   static AudioBuffer toAudioBuffer(AudioContext audioContext, String data) {
-    var synth = new SfxrSynth(new SfxrParams(data));
+    var synth = new SfxrSynth(new SfxrParams.fromString(data));
     var envelopeFullLength = synth.totalReset();
     var buffer = audioContext.createBuffer(1, envelopeFullLength, 44100);
     assert(envelopeFullLength <= buffer.length);
