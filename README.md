@@ -165,3 +165,29 @@ main() {
   audioManager.playClipFromSource('Source A', 'jump_sound');
 }
 ```
+
+6\. Play a clip from a sfxr data.
+
+* Create a sound with [as3sfxr](http://www.superflashbros.net/as3sfxr/)
+* Copy settings string (Just use Ctrl+C on the as3fxr page) and save it (should look something like this "0,,0.1812,,0.1349,0.4524,,0.2365,,,,,,0.0819,,,,,1,,,,,0.5")
+
+```dart
+main() {
+  // Construct a new AudioManager.
+  AudioManager audioManager = new AudioManager();
+  // Make a source called 'Source A'
+  AudioSource source = audioManager.makeSource('Source A');
+  // This source is not affected by the position of the listener.
+  source.positional = false;
+  
+  // Make a clip from a sfxr string .
+  var clipUrl = AudioClip.SFXR_PREFIX.concat('1,,0.0769,0.5058,0.3492,0.4109,,,,,,0.3014,0.5982,,,,,,1,,,,,0.5');
+  AudioClip clip = audioManager.makeClip('coin_sound', clipUrl);
+  // Load sound data into clip.
+  clip.load();
+  
+  // Play clip.
+  audioManager.playClipFromSource('Source A', 'coin_sound');
+}
+```
+

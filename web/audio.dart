@@ -10,7 +10,7 @@ String clipName = 'Wilhelm';
 String clipURL = 'clippack/clips/wilhelm.ogg';
 String musicClipName = 'Deeper';
 String musicClipURL = 'clippack/clips/deeper.ogg';
-
+String sfxrName = 'fx';
 
 void main() {
   audioManager = new AudioManager(getDemoBaseURL());
@@ -31,7 +31,8 @@ void main() {
     ..onClick.listen(pauseLoop);
   query("#pause_all")
     ..onClick.listen(pauseAll);
-
+  query("#sfxr_once")
+  ..onClick.listen(playSfxrOnce);
   query("#music_play")
     ..onClick.listen(startMusic);
   query("#music_stop")
@@ -54,6 +55,12 @@ void main() {
     ie = query("#sourceVolume");
     ie.onChange.listen((e) => adjustVolume("source", ie));
   }
+  {
+    InputElement ie;
+    ie = query("#sfxr_data");
+    ie.onBlur.listen((e) => updateSfxrClip(ie));
+    updateSfxrClip(ie);
+  }
   query("#mute")
     ..onClick.listen(muteEverything);
 }
@@ -64,6 +71,14 @@ void playOnce(Event event) {
 
 void playOnceDelay(Event event) {
   audioManager.playClipFromSourceIn(2.0, sourceName, clipName);
+}
+
+void updateSfxrClip(InputElement el) {
+  audioManager.removeClip(sfxrName);
+  audioManager.makeClip(sfxrName, AudioClip.SFXR_PREFIX.concat(el.value)).load();
+}
+void playSfxrOnce(Event event) {
+  audioManager.playClipFromSourceIn(0.0, sourceName, sfxrName);
 }
 
 void startLoop(Event event) {
