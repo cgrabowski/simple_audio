@@ -28,9 +28,9 @@ class _AssetLoaderClip extends AssetLoader {
   final AudioManager audioManager;
   _AssetLoaderClip(this.audioManager);
 
-  Future<dynamic> load(AssetRequest assetRequest) {
-    AudioClip clip = new AudioClip.external(audioManager, assetRequest.name,
-                                            assetRequest.URL);
+  Future<dynamic> load(Asset asset) {
+    AudioClip clip = new AudioClip.external(audioManager, asset.name,
+                                            asset.url);
     return clip.load();
   }
 
@@ -39,13 +39,17 @@ class _AssetLoaderClip extends AssetLoader {
 }
 
 class _AssetImporterClip extends AssetImporter {
-  dynamic get fallback => null;
-  Future<dynamic> import(dynamic payload, AssetRequest assetRequest) {
-    // NO-OP. Handled in the loader.
-    return new Future.immediate(payload);
+  void initialize(Asset asset) {
+    asset.imported = null;
+  }
+  Future<Asset> import(dynamic payload, Asset asset) {
+    asset.imported = payload;
+    return new Future.immediate(asset);
   }
   void delete(dynamic imported) {
-    // NO-OP. Handled in the loader.
+    if (imported != null) {
+      // NO-OP. Handled in the loader.
+    }
   }
 }
 
@@ -55,8 +59,6 @@ class _AssetImporterClip extends AssetImporter {
  */
 void registerSimpleAudioWithAssetManager(AudioManager audioManager,
                                          AssetManager assetManager) {
-  assetManager.importers['clip'] = new _AssetImporterClip();
-  assetManager.importers['clips'] = assetManager.importers['clip'];
-  assetManager.loaders['clip'] = new _AssetLoaderClip(audioManager);
-  assetManager.loaders['clips'] = assetManager.loaders['clip'];
+  assetManager.importers['audioclip'] = new _AssetImporterClip();
+  assetManager.loaders['audioclip'] = new _AssetLoaderClip(audioManager);
 }

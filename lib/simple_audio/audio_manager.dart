@@ -47,7 +47,7 @@ class AudioManager {
    * can specify [baseURL] which is prepended to all clip URLs.
    * [baseURL] defaults to '/'
    */
-  AudioManager([this.baseURL = '/']) {
+  AudioManager([this.baseURL = '']) {
     _context = new AudioContext();
     _destination = _context.destination;
     _listener = _context.listener;

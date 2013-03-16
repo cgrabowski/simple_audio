@@ -1,1 +1,1 @@
-[{"loadArguments":{},"name":"wilhelm","url":"/clips/wilhelm.ogg","type":"clips","importArguments":{}},{"loadArguments":{},"name":"deeper","url":"/clips/deeper.ogg","type":"clips","importArguments":{}}]
+{"deeper":{"loadArguments":{},"name":"deeper","url":"/clips/deeper.ogg","type":"audioclip","importArguments":{}},"wilhelm":{"loadArguments":{},"name":"wilhelm","url":"/clips/wilhelm.ogg","type":"audioclip","importArguments":{}},"CREDITS":{"loadArguments":{},"name":"","url":"/CREDITS.txt","type":"","importArguments":{}}}

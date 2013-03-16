@@ -15,7 +15,7 @@ String sourceName = 'Page';
 String packName = 'clippack.pack';
 
 void post_pack_loaded() {
-  audioManager.music.clip = assetManager.clips.deeper;
+  audioManager.music.clip = assetManager['clips.deeper'];
 }
 
 void main() {
@@ -61,7 +61,7 @@ void main() {
 
 void playOnce(Event event) {
   AudioSource source = audioManager.findSource(sourceName);
-  source.playOnce(assetManager.clips.wilhelm);
+  source.playOnce(assetManager['clips.wilhelm']);
 }
 
 void startMusic(Event event) {
