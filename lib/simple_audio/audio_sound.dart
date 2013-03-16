@@ -63,9 +63,9 @@ class AudioSound {
     _sourceNode.connect(_source._gainNode, 0, 0);
   }
 
-  void _stop() {
+  void _stop([num when=0.0]) {
     if (_sourceNode != null) {
-      _sourceNode.stop(0.0);
+      _sourceNode.stop(when);
     }
     _sourceNode = null;
   }
@@ -117,7 +117,7 @@ class AudioSound {
     return delta;
   }
 
-  void _pause() {
+  void _pause([num when=0.0]) {
     if (_startTime == null) {
       // Not started.
       return;
@@ -126,7 +126,7 @@ class AudioSound {
     _dumpSourceNode();
     if (_sourceNode != null) {
       _pausedTime = _computePausedTime();
-      _stop();
+      _stop(when);
       print('paused at $_pausedTime');
     }
   }
@@ -169,6 +169,40 @@ class AudioSound {
     _sourceNode.start(_scheduledTime);
     // Called start now.
     _startTime = _source._manager._context.currentTime;
+  }
+
+  /** Fading linear IN this sound with [delay] and the [fadeDuration] with [volume] and [playFromStart] or just unpause */
+  void fadeIn(num delay, num fadeDuration,[bool playFromStart = true, num targetVolume = 1.0]) {
+    if(playFromStart) {
+      play();
+    } else if(pause) {
+      pause = false;
+    } else if(!isPlaying) {
+      play();
+    }
+    volume = 0.0;
+    fade(delay, fadeDuration, targetVolume);
+  }
+  /** Fading linear this sound with [delay] and the [fadeDuration] out and [doPause] or just stop  */
+  void fadeOut(num delay, num fadeDuration, [bool doPause = false]) {
+    num currentTime = _sourceNode.context.currentTime;
+    fade(delay, fadeDuration, 0.0);
+
+    if(doPause) {
+      _pause(currentTime+fadeDuration);
+    } else {
+      _stop(currentTime+fadeDuration);
+    }
+
+  }
+
+  /** Starts fading linear this sound with [delay] and the [fadeDuration] till it reaches the [targetFadeVolumen]  */
+  void fade(num delay, num fadeDuration, num targetFadeVolumen) {
+    print("${_clip._name} $volume");
+    num currentTime = _sourceNode.context.currentTime;
+    _sourceNode.gain.linearRampToValueAtTime(volume, currentTime);
+    _sourceNode.gain.linearRampToValueAtTime(targetFadeVolumen, currentTime+fadeDuration);
+    _volume = targetFadeVolumen;
   }
 
   /** Stop playing this sound */
