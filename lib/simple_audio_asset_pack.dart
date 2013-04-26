@@ -28,30 +28,29 @@ class _AssetLoaderClip extends AssetLoader {
   final AudioManager audioManager;
   _AssetLoaderClip(this.audioManager);
 
-  Future<dynamic> load(Asset asset) {
-    AudioClip clip = new AudioClip.external(audioManager, asset.name,
-                                            asset.url);
-    return clip.load();
+  Future<dynamic> load(Asset asset, AssetPackTrace tracer) {
+    tracer.assetLoadStart(asset);
+    AudioClip clip = new AudioClip.external(
+        audioManager, asset.name, asset.url
+    );
+    return clip.load()
+      .then((a){
+          tracer.assetLoadEnd(asset);
+          return a;
+        },
+        onError: (error) {
+          tracer.assetLoadError(asset, error.toString());
+          tracer.assetLoadEnd(asset);
+          null;
+        }
+      );
   }
 
   void delete(dynamic arg) {
   }
 }
 
-class _AssetImporterClip extends AssetImporter {
-  void initialize(Asset asset) {
-    asset.imported = null;
-  }
-  Future<Asset> import(dynamic payload, Asset asset) {
-    asset.imported = payload;
-    return new Future.immediate(asset);
-  }
-  void delete(dynamic imported) {
-    if (imported != null) {
-      // NO-OP. Handled in the loader.
-    }
-  }
-}
+
 
 /** Register the [simple_audio] audio manager with the [asset_pack]
  * asset manager. After calling this function, the asset manager
@@ -59,6 +58,6 @@ class _AssetImporterClip extends AssetImporter {
  */
 void registerSimpleAudioWithAssetManager(AudioManager audioManager,
                                          AssetManager assetManager) {
-  assetManager.importers['audioclip'] = new _AssetImporterClip();
+  assetManager.importers['audioclip'] = new NoopImporter();
   assetManager.loaders['audioclip'] = new _AssetLoaderClip(audioManager);
 }
