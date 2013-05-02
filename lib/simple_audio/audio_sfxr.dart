@@ -235,7 +235,7 @@ class SfxrSynth {
    * @param buffer A ByteArray to write the wave to
    * @return If the wave is finished
    */
-  bool synthWave(Float32Array buffer, int length) {
+  bool synthWave(Float32List buffer, int length) {
     // Shorter reference
     var p = this._params;
 
@@ -515,7 +515,7 @@ class SfxrSynth {
     var buffer = audioContext.createBuffer(2, envelopeFullLength, 44100);
     assert(envelopeFullLength <= buffer.length);
     synth.synthWave(buffer.getChannelData(0), envelopeFullLength);
-    //var b = new Float32Array(envelopeFullLength);
+    //var b = new Float32List(envelopeFullLength);
     //synth.synthWave(b, envelopeFullLength);
     //var buffer = audioContext.createBuffer(b.buffer, true);
     return buffer;

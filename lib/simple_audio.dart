@@ -24,6 +24,7 @@ import 'dart:html';
 import 'dart:web_audio';
 import 'dart:async';
 import 'dart:math' as math;
+import 'dart:typed_data';
 
 part 'simple_audio/audio_clip.dart';
 part 'simple_audio/audio_source.dart';

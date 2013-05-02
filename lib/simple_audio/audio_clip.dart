@@ -147,7 +147,7 @@ class AudioClip {
 
   /** Return the sample frames array for [channel]. Assuming a stereo setup,
    * the left and right speakers are mapped to channel 0 and 1 respectively. */
-  Float32Array getSampleFramesForChannel(num channel) {
+  Float32List getSampleFramesForChannel(num channel) {
     if (_buffer == null) {
       return null;
     }
