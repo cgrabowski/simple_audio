@@ -108,7 +108,7 @@ class AudioClip {
   Future<AudioClip> load() {
     if (url == null) {
       _setError('No URL set.');
-      return new Future<AudioClip>.immediate(this);
+      return new Future<AudioClip>.value(this);
     }
     _empty();
     if (url.startsWith(SFXR_PREFIX)) {
