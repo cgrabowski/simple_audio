@@ -69,8 +69,10 @@ class AudioSource {
   bool get positional => _positional;
 
   void set positional(bool b) {
-    _positional = b;
-    _setupNodes();
+    if (b != _positional) {
+      _positional = b;
+      _setupNodes();
+    }
   }
 
   /** Get the volume of the source. 0.0 <= volume <= 1.0. */

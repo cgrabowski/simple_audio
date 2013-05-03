@@ -65,9 +65,9 @@ class AudioMusic {
   }
 
   /** Play the music clip. The music will loop. */
-  void play() {
+  void play({loop: true}) {
     _stop();
-    _sound = new AudioSound._internal(_source, _clip, true);
+    _sound = new AudioSound._internal(_source, _clip, loop);
     _sound.play();
   }
 
