@@ -12,7 +12,7 @@ AudioManager audioManager = new AudioManager();
 AudioSound loopingSound = null;
 String sourceName = 'Page';
 
-String packName = 'clippack.pack';
+String packName = 'clippack/_.pack';
 
 void post_pack_loaded() {
   audioManager.music.clip = assetManager['clips.deeper'];
