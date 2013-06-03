@@ -32,7 +32,7 @@ class AudioSound {
   num _pausedTime;
   num _startTime;
   num _scheduledTime;
-  num _volume = 1.0;
+  num get _volume => _sourceNode.gain.value;
 
   /** Is the sound scheduled to be played? */
   bool get isScheduled => _sourceNode == null ? false : _sourceNode.playbackState == AudioBufferSourceNode.SCHEDULED_STATE;
@@ -202,7 +202,6 @@ class AudioSound {
     num currentTime = _sourceNode.context.currentTime;
     _sourceNode.gain.linearRampToValueAtTime(volume, currentTime);
     _sourceNode.gain.linearRampToValueAtTime(targetFadeVolumen, currentTime+fadeDuration);
-    _volume = targetFadeVolumen;
   }
 
   /** Stop playing this sound */
@@ -221,6 +220,5 @@ class AudioSound {
     if (_sourceNode != null) {
       _sourceNode.gain.value = v;
     }
-    _volume = v;
   }
 }
