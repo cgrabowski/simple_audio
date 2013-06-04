@@ -10,13 +10,21 @@ String clipName = 'Wilhelm';
 String clipURL = 'clippack/clips/wilhelm.ogg';
 String musicClipName = 'Deeper';
 String musicClipURL = 'clippack/clips/deeper.ogg';
+String musicClip2Name = 'Dark Knight';
+String musicClip2URL = 'clippack/clips/dark_knight.ogg';
+String currentMusicClip;
 String sfxrName = 'fx';
 
 void main() {
   audioManager = new AudioManager(getDemoBaseURL());
   audioManager.makeClip(clipName, clipURL).load();
   audioManager.makeClip(musicClipName, musicClipURL).load();
+  audioManager.makeClip(musicClip2Name, musicClip2URL).load();
   audioManager.music.clip = audioManager.findClip(musicClipName);
+  currentMusicClip = musicClipName;
+
+
+
   audioManager.makeSource(sourceName);
 
   query("#clip_once")
@@ -39,6 +47,8 @@ void main() {
     ..onClick.listen(stopMusic);
   query("#pause_music")
     ..onClick.listen(pauseMusic);
+  query("#music_cross")
+  ..onClick.listen(crossFadeLinearMusic);
 
   {
     InputElement ie;
@@ -113,6 +123,20 @@ void pauseAll(Event event) {
 
 void stopMusic(Event event) {
   audioManager.music.stop();
+}
+
+void crossFadeLinearMusic(Event event) {
+
+  String nextClipName;
+  if(currentMusicClip == musicClipName) {
+    nextClipName = musicClip2Name;
+  } else {
+    nextClipName = musicClipName;
+  }
+  print("crossfade to $nextClipName");
+  AudioClip nextClip = audioManager.findClip(nextClipName);
+  audioManager.music.crossFadeLinear(1, 6, nextClip);
+  currentMusicClip = nextClipName;
 }
 
 void pauseMusic(Event event) {
