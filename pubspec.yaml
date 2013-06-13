@@ -1,7 +1,8 @@
 name:  simple_audio
 version: 0.9.0
-description:  A simple audio library for video games.
-
+description: A simple audio library for video games.
+author: John McCutchan <john@johnmccutchan.com>
+homepage: https://github.com/johnmccutchan/simple_audio
 dependencies:
     asset_pack:
         git: https://github.com/johnmccutchan/asset_pack.git
