@@ -1,6 +1,8 @@
 # simple_audio #
 ==============
 
+[![Build Status](https://drone.io/github.com/johnmccutchan/simpleaudio/status.png)](https://drone.io/github.com/johnmccutchan/simpleaudio/latest)
+
 ## Introduction ##
 
 A simple to use audio library for video games written in Dart.
