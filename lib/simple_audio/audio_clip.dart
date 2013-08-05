@@ -90,9 +90,11 @@ class AudioClip {
 
   void _onRequestSuccess(HttpRequest request, Completer<AudioClip> completer) {
     var response = request.response;
-    _manager._context.decodeAudioData(response,
-                                      (b) => _onDecode(b, completer),
-                                      (b) => _onDecode(b, completer));
+    _manager._context.decodeAudioData(response).then((buffer) {
+      _onDecode(buffer, completer);
+    }).catchError((e) {
+      _onDecode(null, completer);
+    });
   }
 
   void _onRequestError(HttpRequest request, Completer<AudioClip> completer) {
@@ -112,8 +114,9 @@ class AudioClip {
     }
     _empty();
     if (url.startsWith(SFXR_PREFIX)) {
-      return new Future<AudioClip>.delayed(new Duration(milliseconds: 1), (){
-        _buffer = SfxrSynth.toAudioBuffer(_manager._context, url.substring(SFXR_PREFIX.length));
+      return new Future<AudioClip>.delayed(new Duration(milliseconds: 1), () {
+        _buffer = SfxrSynth.toAudioBuffer(_manager._context,
+                                          url.substring(SFXR_PREFIX.length));
         _isReadyToPlay = true;
         return this;
       });

@@ -50,11 +50,11 @@ class AudioSource {
     _panNode.disconnect(0);
     _gainNode.disconnect(0);
     if (_positional) {
-      _gainNode.connect(_panNode, 0, 0);
-      _panNode.connect(_output, 0, 0);
+      _gainNode.connectNode(_panNode, 0, 0);
+      _panNode.connectNode(_output, 0, 0);
     } else {
       // Not positioned, we skip the panner node.
-      _gainNode.connect(_output, 0, 0);
+      _gainNode.connectNode(_output, 0, 0);
     }
   }
 

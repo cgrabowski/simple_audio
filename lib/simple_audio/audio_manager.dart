@@ -56,9 +56,9 @@ class AudioManager {
     _musicGain = _context.createGain();
     _sourceGain = _context.createGain();
 
-    _masterGain.connect(_destination, 0, 0);
-    _musicGain.connect(_masterGain, 0, 0);
-    _sourceGain.connect(_masterGain, 0, 0);
+    _masterGain.connectNode(_destination, 0, 0);
+    _musicGain.connectNode(_masterGain, 0, 0);
+    _sourceGain.connectNode(_masterGain, 0, 0);
 
     _music = new AudioMusic._internal(this, _musicGain);
   }
