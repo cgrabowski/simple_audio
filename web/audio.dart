@@ -85,7 +85,7 @@ void playOnceDelay(Event event) {
 
 void updateSfxrClip(InputElement el) {
   audioManager.removeClip(sfxrName);
-  audioManager.makeClip(sfxrName, AudioClip.SFXR_PREFIX.concat(el.value)).load();
+  audioManager.makeClip(sfxrName, AudioClip.SFXR_PREFIX + el.value).load();
 }
 void playSfxrOnce(Event event) {
   audioManager.playClipFromSourceIn(0.0, sourceName, sfxrName);
