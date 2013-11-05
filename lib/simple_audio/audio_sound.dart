@@ -58,7 +58,6 @@ class AudioSound {
       _sourceNode.loopStart = 0.0;
       _sourceNode.loopEnd = _clip._buffer.duration;
     }
-    _sourceNode.gain.value = _volume;
     _sourceNode.loop = _loop;
     _sourceNode.connectNode(_source._gainNode, 0, 0);
   }
