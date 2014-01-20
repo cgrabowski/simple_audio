@@ -34,6 +34,8 @@ class AudioSound {
   num _scheduledTime;
   num get _volume => _sourceNode.gain.value;
 
+  /** Is the sound not yet scheduled to be played? */
+  bool get isUnscheduled => _sourceNode == null ? false : _sourceNode.playbackState == AudioBufferSourceNode.UNSCHEDULED_STATE;
   /** Is the sound scheduled to be played? */
   bool get isScheduled => _sourceNode == null ? false : _sourceNode.playbackState == AudioBufferSourceNode.SCHEDULED_STATE;
   /** Is the sound playing right now? */
@@ -63,7 +65,7 @@ class AudioSound {
   }
 
   void _stop([num when=0.0]) {
-    if (_sourceNode != null) {
+    if (_sourceNode != null && !isUnscheduled) {
       _sourceNode.stop(when);
     }
     _sourceNode = null;
