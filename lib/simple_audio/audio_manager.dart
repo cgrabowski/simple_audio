@@ -317,8 +317,8 @@ class AudioManager {
     _listener.setPosition(x, y, z);
   }
   
-  void setOrientation(num x, num y, num z) {
-    _listener.setOrientation(x, y, z);
+  void setOrientation(num x, num y, num z, num upX, num upY, num upZ) {
+    _listener.setOrientation(x, y, z, upX, upY, upZ);
   }
 
   void setVelocity(num x, num y, num z) {
