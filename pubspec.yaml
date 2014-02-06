@@ -6,5 +6,6 @@ homepage: https://github.com/johnmccutchan/simple_audio
 dependencies:
   asset_pack:
     git: https://github.com/johnmccutchan/asset_pack.git
+dev_dependencies:
   browser: any
   hop: any
