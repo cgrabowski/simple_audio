@@ -107,6 +107,13 @@ class AudioSource {
     return this;
   }
 
+  /// Check if the source has at least one active sound.
+  bool get isPlayingSound {
+    _scanSounds();
+
+    return _sounds.isNotEmpty;
+  }
+
   /** Is the source muted? */
   bool get mute {
     return _mutedVolume != null;
@@ -171,7 +178,7 @@ class AudioSource {
         _sounds[i] = _sounds[last];
         // Pop end
         _sounds.removeLast();
-        print('removing sound.');
+        //print('removing sound.');
         sound.stop();
       }
     }
