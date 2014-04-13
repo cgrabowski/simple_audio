@@ -178,7 +178,6 @@ class AudioSource {
         _sounds[i] = _sounds[last];
         // Pop end
         _sounds.removeLast();
-        //print('removing sound.');
         sound.stop();
       }
     }
