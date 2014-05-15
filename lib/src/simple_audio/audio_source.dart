@@ -193,11 +193,14 @@ class AudioSource {
     }
   }
 
+  /** Apply [effect] to the audio source. Multiple effects are chained in the
+   *  same order as they are added. */
   void applyEffect(AudioEffect effect) {
     _appliedEffect.add(effect);
     _setupNodes();
   }
 
+  /** Clear all effects that are applied to the source. */
   void clearEffects() {
     _appliedEffect.clear();
     _setupNodes();
