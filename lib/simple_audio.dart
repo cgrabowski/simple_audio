@@ -27,10 +27,10 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 import 'dart:convert';
 
-part 'simple_audio/audio_clip.dart';
-part 'simple_audio/audio_source.dart';
-part 'simple_audio/audio_sound.dart';
-part 'simple_audio/audio_music.dart';
-part 'simple_audio/audio_manager.dart';
-part 'simple_audio/audio_snapshot.dart';
-part 'simple_audio/audio_sfxr.dart';
+part 'src/simple_audio/audio_clip.dart';
+part 'src/simple_audio/audio_source.dart';
+part 'src/simple_audio/audio_sound.dart';
+part 'src/simple_audio/audio_music.dart';
+part 'src/simple_audio/audio_manager.dart';
+part 'src/simple_audio/audio_snapshot.dart';
+part 'src/simple_audio/audio_sfxr.dart';
