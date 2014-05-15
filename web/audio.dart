@@ -43,56 +43,56 @@ void main() {
 
   audioManager.makeSource(sourceName);
 
-  query("#clip_once")
+  querySelector("#clip_once")
     ..onClick.listen(playOnce);
-  query("#clip_once_delay")
+  querySelector("#clip_once_delay")
     ..onClick.listen(playOnceDelay);
-  query("#clip_loop_start")
+  querySelector("#clip_loop_start")
     ..onClick.listen(startLoop);
-  query("#clip_loop_stop")
+  querySelector("#clip_loop_stop")
     ..onClick.listen(stopLoop);
-  query("#pause_sources")
+  querySelector("#pause_sources")
     ..onClick.listen(pauseLoop);
-  query("#pause_all")
+  querySelector("#pause_all")
     ..onClick.listen(pauseAll);
-  query("#sfxr_once")
+  querySelector("#sfxr_once")
   ..onClick.listen(playSfxrOnce);
-  query("#music_play")
+  querySelector("#music_play")
     ..onClick.listen(startMusic);
-  query("#music_stop")
+  querySelector("#music_stop")
     ..onClick.listen(stopMusic);
-  query("#pause_music")
+  querySelector("#pause_music")
     ..onClick.listen(pauseMusic);
-  query("#music_cross")
+  querySelector("#music_cross")
   ..onClick.listen(crossFadeLinearMusic);
 
   {
     InputElement ie;
-    ie = query("#masterVolume");
+    ie = querySelector("#masterVolume");
     ie.onChange.listen((e) => adjustVolume("master", ie));
   }
   {
     InputElement ie;
-    ie = query("#musicVolume");
+    ie = querySelector("#musicVolume");
     ie.onChange.listen((e) => adjustVolume("music", ie));
   }
   {
     InputElement ie;
-    ie = query("#sourceVolume");
+    ie = querySelector("#sourceVolume");
     ie.onChange.listen((e) => adjustVolume("source", ie));
   }
   {
     InputElement ie;
-    ie = query("#sfxr_data");
+    ie = querySelector("#sfxr_data");
     ie.onBlur.listen((e) => updateSfxrClip(ie));
     updateSfxrClip(ie);
   }
   {
     SelectElement ie;
-    ie = query("#filter");
+    ie = querySelector("#filter");
     ie.onChange.listen((e) => updateFilter(ie));
   }
-  query("#mute")
+  querySelector("#mute")
     ..onClick.listen(muteEverything);
 }
 

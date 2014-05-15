@@ -179,7 +179,7 @@ class AudioSource {
     return sound;
   }
 
-  bool _scanSounds() {
+  void _scanSounds() {
     for (int i = _sounds.length-1; i >= 0; i--) {
       AudioSound sound = _sounds[i];
       if (sound.isFinished) {
