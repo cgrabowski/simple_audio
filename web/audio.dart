@@ -4,6 +4,7 @@ import 'common.dart';
 
 AudioManager audioManager = new AudioManager();
 AudioSound loopingSound = null;
+List<AudioEffect> effects;
 String sourceName = 'Page';
 
 String clipName = 'Wilhelm';
@@ -23,7 +24,16 @@ void main() {
   audioManager.music.clip = audioManager.findClip(musicClipName);
   currentMusicClip = musicClipName;
 
-
+  effects = [
+    new LowpassAudioEffect(audioManager, cutoffFrequency: 100.0),
+    new HighpassAudioEffect(audioManager),
+    new BandpassAudioEffect(audioManager),
+    new LowshelfAudioEffect(audioManager, upperFrequency: 100.0, boost: 2.0),
+    new HighshelfAudioEffect(audioManager, boost: 2.0),
+    new PeakingAudioEffect(audioManager, boost: 2.0),
+    new NotchAudioEffect(audioManager, frequency: 150),
+    new AllpassAudioEffect(audioManager, centerFrequency: 400),
+  ];
 
   audioManager.makeSource(sourceName);
 
@@ -71,6 +81,11 @@ void main() {
     ie.onBlur.listen((e) => updateSfxrClip(ie));
     updateSfxrClip(ie);
   }
+  {
+    SelectElement ie;
+    ie = query("#filter");
+    ie.onChange.listen((e) => updateFilter(ie));
+  }
   query("#mute")
     ..onClick.listen(muteEverything);
 }
@@ -87,8 +102,18 @@ void updateSfxrClip(InputElement el) {
   audioManager.removeClip(sfxrName);
   audioManager.makeClip(sfxrName, AudioClip.SFXR_PREFIX + el.value).load();
 }
+
 void playSfxrOnce(Event event) {
   audioManager.playClipFromSourceIn(0.0, sourceName, sfxrName);
+}
+
+
+void updateFilter(SelectElement el) {
+  if(el.selectedIndex == 0) {
+    audioManager.findSource(sourceName).clearEffects();
+  } else {
+    audioManager.findSource(sourceName).applyEffect(effects[el.selectedIndex - 1]);
+  }
 }
 
 void startLoop(Event event) {
