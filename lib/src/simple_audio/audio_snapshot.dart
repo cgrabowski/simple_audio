@@ -31,13 +31,13 @@ class AudioSnapshot {
    * Volume
    */
   String takeSnapshot() {
-    return JSON.stringify(manager);
+    return JSON.encode(manager);
   }
 
   /** Load a snapshot of the manager.
    */
   void loadSnapshot(String snapshot) {
-    Map map = JSON.parse(snapshot);
+    Map map = JSON.decode(snapshot);
     manager.fromMap(map);
   }
 }
