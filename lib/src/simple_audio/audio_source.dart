@@ -33,6 +33,7 @@ part of simple_audio;
  * *NOTE:* By default an [AudioSource] is [positional].
  */
 class AudioSource {
+  final _appliedEffect = <AudioEffect> [];
   AudioManager _manager;
   String _name;
   GainNode _output;
@@ -49,13 +50,22 @@ class AudioSource {
   void _setupNodes() {
     _panNode.disconnect(0);
     _gainNode.disconnect(0);
+
+    var effectInput = _gainNode;
+
     if (_positional) {
-      _gainNode.connectNode(_panNode, 0, 0);
-      _panNode.connectNode(_output, 0, 0);
-    } else {
-      // Not positioned, we skip the panner node.
-      _gainNode.connectNode(_output, 0, 0);
+      // Positional, we need a pan node.
+      _gainNode.connectNode(_panNode);
+      effectInput = _panNode;
     }
+
+    for(var i = 0; i < _appliedEffect.length; ++i) {
+      final effect = _appliedEffect[i];
+
+      effectInput = effect._apply(effectInput);
+    }
+
+    effectInput.connectNode(_output);
   }
 
   AudioSource._internal(this._manager, this._name, this._output) {
@@ -169,7 +179,7 @@ class AudioSource {
     return sound;
   }
 
-  bool _scanSounds() {
+  void _scanSounds() {
     for (int i = _sounds.length-1; i >= 0; i--) {
       AudioSound sound = _sounds[i];
       if (sound.isFinished) {
@@ -181,6 +191,19 @@ class AudioSource {
         sound.stop();
       }
     }
+  }
+
+  /** Apply [effect] to the audio source. Multiple effects are chained in the
+   *  same order as they are added. */
+  void applyEffect(AudioEffect effect) {
+    _appliedEffect.add(effect);
+    _setupNodes();
+  }
+
+  /** Clear all effects that are applied to the source. */
+  void clearEffects() {
+    _appliedEffect.clear();
+    _setupNodes();
   }
 
   /** Is the source currently paused? */

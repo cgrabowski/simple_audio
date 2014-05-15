@@ -44,60 +44,60 @@ void main() {
   source.setPosition(-1.0, 0.0, -1.0);
   source.positional = false;
 
-  query("#pause_sources")
+  querySelector("#pause_sources")
     ..onClick.listen(pauseLoop);
 
-  query("#music_play")
+  querySelector("#music_play")
     ..onClick.listen(startMusic);
-  query("#music_stop")
+  querySelector("#music_stop")
     ..onClick.listen(stopMusic);
-  query("#pause_music")
+  querySelector("#pause_music")
     ..onClick.listen(pauseMusic);
 
   {
     InputElement ie;
-    ie = query("#play0");
+    ie = querySelector("#play0");
     ie.onClick.listen((e) => playClipOn(ie.value));
   }
   {
     InputElement ie;
-    ie = query("#play1");
+    ie = querySelector("#play1");
     ie.onClick.listen((e) => playClipOn(ie.value));
   }
   {
     InputElement ie;
-    ie = query("#play2");
+    ie = querySelector("#play2");
     ie.onClick.listen((e) => playClipOn(ie.value));
   }
   {
     InputElement ie;
-    ie = query("#play3");
+    ie = querySelector("#play3");
     ie.onClick.listen((e) => playClipOn(ie.value));
   }
   {
     InputElement ie;
-    ie = query("#play4");
+    ie = querySelector("#play4");
     ie.onClick.listen((e) => playClipOn(ie.value));
   }
 
   {
     InputElement ie;
-    ie = query("#masterVolume");
+    ie = querySelector("#masterVolume");
     ie.onChange.listen((e) => adjustVolume("master", ie));
   }
   {
     InputElement ie;
-    ie = query("#musicVolume");
+    ie = querySelector("#musicVolume");
     ie.onChange.listen((e) => adjustVolume("music", ie));
   }
   {
     InputElement ie;
-    ie = query("#sourceVolume");
+    ie = querySelector("#sourceVolume");
     ie.onChange.listen((e) => adjustVolume("source", ie));
   }
-  query("#mute")
+  querySelector("#mute")
     ..onClick.listen(muteEverything);
-  CanvasElement canvas = query("#stage");
+  CanvasElement canvas = querySelector("#stage");
   canvas.width = canvas.clientWidth;
   canvas.height = canvas.clientHeight;
   drawStage();
@@ -106,7 +106,7 @@ void main() {
 }
 
 void drawStage() {
-  CanvasElement canvas = query("#stage");
+  CanvasElement canvas = querySelector("#stage");
   CanvasRenderingContext2D context = canvas.getContext("2d");
   context.fillStyle = "#cccccc";
   context.rect(0.0, 0.0, canvas.width, canvas.height);
@@ -137,8 +137,8 @@ void drawStage() {
       context.stroke();
     }
   }
-  drawListener(query("#stage"));
-  drawSources(query("#stage"), globalSources);
+  drawListener(querySelector("#stage"));
+  drawSources(querySelector("#stage"), globalSources);
 }
 
 void drawListener(CanvasElement canvas) {

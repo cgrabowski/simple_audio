@@ -4,10 +4,13 @@ import 'common.dart';
 
 AudioManager audioManager = new AudioManager();
 AudioSound loopingSound = null;
+List<AudioEffect> effects;
 String sourceName = 'Page';
 
 String clipName = 'Wilhelm';
 String clipURL = 'clippack/clips/wilhelm.ogg';
+String effectName = 'Dungeon';
+String effectURL = 'clippack/clips/dungeon_effect.ogg';
 String musicClipName = 'Deeper';
 String musicClipURL = 'clippack/clips/deeper.ogg';
 String musicClip2Name = 'Dark Knight';
@@ -23,55 +26,73 @@ void main() {
   audioManager.music.clip = audioManager.findClip(musicClipName);
   currentMusicClip = musicClipName;
 
+  effects = [
+    new LowpassAudioEffect(audioManager, cutoffFrequency: 100.0),
+    new HighpassAudioEffect(audioManager),
+    new BandpassAudioEffect(audioManager),
+    new LowshelfAudioEffect(audioManager, upperFrequency: 100.0, boost: 2.0),
+    new HighshelfAudioEffect(audioManager, boost: 2.0),
+    new PeakingAudioEffect(audioManager, boost: 2.0),
+    new NotchAudioEffect(audioManager, frequency: 150),
+    new AllpassAudioEffect(audioManager, centerFrequency: 400),
+  ];
 
+  audioManager.makeClip(effectName, effectURL).load().then((clip) {
+    effects.add(new ConvolverAudioEffect(audioManager, clip));
+  });
 
   audioManager.makeSource(sourceName);
 
-  query("#clip_once")
+  querySelector("#clip_once")
     ..onClick.listen(playOnce);
-  query("#clip_once_delay")
+  querySelector("#clip_once_delay")
     ..onClick.listen(playOnceDelay);
-  query("#clip_loop_start")
+  querySelector("#clip_loop_start")
     ..onClick.listen(startLoop);
-  query("#clip_loop_stop")
+  querySelector("#clip_loop_stop")
     ..onClick.listen(stopLoop);
-  query("#pause_sources")
+  querySelector("#pause_sources")
     ..onClick.listen(pauseLoop);
-  query("#pause_all")
+  querySelector("#pause_all")
     ..onClick.listen(pauseAll);
-  query("#sfxr_once")
+  querySelector("#sfxr_once")
   ..onClick.listen(playSfxrOnce);
-  query("#music_play")
+  querySelector("#music_play")
     ..onClick.listen(startMusic);
-  query("#music_stop")
+  querySelector("#music_stop")
     ..onClick.listen(stopMusic);
-  query("#pause_music")
+  querySelector("#pause_music")
     ..onClick.listen(pauseMusic);
-  query("#music_cross")
+  querySelector("#music_cross")
   ..onClick.listen(crossFadeLinearMusic);
 
   {
     InputElement ie;
-    ie = query("#masterVolume");
+    ie = querySelector("#masterVolume");
     ie.onChange.listen((e) => adjustVolume("master", ie));
   }
   {
     InputElement ie;
-    ie = query("#musicVolume");
+    ie = querySelector("#musicVolume");
     ie.onChange.listen((e) => adjustVolume("music", ie));
   }
   {
     InputElement ie;
-    ie = query("#sourceVolume");
+    ie = querySelector("#sourceVolume");
     ie.onChange.listen((e) => adjustVolume("source", ie));
   }
   {
     InputElement ie;
-    ie = query("#sfxr_data");
+    ie = querySelector("#sfxr_data");
     ie.onBlur.listen((e) => updateSfxrClip(ie));
     updateSfxrClip(ie);
   }
-  query("#mute")
+  {
+    SelectElement ie;
+    ie = querySelector("#filter");
+    ie.onChange.listen((e) => updateFilter(ie));
+  }
+  querySelector("#mute")
     ..onClick.listen(muteEverything);
 }
 
@@ -87,8 +108,18 @@ void updateSfxrClip(InputElement el) {
   audioManager.removeClip(sfxrName);
   audioManager.makeClip(sfxrName, AudioClip.SFXR_PREFIX + el.value).load();
 }
+
 void playSfxrOnce(Event event) {
   audioManager.playClipFromSourceIn(0.0, sourceName, sfxrName);
+}
+
+
+void updateFilter(SelectElement el) {
+  if(el.selectedIndex == 0) {
+    audioManager.findSource(sourceName).clearEffects();
+  } else {
+    audioManager.findSource(sourceName).applyEffect(effects[el.selectedIndex - 1]);
+  }
 }
 
 void startLoop(Event event) {

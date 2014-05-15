@@ -214,6 +214,7 @@ class AudioManager {
     for (int i = 0; i < names.length; i++) {
       clips.add(makeClip(names[i], urls[i]));
     }
+    return clips;
   }
 
   AudioClip removeClip(String name) => _clips.remove(name);
@@ -316,7 +317,7 @@ class AudioManager {
   void setPosition(num x, num y, num z) {
     _listener.setPosition(x, y, z);
   }
-  
+
   void setOrientation(num x, num y, num z, num upX, num upY, num upZ) {
     _listener.setOrientation(x, y, z, upX, upY, upZ);
   }
