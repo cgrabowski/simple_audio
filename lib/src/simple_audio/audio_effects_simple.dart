@@ -321,3 +321,23 @@ class AllpassAudioEffect extends AudioEffect {
     return _filterNode;
   }
 }
+
+/**
+ * A audio effect based on an impulse response.
+ */
+class ConvolverAudioEffect extends AudioEffect {
+  final ConvolverNode _convolverNode;
+
+  ConvolverAudioEffect(AudioManager audioManager, AudioClip impulseResponse, {bool normalize: true})
+      : _convolverNode = audioManager._context.createConvolver() {
+    _convolverNode.buffer = impulseResponse._buffer;
+    _convolverNode.normalize = normalize;
+  }
+
+  @override
+  AudioNode _apply(AudioNode inNode) {
+    _convolverNode.disconnect(0);
+    inNode.connectNode(_convolverNode);
+    return _convolverNode;
+  }
+}

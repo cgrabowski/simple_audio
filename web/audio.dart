@@ -9,6 +9,8 @@ String sourceName = 'Page';
 
 String clipName = 'Wilhelm';
 String clipURL = 'clippack/clips/wilhelm.ogg';
+String effectName = 'Dungeon';
+String effectURL = 'clippack/clips/dungeon_effect.ogg';
 String musicClipName = 'Deeper';
 String musicClipURL = 'clippack/clips/deeper.ogg';
 String musicClip2Name = 'Dark Knight';
@@ -34,6 +36,10 @@ void main() {
     new NotchAudioEffect(audioManager, frequency: 150),
     new AllpassAudioEffect(audioManager, centerFrequency: 400),
   ];
+
+  audioManager.makeClip(effectName, effectURL).load().then((clip) {
+    effects.add(new ConvolverAudioEffect(audioManager, clip));
+  });
 
   audioManager.makeSource(sourceName);
 
