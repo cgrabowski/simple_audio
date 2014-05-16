@@ -21,8 +21,9 @@
 part of simple_audio;
 
 /** [AudioSound] is an [AudioClip] scheduled to be played on an [AudioSource].
- * You cannot construct an instance of the [AudioSound] class directly, it can only be
- * done by playing an [AudioClip] from an [AudioSource] (See [AudioSource], [AudioMusic], and [AudioManager]).
+ * You cannot construct an instance of the [AudioSound] class directly, it can
+ * only be done by playing an [AudioClip] from an [AudioSource] (See
+ * [AudioSource], [AudioMusic], and [AudioManager]).
  */
 class AudioSound {
   final AudioSource _source;
@@ -32,7 +33,6 @@ class AudioSound {
   num _pausedTime;
   num _startTime;
   num _scheduledTime;
-  num get _volume => _sourceNode.gain.value;
 
   /** Is the sound not yet scheduled to be played? */
   bool get isUnscheduled => _sourceNode == null ? false : _sourceNode.playbackState == AudioBufferSourceNode.UNSCHEDULED_STATE;
@@ -92,7 +92,7 @@ class AudioSound {
   }
 
   /**
-   * Time cursor for sound. Will be negative is sound is scheduled
+   * Time cursor for sound. Will be negative if sound is scheduled
    * to be played. Positive if playing.
    */
   num get time {
@@ -172,7 +172,8 @@ class AudioSound {
     _startTime = _source._manager._context.currentTime;
   }
 
-  /** Fading linear IN this sound with [delay] and the [fadeDuration] with [volume] and [playFromStart] or just unpause */
+  /** Fading linear IN this sound with [delay] and the [fadeDuration] with
+   * [volume] and [playFromStart] or just unpause */
   void fadeIn(num delay, num fadeDuration,[bool playFromStart = true, num targetVolume = 1.0]) {
     if(playFromStart) {
       play();
@@ -184,6 +185,7 @@ class AudioSound {
     volume = 0.0;
     fade(delay, fadeDuration, targetVolume);
   }
+
   /** Fading linear this sound with [delay] and the [fadeDuration] out and [doPause] or just stop  */
   void fadeOut(num delay, num fadeDuration, [bool doPause = false]) {
     num currentTime = _sourceNode.context.currentTime;
@@ -194,15 +196,13 @@ class AudioSound {
     } else {
       _stop(currentTime+fadeDuration);
     }
-
   }
 
-  /** Starts fading linear this sound with [delay] and the [fadeDuration] till it reaches the [targetFadeVolumen]  */
+  /** Starts fading linear this sound with [delay] and the [fadeDuration] till
+   * it reaches the [targetFadeVolumen] */
   void fade(num delay, num fadeDuration, num targetFadeVolumen) {
-    print("${_clip._name} $volume");
-    num currentTime = _sourceNode.context.currentTime;
-    _sourceNode.gain.linearRampToValueAtTime(volume, currentTime);
-    _sourceNode.gain.linearRampToValueAtTime(targetFadeVolumen, currentTime+fadeDuration);
+    _fadeAudioParam(_sourceNode.context, _sourceNode.gain, targetFadeVolumen,
+        fadeDuration, delay);
   }
 
   /** Stop playing this sound */
@@ -214,7 +214,7 @@ class AudioSound {
   }
 
   /** Get the volume of the sound. 0.0 <= volume <= 1.0. */
-  num get volume => _volume;
+  num get volume => _sourceNode.gain.value;
 
   /** Set the volume for the sound. */
   void set volume(num v) {
