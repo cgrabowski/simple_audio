@@ -327,6 +327,14 @@ class AudioManager {
   }
 }
 
+
+void _fadeAudioParam(AudioContext context, AudioParam param, num value,
+                     num fadeDuration, num delay) {
+  final currentTime = context.currentTime;
+  param.linearRampToValueAtTime(param.value, currentTime + delay);
+  param.linearRampToValueAtTime(value, currentTime + delay + fadeDuration);
+}
+
 /* TODO:
  * Allow clips and sources to be deleted.
  *
