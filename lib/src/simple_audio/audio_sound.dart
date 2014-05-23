@@ -33,28 +33,22 @@ class AudioSound {
   num _pausedTime;
   num _startTime;
   num _scheduledTime;
+  bool _isFinished = false;
+  bool _isPlaying = false;
+  Timer _endedTimer;
 
-  /** Is the sound not yet scheduled to be played? */
-  bool get isUnscheduled => _sourceNode == null ? false : _sourceNode.playbackState == AudioBufferSourceNode.UNSCHEDULED_STATE;
-  /** Is the sound scheduled to be played? */
-  bool get isScheduled => _sourceNode == null ? false : _sourceNode.playbackState == AudioBufferSourceNode.SCHEDULED_STATE;
   /** Is the sound playing right now? */
-  bool get isPlaying => _sourceNode == null ? false : _sourceNode.playbackState == AudioBufferSourceNode.PLAYING_STATE;
+  bool get isPlaying => _sourceNode == null ? false : _isPlaying;
   /** Is the sound finished being played? */
-  bool get isFinished => _sourceNode == null ? false : _sourceNode.playbackState == AudioBufferSourceNode.FINISHED_STATE;
+  bool get isFinished => _sourceNode != null && _isFinished;
 
   AudioSound._internal(this._source, this._clip, this._loop) {
     _setupSourceNodeForPlayback();
   }
 
-  void _dumpSourceNode() {
-    if (_sourceNode != null) {
-      print('${_sourceNode.playbackState}');
-    }
-  }
-
   void _setupSourceNodeForPlayback() {
     _sourceNode = _source._manager._context.createBufferSource();
+
     if (_clip != null && _clip._buffer != null) {
       _sourceNode.buffer = _clip._buffer;
       _sourceNode.loopStart = 0.0;
@@ -65,9 +59,15 @@ class AudioSound {
   }
 
   void _stop([num when=0.0]) {
-    if (_sourceNode != null && !isUnscheduled) {
+    if (_endedTimer != null) {
+      _endedTimer.cancel();
+      _endedTimer = null;
+    }
+
+    if (_sourceNode != null && isPlaying) {
       _sourceNode.stop(when);
     }
+    _isPlaying = false;
     _sourceNode = null;
   }
 
@@ -123,12 +123,9 @@ class AudioSound {
       // Not started.
       return;
     }
-    print('Sound.pause');
-    _dumpSourceNode();
     if (_sourceNode != null) {
       _pausedTime = _computePausedTime();
       _stop(when);
-      print('paused at $_pausedTime');
     }
   }
 
@@ -137,36 +134,59 @@ class AudioSound {
       // Not paused.
       return;
     }
-    print('Sound.resume');
-    _dumpSourceNode();
     _setupSourceNodeForPlayback();
+
+
     if (_pausedTime < 0.0) {
       // Schedule again.
       _pausedTime = -_pausedTime;
-      print('Scheduling to play sound in $_pausedTime.');
       _scheduledTime = _source._manager._context.currentTime+_pausedTime;
+      _isPlaying = true;
+
+      if (!_loop) {
+        _scheduleEndTimer(_clip._buffer.duration + _pausedTime);
+      }
+
       _sourceNode.start(_scheduledTime, 0.0, _sourceNode.buffer.duration);
       _startTime = _source._manager._context.currentTime;
     } else {
-      print('Starting to play at offset $_pausedTime');
       _scheduledTime = _source._manager._context.currentTime;
+      _isPlaying = true;
+
+      if (!_loop) {
+        _scheduleEndTimer(_sourceNode.buffer.duration-_pausedTime);
+      }
+
       _sourceNode.start(_scheduledTime, // Now.
                         _pausedTime, // Offset.
                         _sourceNode.buffer.duration-_pausedTime); // Length.
       // Offset the time that start was called by the offset into clip.
       _startTime = _source._manager._context.currentTime-_pausedTime;
     }
+
     // Clear paused time.
     _pausedTime = null;
   }
 
+  void _scheduleEndTimer(num expectedEndTime) {
+    _endedTimer = new Timer(new Duration(seconds: expectedEndTime.ceil()), () {
+      _isFinished = true;
+      _isPlaying = false;
+      _endedTimer = null;
+    });
+  }
+
   /** Start playing this sound in [when] seconds. */
   void play([num when=0.0]) {
-    //print('Sound.play');
-    //_dumpSourceNode();
     _stop();
     _setupSourceNodeForPlayback();
     _scheduledTime = _source._manager._context.currentTime+when;
+    _isPlaying = true;
+
+    if (!_loop) {
+      _scheduleEndTimer(when + _clip._buffer.duration);
+    }
+
     _sourceNode.start(_scheduledTime);
     // Called start now.
     _startTime = _source._manager._context.currentTime;
